@@ -1,4 +1,4 @@
-package ru.sberbank.edu.ticketservice.enums;
+package ru.sberbank.edu.ticketservice.ticket;
 
 public enum TicketStatus {
     NEW,

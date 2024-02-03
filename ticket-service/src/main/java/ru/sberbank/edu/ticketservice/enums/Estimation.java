@@ -1,6 +1,6 @@
 package ru.sberbank.edu.ticketservice.enums;
 
-public enum Rating {
+public enum Estimation {
     ONE,
     TWO,
     THREE,
