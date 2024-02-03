@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <title>Dashboard</title>
+  </head>
+  <body>
+    <h1>SberHelpDesk</h1>
+    <div class="ticketSpase">
+        <div class="ticket" th:each="ticket : ${tickets}">
+            <div th:text="${ticket.id}">Id</div>
+            <div th:text="${ticket.creationTime}">CreationTime</div>
+            <br>
+        </div>
+    </div>
+  </body>
+</html>
