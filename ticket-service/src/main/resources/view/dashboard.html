@@ -9,7 +9,6 @@
     <div class="ticketSpase">
         <div class="ticket" th:each="ticket : ${tickets}">
             <div th:text="${ticket.id}">Id</div>
-            <div th:text="${ticket.commentary}">Commentary</div>
             <div th:text="${ticket.creationTime}">CreationTime</div>
             <br>
         </div>
