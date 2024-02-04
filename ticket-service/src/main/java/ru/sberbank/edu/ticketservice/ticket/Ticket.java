@@ -5,8 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.*;
 import ru.sberbank.edu.ticketservice.comment.Comment;
 import ru.sberbank.edu.ticketservice.entity.User;
@@ -21,23 +20,24 @@ import ru.sberbank.edu.ticketservice.enums.Estimation;
 public class Ticket {
 
     @Id
+    @Column(name = "ticket_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column (name = "title")
-    @NotBlank(message = "Title mustn't empty")
+    @NotBlank(message = "Title can't be empty")
     private String title;
 
     @Column (name = "description")
+    @Size(max = 600, message = "Description size must be less then 600 symbols")
     private String description;
 
-    //TODO Сделать через entity graph
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "requester_id")
-    @NotNull(message = "Requester mustn't empty")
+    @NotNull(message = "Requester must exist")
     private User requester;
 
-    //TODO Сделать через entity graph
+    //TODO переписать fetch через entityGraph
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "manager_id")
     private User manager;
@@ -57,9 +57,10 @@ public class Ticket {
     @Column (name = "control_period_at")
     private LocalDateTime controlPeriodAt;
 
-    //TODO Проверить что ArrayList лучшее решение
+    //TODO доделать как отдельную сущность, в которую будет писаться переписка. С датами записи, кто, кому отвечал
+    //TODO Чекнуть что List лучший вариант
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "task_id")
+    @JoinColumn(name = "comment_id")
     private List<Comment> comments = new ArrayList<>();
     
     @Enumerated(EnumType.STRING)

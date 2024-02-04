@@ -3,6 +3,7 @@ package ru.sberbank.edu.ticketservice.ticket;
 public enum TicketStatus {
     NEW,
     ASSIGNED,
-    INPROGRESS,
-    CLOSED;
+    IN_PROGRESS,
+    CLOSED,
+    ARCHIVED
 }
