@@ -6,6 +6,8 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Positive;
 import ru.sberbank.edu.ticketservice.enums.UserRole;
 
 @Entity
@@ -13,7 +15,7 @@ import ru.sberbank.edu.ticketservice.enums.UserRole;
 public class User {
 
     @Id
-    @Column (name = "id")
+    @Column (name = "user_id", unique = true)
     private String id;
     
     @Column (name = "name")

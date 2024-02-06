@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit ticket</title>
+</head>
+<body>
+    <div class="edit ticket">
+        <form th:method="PATCH"
+              th:action="@{/tickets/${id}(id=${ticket.getId()})}"
+              th:object="${ticket}">
+            <label for="title">Title: </label>
+            <input type="text" id="title" th:field="*{title}">
+            <br>
+            <label for="description">Description: </label>
+            <input type="text" id="description" th:field="*{description}">
+            <br>
+            <label for="description">Description: </label>
+            <input type="text" id="description" th:field="*{description}">
+            <br>
+        </form>
+
+        <p th:text="${ticket.getStatus()}">Ticket status</p>
+        <p th:text="${ticket.getEstimation()}">Estimate</p>
+        <p th:text="${ticket.getRequester().getName()}">Requester</p>
+        <p th:text="${ticket.getManager().getName()}">Manager</p>
+
+        <p th:text="${ticket.getCreatedAt()}">Creation time</p>
+        <p th:text="${ticket.getStatusUpdatedAt()}">Last status change time</p>
+    </div>
+</body>
+</html>
