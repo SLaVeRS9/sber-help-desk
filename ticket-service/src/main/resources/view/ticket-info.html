@@ -6,15 +6,26 @@
 </head>
 <body>
     <div class="ticket-info">
-        <h1 th:text="">Ticket summary</h1>
-        <h2>Ticket status</h2>
-        <p>Estimate</p>
-        <p>Requester</p>
-        <p>Manager</p>
-        <p>Description</p>
-        <p>Creation time</p>
-        <p>Last status change time</p>
-        <p>Commentary</p>
+        <h1 th:text="${ticket.getTitle()}">Ticket title</h1>
+        <h2 th:text="${ticket.getStatus()}">Ticket status</h2>
+        <p th:text="${ticket.getEstimation()}">Estimate</p>
+        <p th:text="${ticket.getRequester().getName()}">Requester</p>
+        <p th:text="${ticket.getManager().getName()}">Manager</p>
+        <p th:text="${ticket.getDescription()}">Description</p>
+        <p th:text="${ticket.getCreatedAt()}">Creation time</p>
+        <p th:text="${ticket.getStatusUpdatedAt()}">Last status change time</p>
+    </div>
+
+    <div class="ticket-edit">
+        <form method="GET" th:action="@{/dashboard}">
+            <input type="submit" value="Back"/>
+        </form>
+        <form method="GET" th:action="@{/tickets/{id}/edit(id=${ticket.getId()})}">
+            <input type="submit" value="Edit"/>
+        </form>
+        <form method="DELETE" th:action="@{/dashboard}">
+            <input type="submit" value="Delete"/>
+        </form>
     </div>
 </body>
 </html>

@@ -7,6 +7,7 @@ import java.util.List;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
+import org.hibernate.annotations.Formula;
 import ru.sberbank.edu.ticketservice.comment.Comment;
 import ru.sberbank.edu.ticketservice.entity.User;
 import ru.sberbank.edu.ticketservice.enums.Estimation;
@@ -24,8 +25,14 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    //TODO проверить
+    @Formula(value = "'SBHD-'+id")
+    @Column(name = "ticket_code")
+    private String code;
+
     @Column (name = "title")
     @NotBlank(message = "Title can't be empty")
+    @Size(max = 100, message = "Title size must be less then 100 symbols")
     private String title;
 
     @Column (name = "description")
@@ -46,19 +53,23 @@ public class Ticket {
     @Column (name = "status")
     private TicketStatus status;
 
+    //TODO Добавить маску отображения
     @Column (name = "created_at")
     private LocalDateTime createdAt;
 
+    //TODO Добавить маску отображения
     //TODO сделать листенером на смену статуса
     @Column (name = "status_updated_at")
     private LocalDateTime statusUpdatedAt;
 
+    //TODO Добавить маску отображения
     //TODO сделать вычисляемым полем
     @Column (name = "control_period_at")
     private LocalDateTime controlPeriodAt;
 
     //TODO доделать как отдельную сущность, в которую будет писаться переписка. С датами записи, кто, кому отвечал
     //TODO Чекнуть что List лучший вариант
+    //TODO Работу с комментариями сделать как доп задачу
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "comment_id")
     private List<Comment> comments = new ArrayList<>();

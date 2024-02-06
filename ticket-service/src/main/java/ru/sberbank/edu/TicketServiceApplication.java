@@ -1,4 +1,4 @@
-package ru.sberbank.edu.ticketservice;
+package ru.sberbank.edu;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

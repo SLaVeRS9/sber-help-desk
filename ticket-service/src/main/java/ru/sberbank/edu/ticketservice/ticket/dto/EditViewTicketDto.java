@@ -12,17 +12,18 @@ import ru.sberbank.edu.ticketservice.ticket.TicketStatus;
 import java.time.LocalDateTime;
 import java.util.List;
 
-
+//TODO Подумать как грамотно реализовать, в том числе и перевод EditViewTicketDto на полный entity. После убрать Deprecated
 /**
- * DTO для передачи всей информации о тикете. Применяется для отображения страницы о тикете
+ * DTO для передачи информации для редактирования тикета
  * @author SLaVeRS9
  * @version 1.0
  */
+@Deprecated
 @Builder
 @Getter
 @Setter
 @ToString
-public class FullViewTicketDto {
+public class EditViewTicketDto {
     private Long id;
     private String title;
     private String description;
