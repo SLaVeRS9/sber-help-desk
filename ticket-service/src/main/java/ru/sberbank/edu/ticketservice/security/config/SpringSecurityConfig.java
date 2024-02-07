@@ -21,14 +21,12 @@ public class SpringSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(AbstractHttpConfigurer::disable)
-            
             //for testing on H2 only
             .csrf(csrf -> csrf
                     .ignoringRequestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")))
             .headers(headers -> headers.frameOptions(FrameOptionsConfig::disable))
             //
-            
+       
             .authorizeHttpRequests(authorize -> authorize
                     .dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.ERROR).permitAll()
                     .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
@@ -41,7 +39,8 @@ public class SpringSecurityConfig {
                     .anyRequest().denyAll()
             )
             .httpBasic(Customizer.withDefaults())
-            .formLogin(Customizer.withDefaults());
+            .formLogin(Customizer.withDefaults())
+            .csrf(AbstractHttpConfigurer::disable);
         return http.build();
     }
     

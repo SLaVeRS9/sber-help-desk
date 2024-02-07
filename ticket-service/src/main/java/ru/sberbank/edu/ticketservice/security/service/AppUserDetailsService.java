@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.sberbank.edu.ticketservice.entity.User;
 import ru.sberbank.edu.ticketservice.repository.UserRepository;
-import ru.sberbank.edu.ticketservice.security.AppUserPrincipal;
+import ru.sberbank.edu.ticketservice.security.details.AppUserPrincipal;
 
 @Service
 public class AppUserDetailsService implements UserDetailsService{
