@@ -1,12 +1,12 @@
 /*Создание таблицы users*/
 CREATE TABLE IF NOT EXISTS users (
-    user_id varchar(50),
+    id varchar(50),
     name varchar(50) NOT NULL,
     password varchar(100) NOT NULL,
     role varchar(20) NOT NULL
 );
-
-/*Создание таблицы tickets*/
+--
+-- /*Создание таблицы tickets*/
 CREATE TABLE IF NOT EXISTS tickets (
     title varchar(100),
     requester_id varchar(50),

@@ -9,8 +9,7 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 import org.hibernate.annotations.Formula;
 import ru.sberbank.edu.ticketservice.comment.Comment;
-import ru.sberbank.edu.ticketservice.entity.User;
-import ru.sberbank.edu.ticketservice.enums.Estimation;
+import ru.sberbank.edu.ticketservice.profile.User;
 
 @Entity
 @Table(name = "tickets")

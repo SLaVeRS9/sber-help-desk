@@ -3,7 +3,7 @@ package ru.sberbank.edu.ticketservice.ticket.dto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import ru.sberbank.edu.ticketservice.entity.User;
+import ru.sberbank.edu.ticketservice.profile.User;
 import ru.sberbank.edu.ticketservice.ticket.TicketStatus;
 
 import java.io.Serializable;
