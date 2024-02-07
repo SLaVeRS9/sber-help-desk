@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit ticket</title>
+</head>
+<body>
+    <div class="add ticket">
+        <form th:method="POST"
+              th:action="@{/tickets}"
+              th:object="${ticket}">
+            <span th:text="${ticket.getStatus()}">Status</span>
+            <br>
+            <label for="title">Title: </label>
+            <input type="text" id="title" th:field="*{title}">
+            <br>
+            <label for="description">Description: </label>
+            <input type="text" id="description" th:field="*{description}">
+            <br>
+            <label for="description">Requester: </label>
+            <input type="text" id="requester" th:field="*{requester.name}">
+            <br>
+            <input type="submit" id="submit" value="Add ticket">
+        </form>
+    </div>
+</body>
+</html>
