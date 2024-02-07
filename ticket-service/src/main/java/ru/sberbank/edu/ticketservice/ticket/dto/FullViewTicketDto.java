@@ -24,6 +24,7 @@ import java.util.List;
 @ToString
 public class FullViewTicketDto {
     private Long id;
+    private String code;
     private String title;
     private String description;
     private User requester;

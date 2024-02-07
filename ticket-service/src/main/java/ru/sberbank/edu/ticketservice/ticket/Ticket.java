@@ -39,7 +39,7 @@ public class Ticket {
     @Size(max = 600, message = "Description size must be less then 600 symbols")
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "requester_id")
     @NotNull(message = "Requester must exist")
     private User requester;

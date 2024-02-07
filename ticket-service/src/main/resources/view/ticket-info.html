@@ -17,13 +17,13 @@
     </div>
 
     <div class="ticket-edit">
-        <form method="GET" th:action="@{/dashboard}">
+        <form th:method="GET" th:action="@{/dashboard}">
             <input type="submit" value="Back"/>
         </form>
-        <form method="GET" th:action="@{/tickets/{id}/edit(id=${ticket.getId()})}">
+        <form th:method="GET" th:action="@{/tickets/{id}/edit(id=${ticket.getId()})}">
             <input type="submit" value="Edit"/>
         </form>
-        <form method="DELETE" th:action="@{/dashboard}">
+        <form th:method="DELETE" th:action="@{/tickets/{id}(id=${ticket.getId()})}">
             <input type="submit" value="Delete"/>
         </form>
     </div>

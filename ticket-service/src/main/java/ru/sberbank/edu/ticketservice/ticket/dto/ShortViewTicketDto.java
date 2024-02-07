@@ -19,9 +19,11 @@ import java.time.LocalDateTime;
 @Setter
 public class ShortViewTicketDto implements Serializable {
     private Long id;
+    private String code;
     private String title;
     private User requester;
     private User manager;
     private TicketStatus status;
+    private LocalDateTime creationAt;
     private LocalDateTime controlPeriodAt;
 }

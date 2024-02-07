@@ -60,6 +60,6 @@ public class TicketUIController {
     @DeleteMapping("/{id}")
     public String addTicket(@PathVariable Long id) {
         ticketService.deleteTicket(id);
-        return "redirect:dashboard";
+        return "redirect:/dashboard";
     }
 }

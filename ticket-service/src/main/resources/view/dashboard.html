@@ -8,8 +8,16 @@
     <h1>SberHelpDesk</h1>
     <div class="ticketSpase">
         <div class="ticket" th:each="ticket : ${tickets}">
-            <div th:text="${ticket.id}">Id</div>
-            <div th:text="${ticket.creationTime}">CreationTime</div>
+            <div th:text="${ticket.getId()}">Id</div>
+            <div th:text="${ticket.getCode()}">Code</div>
+            <div th:text="${ticket.getTitle()}">Title</div>
+            <div th:text="${ticket.getStatus()}">Status</div>
+            <!--<div th:text="${ticket.getRequester().getName()}">Requester</div>
+            <div th:text="${ticket.getManager().getName()}">Manager</div>-->
+            <div th:text="${ticket.getCreationAt()}">CreationAt</div>
+            <form method="GET" th:action="@{/tickets/{id}/edit(id=${ticket.getId()})}">
+                <input type="submit" value="Edit"/>
+            </form>
             <br>
         </div>
     </div>
