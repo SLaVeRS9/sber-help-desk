@@ -1,4 +1,4 @@
-package ru.sberbank.edu.ticketservice.security;
+package ru.sberbank.edu.ticketservice.security.details;
 
 import java.util.Collection;
 import java.util.Collections;
