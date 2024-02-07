@@ -2,11 +2,16 @@ package ru.sberbank.edu.ticketservice.security;
 
 import java.util.Collection;
 import java.util.Collections;
+
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
 import ru.sberbank.edu.ticketservice.entity.User;
 
+//@Service
+//@AllArgsConstructor
 public class AppUserPrincipal implements UserDetails {
     
     private final String ROLE_PREFIX = "ROLE_";

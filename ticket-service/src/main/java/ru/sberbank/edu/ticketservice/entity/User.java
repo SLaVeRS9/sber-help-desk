@@ -6,10 +6,15 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import ru.sberbank.edu.ticketservice.enums.UserRole;
 
 @Entity
 @Table(name = "users")
+//@Data
+//@NoArgsConstructor
 public class User {
 
     @Id
@@ -27,7 +32,7 @@ public class User {
     private UserRole role;
 
     public User() {
-        
+
     }
     
     public User(String id, String name, String password, UserRole role) {

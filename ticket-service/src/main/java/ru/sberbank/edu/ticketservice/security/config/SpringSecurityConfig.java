@@ -38,6 +38,7 @@ public class SpringSecurityConfig {
                     .requestMatchers("/admin/*").hasRole("ADMIN")
                     .requestMatchers("/manager/*").hasAnyRole("MANAGER", "ADMIN")
                     .requestMatchers("/user/*").hasAnyRole("USER", "MANAGER", "ADMIN")
+                    .requestMatchers("/profile/**").hasAnyRole("USER", "MANAGER", "ADMIN")
                     .anyRequest().denyAll()
             )
             .httpBasic(Customizer.withDefaults())
