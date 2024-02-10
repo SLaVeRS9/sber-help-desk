@@ -12,7 +12,7 @@ import jakarta.persistence.Table;
 public class User {
 
     @Id
-//    @Column (name = "user_id", unique = true)
+    @Column (name = "id")
     private String id;
     
     @Column (name = "name")
