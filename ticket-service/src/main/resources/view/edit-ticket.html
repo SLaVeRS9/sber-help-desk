@@ -15,16 +15,32 @@
             <label for="description">Description: </label>
             <input type="text" id="description" th:field="*{description}">
             <br>
+            <br>
             <input type="submit" value="Save changes"/>
+            <br>
+            <br>
+            <br>
+            <label for="status">Status: </label>
+            <input type="text" id="status" th:field="*{status}" readonly>
+            <br>
+            <label for="estimation">Estimate: </label>
+            <input type="text" id="estimation" th:field="*{estimation}" readonly>
+            <br>
+            <label for="requester">Requester: </label>
+            <input type="text" id="requester" th:field="*{requester.name}" readonly>
+            <br>
+            <label for="manager">Manager: </label>
+            <input type="text" id="manager" th:field="*{manager.name}" readonly>
+            <br>
+            <label for="creation_time">Creation time: </label>
+            <input type="text" id="creation_time" th:field="*{createdAt}" readonly>
+            <br>
+            <label for="status_updatedAt">Last status change time: </label>
+            <input type="text" id="status_updatedAt" th:field="*{statusUpdatedAt}" readonly>
+
         </form>
 
-        <p th:text="${ticket.getStatus()}">Ticket status</p>
-        <p th:text="${ticket.getEstimation()}">Estimate</p>
-        <p th:text="${ticket.getRequester().getName()}">Requester</p>
-        <p th:text="${ticket.getManager().getName()}">Manager</p>
 
-        <p th:text="${ticket.getCreatedAt()}">Creation time</p>
-        <p th:text="${ticket.getStatusUpdatedAt()}">Last status change time</p>
     </div>
 </body>
 </html>

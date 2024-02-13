@@ -1,10 +1,16 @@
 package ru.sberbank.edu.ticketservice.ticket;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.sberbank.edu.ticketservice.profile.ProfileService;
+import ru.sberbank.edu.ticketservice.profile.User;
 import ru.sberbank.edu.ticketservice.ticket.dto.FullViewTicketDto;
+
+import java.util.Set;
 
 /**
  * Controller для обработки запросов на отображение ui
@@ -19,34 +25,46 @@ import ru.sberbank.edu.ticketservice.ticket.dto.FullViewTicketDto;
 @RequiredArgsConstructor
 public class TicketUIController {
     private final TicketService ticketService;
+    private final ProfileService profileService;
     @GetMapping("/{id}")
-    public String showTicketInfo(@PathVariable Long id, Model model) {
+    public String showTicketInfo(@PathVariable Long id, Model model,
+                                 @AuthenticationPrincipal UserDetails currentUser) {
         var fullViewTicketDto = ticketService.getFullTicketInfo(id);
         model.addAttribute("ticket", fullViewTicketDto);
+        model.addAttribute("userId", currentUser.getUsername());
         return "ticket-info";
     }
 
+    //TODO подумать как проставить ограничения по ролям
     //TODO подумать над переделать под dto под редактирование
     @GetMapping("/{id}/edit")
     public String showEditPage(@PathVariable Long id, Model model) {
         //TODO Обработка exception
-        var fullViewTicketDto = ticketService.editTicket(id);
+        var fullViewTicketDto = ticketService.getFullTicketInfo(id);
         model.addAttribute("ticket", fullViewTicketDto);
         return "edit-ticket";
     }
 
-    //TODO Переписать метод, вся логика внутри не верная
     @PatchMapping("/{id}")
-    public String editTicket(@PathVariable Long id, Model model) {
+    public String editTicket(@ModelAttribute("ticket") FullViewTicketDto fullViewTicketDtoModel) {
         //TODO Обработка exception
-        var fullViewTicketDto = ticketService.editTicket(id);
-        model.addAttribute("ticket", fullViewTicketDto);
-        return "redirect:{id}";
+        fullViewTicketDtoModel = ticketService.editTicket(fullViewTicketDtoModel);
+        return "redirect:/tickets/"+fullViewTicketDtoModel.getId();
     }
 
     @GetMapping("/add")
-    public String showAddPage(@ModelAttribute("ticket") FullViewTicketDto fullViewTicketDto) {
+    public String showAddPage(@ModelAttribute("ticket") FullViewTicketDto fullViewTicketDto,
+                              //@ModelAttribute("managers") Set<UserDto> managers,
+                              /*@AuthenticationPrincipal UserDetails currentUser*/
+                              @ModelAttribute("currentUser") User currentUser) {
         fullViewTicketDto.setStatus(TicketStatus.NEW);
+        //managers = profileService.getAllManagers;
+        //String userId = currentUser.getUsername();
+        //User user = profileService.getUserById();
+
+        User user = profileService.getActiveUser();
+        currentUser.setName(user.getName());
+        currentUser.setId(user.getId());
         //TODO Реализовать вызов получения всех менеджеров и отправки их в вью
         return "add-ticket";
     }

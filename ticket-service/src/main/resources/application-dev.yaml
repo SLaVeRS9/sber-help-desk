@@ -30,3 +30,12 @@ spring:
     hiddenmethod:
       filter:
         enabled: true
+
+  thymeleaf:
+    cache: off
+
+
+ticket:
+  code: SHD-
+  SLA:
+    days: 5

@@ -26,17 +26,20 @@ public class SpringSecurityConfig {
                     .ignoringRequestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")))
             .headers(headers -> headers.frameOptions(FrameOptionsConfig::disable))
             //
-       
+
             .authorizeHttpRequests(authorize -> authorize
                     .dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.ERROR).permitAll()
                     .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                    .requestMatchers("/h2-console/*").permitAll()
+                    .requestMatchers("/h2-console/**").permitAll()
                     .requestMatchers("/error/*").permitAll()
                     .requestMatchers("/auth/*").permitAll()
                     .requestMatchers("/admin/*").hasRole("ADMIN")
                     .requestMatchers("/manager/*").hasAnyRole("MANAGER", "ADMIN")
                     .requestMatchers("/user/*").hasAnyRole("USER", "MANAGER", "ADMIN")
+                    .requestMatchers("/api/**").hasAnyRole("USER", "MANAGER", "ADMIN")
                     .requestMatchers("/profile/**").hasAnyRole("USER", "MANAGER", "ADMIN")
+                    .requestMatchers("/tickets/**").hasAnyRole("USER", "MANAGER", "ADMIN")
+                    .requestMatchers("/dashboard/**").hasAnyRole("USER", "MANAGER", "ADMIN")
                     .anyRequest().denyAll()
             )
             .httpBasic(Customizer.withDefaults())

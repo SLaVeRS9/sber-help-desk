@@ -2,12 +2,13 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
       </profile>
-      <profile name="Annotation profile for help-desk" enabled="true">
+      <profile name="Annotation profile for ticket-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -20,12 +21,13 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="help-desk" target="17" />
       <module name="sber-help-desk" target="17" />
-      <module name="ticket-service" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="help-desk" options="-parameters" />
       <module name="ticket-service" options="-parameters" />
     </option>
   </component>

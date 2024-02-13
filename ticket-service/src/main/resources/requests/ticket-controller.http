@@ -1,0 +1,8 @@
+###
+GET http://localhost:8082/api/tickets/1?offset=1&limit=2
+Authorization: Basic smirnovav 123456
+
+###
+GET http://localhost:8082/api/tickets
+Authorization: Basic smirnovav 123456
+
