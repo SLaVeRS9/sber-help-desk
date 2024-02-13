@@ -2,14 +2,16 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Edit ticket</title>
+    <title>Add ticket</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style-ticket.css}"/>
 </head>
 <body>
-    <div class="add ticket">
-        <form th:method="POST"
+    <div class="add ticket" >
+        <form
+              th:method="POST"
               th:action="@{/tickets}"
               th:object="${ticket}">
-            <span th:text="${ticket.getStatus()}">Status</span>
+            <span th:text="'Status: ' + ${ticket.getStatus()}">Status</span>
             <br>
             <label for="title">Title: </label>
             <input type="text" id="title" th:field="*{title}">
@@ -17,11 +19,17 @@
             <label for="description">Description: </label>
             <input type="text" id="description" th:field="*{description}">
             <br>
-            <label for="description">Requester: </label>
-            <input type="text" id="requester" th:field="*{requester.name}">
+            <label for="requester">Requester: </label>
+            <input type="text" id="requester" th:field="${currentUser.name}" readonly>
             <br>
-            <input type="submit" id="submit" value="Add ticket">
+            <input class="ticket-buttons" type="submit" id="submit" value="Add ticket">
         </form>
+        <div>
+            <form th:method="GET"
+                  th:action="@{/dashboard}">
+                <input class="ticket-buttons" type="submit" id="back" value="Back">
+            </form>
+        </div>
     </div>
 </body>
 </html>

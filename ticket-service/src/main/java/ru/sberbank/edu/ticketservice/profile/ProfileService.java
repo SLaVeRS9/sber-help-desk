@@ -12,7 +12,7 @@ public class ProfileService {
 
     public User getActiveUser() {
 //        User user = userRepository.findUserByName(userPrincipal.getUsername());
-        User user = new User("ABraham", "John", "", UserRole.MANAGER);
+        User user = new User("smirnovav", "Smirnov Alexey", "$2a$12$HHSybys2IZOGkIev4I0nuOYQkNvtjVamreLkz8iRazn0jHABlrsT6", UserRole.MANAGER);
         return user;
     }
 //    }
