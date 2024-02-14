@@ -7,7 +7,6 @@ import java.util.List;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
-import org.hibernate.annotations.Formula;
 import ru.sberbank.edu.ticketservice.comment.Comment;
 import ru.sberbank.edu.ticketservice.profile.User;
 
@@ -17,6 +16,7 @@ import ru.sberbank.edu.ticketservice.profile.User;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Ticket {
 
     @Id
@@ -24,8 +24,6 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //TODO проверить
-    @Formula(value = "'SBHD-'+id")
     @Column(name = "ticket_code")
     private String code;
 
@@ -38,13 +36,14 @@ public class Ticket {
     @Size(max = 600, message = "Description size must be less then 600 symbols")
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
+    //TODO CascadeType проверить
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST})
     @JoinColumn(name = "requester_id")
     @NotNull(message = "Requester must exist")
     private User requester;
 
     //TODO переписать fetch через entityGraph
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST})
     @JoinColumn(name = "manager_id")
     private User manager;
 
