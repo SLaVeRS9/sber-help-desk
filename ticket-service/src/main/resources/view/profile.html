@@ -57,7 +57,7 @@
                                 <tbody>
                                 <tr>
                                     <td class="active">Зарегистрирован:</td>
-                                    <td>12.06.2016</td>
+                                    <td th:text="${user.dateOfRegister}"></td>
                                 </tr>
                                 <tr>
                                     <td class="active">Login:</td>
@@ -65,7 +65,7 @@
                                 </tr>
                                 <tr>
                                     <td class="active">Дата Рождения:</td>
-                                    <td>21.04.1991</td>
+                                    <td th:text="${user.dateOfBirth}"></td>
                                 </tr>
                                 <tr>
                                     <td class="active">Имя Пользователя:</td>
@@ -73,11 +73,11 @@
                                 </tr>
                                 <tr>
                                     <td class="active">Пол:</td>
-                                    <td>Мужской</td>
+                                    <td th:text="${user.gender}"></td>
                                 </tr>
                                 <tr>
                                     <td class="active">Полных лет:</td>
-                                    <td>43</td>
+                                    <td th:text="${user.age}"></td>
                                 </tr>
                                 <tr>
                                     <td class="active">Роль пользователя:</td>
