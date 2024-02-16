@@ -3,6 +3,8 @@ package ru.sberbank.edu.ticketservice.ticket;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.sberbank.edu.ticketservice.profile.*;
@@ -21,8 +23,8 @@ public class TicketService {
     private final TicketRepository ticketRepository;
     private final FullViewTicketMapper fullViewTicketMapper;
     private final ShortViewTicketMapper shortViewTicketMapper;
-    private final ProfileService profileService;
-    private final UserRepository userRepository;
+    private final UserService userService;
+
     @Value("${ticket.SLA.days}")
     private Long slaDays;
     @Value("${ticket.code}")
@@ -63,14 +65,13 @@ public class TicketService {
         return fullViewTicketMapper.ticketToFullViewTicketDto(ticket);
     }
 
-    public void addTicket(FullViewTicketDto fullViewTicketDto) {
+    public void addTicket(FullViewTicketDto fullViewTicketDto, UserDetails userDetails) {
         //TODO Заглушка, поменять когда будет норм реализацция получения на фронте инфы из профиль пользователя
-        User currentUser = profileService.getActiveUser();
+        String currentUserId = userDetails.getUsername();
+        User currentUser = userService.getUserById(currentUserId);
         fullViewTicketDto.setCode(ticketCode);
         fullViewTicketDto.setStatus(TicketStatus.NEW);
-        fullViewTicketDto.setRequester(userRepository.getReferenceById(currentUser.getId()));
-        fullViewTicketDto.setCreatedAt(LocalDateTime.now());
-        fullViewTicketDto.setStatusUpdatedAt(LocalDateTime.now());
+        fullViewTicketDto.setRequester(currentUser);
         fullViewTicketDto.setControlPeriodAt(LocalDateTime.now().plusDays(slaDays));
 
         var ticket = fullViewTicketMapper.fullViewTicketDtoToTicket(fullViewTicketDto);
