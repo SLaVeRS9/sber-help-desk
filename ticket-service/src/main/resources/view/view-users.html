@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+ <head>
+    <meta charset="utf-8">
+    <title>All Users</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}"/>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1> Users </h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th> Login </th>
+                            <th> Name </th>
+                            <th> Role </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:if="${users.empty}">
+                            <td colspan="3"> No Users Available </td>"
+                        </tr>
+                        <tr th:each="user : ${users}">
+                            <td><span th:text="${user.id}"> Login </span></td>
+                            <td><span th:text="${user.name}"> Name </span></td>
+                            <td><span th:text="${user.role}"> Role </span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <a class="btn btn-primary" href="#" th:href="@{users/edit}" th:classappend="${users.empty} ? 'disabled' : ''"> Edit users</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

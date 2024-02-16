@@ -1,14 +1,11 @@
 package ru.sberbank.edu.ticketservice.profile;
 
-import ru.sberbank.edu.ticketservice.profile.User;
-import ru.sberbank.edu.ticketservice.profile.UserRole;
 import ru.sberbank.edu.common.error.UserAlreadyExistsException;
-
+import ru.sberbank.edu.common.error.UserNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import ru.sberbank.edu.ticketservice.profile.UserDto;
-import ru.sberbank.edu.ticketservice.profile.UserRepository;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -35,5 +32,34 @@ public class UserService {
     
     public boolean loginExists(String login) {
         return userRepository.findById(login).isPresent();
+    }
+    
+    public User getUserById(String id) {
+        Optional<User> optional = userRepository.findById(id);
+        if (optional.isPresent()) {
+            return optional.get();
+        } else {
+            throw new UserNotFoundException("User not found, id = " + id);
+        }
+    }
+    
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+    
+    public void saveAll(List<User> users) {
+        userRepository.saveAll(users);
+    }
+    
+    public void updateRoles(List<User> users) {
+       for(User user : users) {
+           User savedUser = getUserById(user.getId());
+           savedUser.setRole(user.getRole());
+           userRepository.save(savedUser);
+       }
+    }
+    
+    public List<User> findByRole(UserRole role) {
+        return userRepository.findByRole(role);
     }
 }

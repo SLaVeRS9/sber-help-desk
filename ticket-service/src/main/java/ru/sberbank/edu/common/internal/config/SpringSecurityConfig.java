@@ -31,11 +31,11 @@ public class SpringSecurityConfig {
                     .dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.ERROR).permitAll()
                     .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                     .requestMatchers("/h2-console/**").permitAll()
-                    .requestMatchers("/error/*").permitAll()
-                    .requestMatchers("/auth/*").permitAll()
-                    .requestMatchers("/admin/*").hasRole("ADMIN")
-                    .requestMatchers("/manager/*").hasAnyRole("MANAGER", "ADMIN")
-                    .requestMatchers("/user/*").hasAnyRole("USER", "MANAGER", "ADMIN")
+                    .requestMatchers("/error/**").permitAll()
+                    .requestMatchers("/auth/**").permitAll()
+                    .requestMatchers("/admin/**").hasRole("ADMIN")
+                    .requestMatchers("/manager/**").hasAnyRole("MANAGER", "ADMIN")
+                    .requestMatchers("/user/**").hasAnyRole("USER", "MANAGER", "ADMIN")
                     .requestMatchers("/api/**").hasAnyRole("USER", "MANAGER", "ADMIN")
                     .requestMatchers("/profile/**").hasAnyRole("USER", "MANAGER", "ADMIN")
                     .requestMatchers("/tickets/**").hasAnyRole("USER", "MANAGER", "ADMIN")
@@ -43,7 +43,9 @@ public class SpringSecurityConfig {
                     .anyRequest().denyAll()
             )
             .httpBasic(Customizer.withDefaults())
-            .formLogin(Customizer.withDefaults())
+            .formLogin(formLogin -> formLogin
+                    .defaultSuccessUrl("/profile", true)
+            )
             .csrf(AbstractHttpConfigurer::disable);
         return http.build();
     }

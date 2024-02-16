@@ -10,7 +10,7 @@ import java.time.Period;
 public class User {
 
     @Id
-//    @Column (name = "user_id", unique = true)
+    @Column (name = "id")
     private String id;
     
     @Column (name = "name")
@@ -83,5 +83,10 @@ public class User {
 
     public void setRole(UserRole role) {
         this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return "User [id=" + id + ", name=" + name + ", password=" + password + ", role=" + role + "]";
     }
 }

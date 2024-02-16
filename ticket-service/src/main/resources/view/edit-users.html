@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+ <head>
+    <meta charset="utf-8">
+    <title>All Users</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}"/>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1> Edit users </h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <form action="#" class="form-horizontal" th:action="@{save}" th:object="${form}" method="POST">
+                    <fieldset>
+                        <a class="btn btn-info" href="#" th:href="@{/admin/users}"> View mode </a>
+                        <a class="float-right">
+                            <input type = "submit" id="submitButton" class="btn btn-success" th:value="Save">
+                            <input type = "reset" id="resetButton" class="btn btn-danger" th:value="Reset">
+                        </a>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th> Login </th>
+                                    <th> Name </th>
+                                    <th> Role </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="user, itemStat : ${form.users}">
+                                    <td><input th:name="|users[${itemStat.index}].id|" th:value="${user.getId()}" th:readonly="readlonly"/></td>
+                                    <td><input th:name="|users[${itemStat.index}].name|" th:value="${user.getName()}" th:readonly="readlonly"/></td>
+                                    <td>
+                                        <select th:name="|users[${itemStat.index}].role|">
+                                            <option th:value="${user.getRole()}" th:text="${user.getRole()}"></option>
+                                            <option th:each="role : ${roles}" th:value ="${role}" th:text ="${role}"/>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>                        
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
