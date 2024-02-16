@@ -7,6 +7,8 @@ import java.util.List;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import ru.sberbank.edu.ticketservice.comment.Comment;
 import ru.sberbank.edu.ticketservice.profile.User;
 
@@ -52,11 +54,13 @@ public class Ticket {
     private TicketStatus status;
 
     //TODO Добавить маску отображения
+    @CreationTimestamp
     @Column (name = "created_at")
     private LocalDateTime createdAt;
 
     //TODO Добавить маску отображения
     //TODO сделать листенером на смену статуса
+    @UpdateTimestamp
     @Column (name = "status_updated_at")
     private LocalDateTime statusUpdatedAt;
 

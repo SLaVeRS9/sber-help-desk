@@ -1,13 +1,14 @@
 package ru.sberbank.edu.ticketservice.ticket;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.sberbank.edu.ticketservice.profile.ProfileService;
-import ru.sberbank.edu.ticketservice.profile.User;
+import ru.sberbank.edu.ticketservice.profile.*;
 import ru.sberbank.edu.ticketservice.ticket.dto.FullViewTicketDto;
 
 import java.util.Set;
@@ -20,12 +21,12 @@ import java.util.Set;
 //TODO прикрутить валидацию
 //TODO добавить сортировку и плагинацию в дашборд
 @Controller
-//TODO вынести пути в проперти
 @RequestMapping("/tickets")
 @RequiredArgsConstructor
 public class TicketUIController {
     private final TicketService ticketService;
-    private final ProfileService profileService;
+    private final UserService userService;
+
     @GetMapping("/{id}")
     public String showTicketInfo(@PathVariable Long id, Model model,
                                  @AuthenticationPrincipal UserDetails currentUser) {
@@ -46,8 +47,11 @@ public class TicketUIController {
     }
 
     @PatchMapping("/{id}")
-    public String editTicket(@ModelAttribute("ticket") FullViewTicketDto fullViewTicketDtoModel) {
+    public String editTicket(@ModelAttribute("ticket") @Valid FullViewTicketDto fullViewTicketDtoModel,
+                             BindingResult bindingResult) {
         //TODO Обработка exception
+        if (bindingResult.hasErrors())
+            return "edit-ticket";
         fullViewTicketDtoModel = ticketService.editTicket(fullViewTicketDtoModel);
         return "redirect:/tickets/"+fullViewTicketDtoModel.getId();
     }
@@ -55,23 +59,31 @@ public class TicketUIController {
     @GetMapping("/add")
     public String showAddPage(@ModelAttribute("ticket") FullViewTicketDto fullViewTicketDto,
                               //@ModelAttribute("managers") Set<UserDto> managers,
-                              /*@AuthenticationPrincipal UserDetails currentUser*/
-                              @ModelAttribute("currentUser") User currentUser) {
+                              @AuthenticationPrincipal UserDetails userDetails,
+                              Model model) {
         fullViewTicketDto.setStatus(TicketStatus.NEW);
+        String currentUserId = userDetails.getUsername();
+        User currentUser = userService.getUserById(currentUserId);
+        model.addAttribute("currentUser", currentUser);
         //managers = profileService.getAllManagers;
         //String userId = currentUser.getUsername();
         //User user = profileService.getUserById();
-
-        User user = profileService.getActiveUser();
-        currentUser.setName(user.getName());
-        currentUser.setId(user.getId());
         //TODO Реализовать вызов получения всех менеджеров и отправки их в вью
         return "add-ticket";
     }
 
     @PostMapping
-    public String addTicket(@ModelAttribute("ticket") FullViewTicketDto fullViewTicketDto) {
-        ticketService.addTicket(fullViewTicketDto);
+    public String addTicket(@ModelAttribute("ticket") @Valid FullViewTicketDto fullViewTicketDto,
+                            BindingResult bindingResult,
+                            @AuthenticationPrincipal UserDetails userDetails,
+                            Model model) {
+        if(bindingResult.hasErrors()) {
+            String currentUserId = userDetails.getUsername();
+            User currentUser = userService.getUserById(currentUserId);
+            model.addAttribute("currentUser", currentUser);
+            return "add-ticket";
+        }
+        ticketService.addTicket(fullViewTicketDto, userDetails);
         return "redirect:dashboard";
     }
 

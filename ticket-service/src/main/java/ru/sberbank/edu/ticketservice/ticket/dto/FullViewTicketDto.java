@@ -1,5 +1,9 @@
 package ru.sberbank.edu.ticketservice.ticket.dto;
 
+import jakarta.persistence.Column;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,7 +31,11 @@ import java.util.List;
 public class FullViewTicketDto {
     private Long id;
     private String code;
+    @NotBlank(message = "Title can't be empty")
+    @Size(max = 100, message = "Title size must be less then 100 symbols")
     private String title;
+    @Column(name = "description")
+    @Size(max = 600, message = "Description size must be less then 600 symbols")
     private String description;
     private User requester;
     private User manager;
