@@ -1,11 +1,9 @@
 package ru.sberbank.edu.ticketservice.profile;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.time.LocalDate;
+import java.time.Period;
 
 @Entity
 @Table(name = "users")
@@ -25,10 +23,28 @@ public class User {
     @Column (name = "role")
     private UserRole role;
 
+    @Column (name = "date_of_birth")
+    private LocalDate dateOfBirth;
+
+    @Transient
+    private int age;
+
+    @Column (name = "date_of_register")
+    private LocalDate dateOfRegister;
+
+    @Enumerated(EnumType.STRING)
+    @Column (name = "gender")
+    private UserGender gender;
+
+
     public User() {
         
     }
-    
+
+    public int getAge() {
+        return Period.between(dateOfBirth, LocalDate.now()).getYears() + 1;
+    }
+
     public User(String id, String name, String password, UserRole role) {
         super();
         this.id = id;

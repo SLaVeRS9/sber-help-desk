@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Builder
 @Getter
 @Setter
-public class ShortViewTicketDto implements Serializable {
+public class ShortViewTicketDto {
     private Long id;
     private String code;
     private String title;

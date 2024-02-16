@@ -3,21 +3,40 @@
   <head>
       <meta charset="UTF-8">
       <title>Dashboard</title>
+      <link rel="stylesheet" type="text/css" th:href="@{/css/style-ticket.css}"/>
   </head>
   <body>
     <h1>SberHelpDesk</h1>
+    <div class="ticket-buttons">
+        <form method="GET" th:action="@{/tickets/add}">
+            <input type="submit" value="Add new ticket"/>
+        </form>
+    </div>
+    <br>
     <div class="ticketSpase">
-        <div class="ticket" th:each="ticket : ${tickets}">
-            <div th:text="${ticket.getId()}">Id</div>
-            <div th:text="${ticket.getCode()}">Code</div>
+        <h2>Tickets</h2>
+        <div class="ticket-card" th:each="ticket : ${tickets}">
+            <div th:text="${ticket.getCode()} + ${ticket.getId()}">Code</div>
             <div th:text="${ticket.getTitle()}">Title</div>
             <div th:text="${ticket.getStatus()}">Status</div>
-            <!--<div th:text="${ticket.getRequester().getName()}">Requester</div>
-            <div th:text="${ticket.getManager().getName()}">Manager</div>-->
-            <div th:text="${ticket.getCreationAt()}">CreationAt</div>
-            <form method="GET" th:action="@{/tickets/{id}/edit(id=${ticket.getId()})}">
-                <input type="submit" value="Edit"/>
-            </form>
+            <div><span>Requester: </span><span th:text="${ticket.getRequester().getName()}">Requester</span></div>
+            <div><span>Manager: </span><span th:if="${ticket.getManager()}!=null" th:text="${ticket.getManager().getName()}">Manager</span></div>
+            <div><span>Control period: </span><span th:text="${#temporals.format(ticket.getControlPeriodAt(), 'dd-MM-yyyy HH:mm')}">Control period</span></div>
+            <br>
+            <table>
+                <tr>
+                    <td>
+                        <form method="GET" th:if="${ticket.getRequester().getId()}==${userId}" th:action="@{/tickets/{id}/edit(id=${ticket.getId()})}">
+                            <input type="submit" value="Edit"/>
+                        </form>
+                    </td>
+                    <td>
+                        <form method="GET" th:action="@{/tickets/{id}(id=${ticket.getId()})}">
+                            <input type="submit" value="Details"/>
+                        </form>
+                    </td>
+                </tr>
+            </table>
             <br>
         </div>
     </div>
