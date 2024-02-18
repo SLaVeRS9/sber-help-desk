@@ -6,10 +6,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import ru.sberbank.edu.common.error.UserNotFoundException;
 import ru.sberbank.edu.ticketservice.security.details.AppUserPrincipal;
 import ru.sberbank.edu.ticketservice.ticket.dto.ShortViewTicketDto;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -19,8 +21,9 @@ public class ProfileService {
     private final UserProfileMapper userProfileMapper;
 
     public ProfileDto getActiveUser(String name) {
+
         User user = userRepository.findUserById(name);
-        return userProfileMapper.UserToProfileDto(user);
+        return userProfileMapper.INSTANCE.UserToProfileDto(user);
     }
     
     public User getActiveUser() {
@@ -32,9 +35,32 @@ public class ProfileService {
     public List<ProfileDto> getAllManagers() {
         List<User> users = userRepository.findAllUsersByRole(String.valueOf(UserRole.MANAGER));
         List<ProfileDto> profilesDto = users.stream()
-                .map(userProfileMapper::UserToProfileDto).toList();
+                .map(userProfileMapper.INSTANCE::UserToProfileDto).toList();
         return profilesDto;
 
+    }
+    public User getUserById(String id) {
+        Optional<User> optional = userRepository.findById(id);
+        if (optional.isPresent()) {
+            return optional.get();
+        } else {
+            throw new UserNotFoundException("User not found, id = " + id);
+        }
+    }
+
+    public User update(ProfileDto user) {
+        User savedUser = getUserById(user.getId());
+        savedUser.setGender(user.getGender());
+        savedUser.setName(user.getName());
+        savedUser.setDateOfBirth(user.getDateOfBirth());
+
+        return userRepository.save(savedUser);
+    }
+
+
+    public User save(ProfileDto user) {
+
+        return userRepository.save(userProfileMapper.INSTANCE.ProfileDtoToUser(user));
     }
 
 
