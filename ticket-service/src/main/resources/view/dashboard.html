@@ -7,11 +7,33 @@
   </head>
   <body>
     <h1>SberHelpDesk</h1>
-    <div class="ticket-buttons">
+    <table>
+        <tr>
+            <td>
+                <div class="ticket-buttons">
+                    <form method="GET" th:action="@{/tickets/add}">
+                        <input type="submit" value="Add new ticket"/>
+                    </form>
+                </div>
+            </td>
+            <td th:width="50px"></td>
+            <td>
+                <div class="ticket-buttons">
+                    <form method="GET" th:action="@{/profile}">
+                        <input type="submit" value="My profile"/>
+                    </form>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <!--<div class="ticket-buttons">
         <form method="GET" th:action="@{/tickets/add}">
             <input type="submit" value="Add new ticket"/>
         </form>
-    </div>
+        <form method="GET" th:action="@{/profile}">
+            <input type="submit" value="My profile"/>
+        </form>
+    </div>-->
     <br>
     <div class="ticketSpase">
         <h2>Tickets</h2>

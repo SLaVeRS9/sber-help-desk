@@ -21,12 +21,12 @@
             </tr>
             <tr>
                 <td>Requester:</td>
-                <td><p th:text="${ticket.getRequester().getName()}">Requester</p></td>
+                <td><p th:text="${requester.name}">Requester</p></td>
                 <td></td>
             </tr>
             <tr>
                 <td>Manager:</td>
-                <td><p th:text="${ticket.getManager()}!=null ? ${ticket.getManager().getName()} : 'NotSetted'">Manager</p></td>
+                <td><p th:text="${manager}!=null ? ${manager.name} : 'NotSetted'">Manager</p></td>
                 <td></td>
             </tr>
             <tr>
@@ -57,10 +57,10 @@
                 <td><form th:method="GET" th:action="@{/dashboard}">
                     <input type="submit" value="Back"/>
                 </form></td>
-                <td><form th:method="GET" th:if="${ticket.getRequester().getId()}==${userId}" th:action="@{/tickets/{id}/edit(id=${ticket.getId()})}">
+                <td><form th:method="GET" th:if="${ticket.getRequesterId}==${userId}" th:action="@{/tickets/{id}/edit(id=${ticket.getId()})}">
                     <input type="submit" value="Edit"/>
                 </form></td>
-                <td><form th:method="DELETE" th:if="${ticket.getRequester().getId()}==${userId}" th:action="@{/tickets/{id}(id=${ticket.getId()})}">
+                <td><form th:method="DELETE" th:if="${ticket.getRequesterId}==${userId}" th:action="@{/tickets/{id}(id=${ticket.getId()})}">
                     <input type="submit" value="Delete"/>
                 </form></td>
             </tr>

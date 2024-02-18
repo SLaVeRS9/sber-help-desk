@@ -12,13 +12,13 @@ import ru.sberbank.edu.ticketservice.ticket.dto.ShortViewTicketDto;
 @ContextConfiguration("classpath:application-test.yaml")
 public class ShortViewTicketMapperIntegrationTest {
 
-    /*@Autowired
-    ShortViewTicketDto shortViewTicketDto;*/
-
-    @Test
-    public void ticketToShortViewTicketDtoTest_success() {
-
-    }
+//    /*@Autowired
+//    ShortViewTicketDto shortViewTicketDto;*/
+//
+//    @Test
+//    public void ticketToShortViewTicketDtoTest_success() {
+//
+//    }
 
 
 }
