@@ -30,9 +30,9 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User getUserById(String id){
-        return userRepository.findUserById(id);
-    }
+//    public User getUserById(String id){
+//        return userRepository.findUserById(id);
+//    }
     
     public boolean loginExists(String login) {
         return userRepository.findById(login).isPresent();
