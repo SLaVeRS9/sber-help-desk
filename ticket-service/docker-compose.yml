@@ -1,0 +1,28 @@
+services:
+    db:
+        image: postgres
+        container_name: ticket_service_db
+        environment:
+            POSTGRES_DB: ticket_service
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: password
+        volumes:
+            - app:/home/node/app
+        ports:
+            - 8085:5432
+            
+    app:
+        image: ticket_service_app_image
+        container_name: ticket_service_app
+        build:
+            context: .
+        environment:
+            SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/ticket_service
+            SPRING_PROFILES_ACTIVE: prom
+        ports:
+            - 8082:8082
+        depends_on:
+            - db
+            
+volumes:
+    app: 
