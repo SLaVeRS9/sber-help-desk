@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit ticket</title>
+</head>
+<body>
+    <div class="edit ticket">
+        <form th:method="PATCH"
+              th:action="@{/tickets/{id}(id=${ticket.getId()})}"
+              th:object="${ticket}">
+            <span style="color: firebrick" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"/>
+            <br>
+            <label for="title">Title: </label>
+            <input type="text" id="title" th:field="*{title}">
+            <span style="color: firebrick" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"/>
+            <br>
+            <label for="description">Description: </label>
+            <input type="text" id="description" th:field="*{description}">
+            <span style="color: firebrick" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"/>
+            <br>
+            <br>
+            <input type="text" th:field="*{requesterId}" hidden="hidden">
+            <input type="text" th:field="*{managerId}" hidden="hidden">
+            <input type="text" th:field="*{code}" hidden="hidden">
+            <input type="submit" value="Save changes"/>
+            <br>
+            <br>
+            <br>
+            <label for="status">Status: </label>
+            <input type="text" id="status" th:field="*{status}" readonly>
+            <br>
+            <label for="estimation">Estimate: </label>
+            <input type="text" id="estimation" th:field="*{estimation}" readonly>
+            <br>
+            <label for="requester">Requester: </label>
+            <input type="text" id="requester" th:field="${requester.name}" readonly>
+            <br>
+            <label for="manager">Manager: </label>
+            <input type="text" id="manager" th:field="${manager.name}" readonly>
+            <br>
+            <label for="creation_time">Creation time: </label>
+            <input type="text" id="creation_time" th:field="*{createdAt}" readonly>
+            <br>
+            <label for="status_updatedAt">Last status change time: </label>
+            <input type="text" id="status_updatedAt" th:field="*{statusUpdatedAt}" readonly>
+
+        </form>
+
+
+    </div>
+</body>
+</html>

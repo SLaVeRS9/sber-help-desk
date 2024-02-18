@@ -1,0 +1,4 @@
+###
+GET http://localhost:8082/tickets/{{id}}/edit
+Authorization: Basic smirnovav 123456
+Accept: application/json

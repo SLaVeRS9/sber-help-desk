@@ -1,0 +1,66 @@
+body {
+    font-family: "Andale Mono", monospace;
+}
+
+
+.ticket-buttons input:hover {
+    color: #33c4ff;
+    border-color: whitesmoke;
+    background-color: whitesmoke;
+}
+
+button {
+    background-color: #33c4ff;
+}
+
+
+
+.ticket-buttons input {
+    background-color: #33c4ff;
+    color: whitesmoke;
+    border-color: whitesmoke;
+    height: 50px;
+    width: 140px;
+}
+
+.ticket-buttons {
+    background-color: #33c4ff;
+    color: whitesmoke;
+    border-color: whitesmoke;
+    height: 30px;
+    width: 100px;
+}
+
+.ticket-buttons:hover {
+    color: #33c4ff;
+    border-color: whitesmoke;
+    background-color: whitesmoke;
+}
+
+.ticket-status {
+    border: 1rem #002752;
+    color: whitesmoke;
+    background-color: #33c4ff;
+    text-align: center;
+}
+
+.ticket-card {
+    border: solid #002752;
+    background-color: #33c4ff;
+    color: whitesmoke;
+    padding-left: 5px;
+    width: 30%;
+    margin-bottom: 20px;
+}
+
+.ticket-card form input {
+    background-color: whitesmoke;
+    color: #33c4ff;
+    height: 30px;
+    width: 100px;
+}
+
+.ticket-card form input:hover {
+    background-color: #002752;
+    color: whitesmoke;
+}

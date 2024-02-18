@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+    <link rel="stylesheet" href="https://bootstraptema.ru/plugins/2015/bootstrap3/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}"/>
+
+</head>
+<body>
+
+<body>
+<div class="container">
+    <div class="row" id="real-estates-detail">
+        <div class="col-lg-4 col-md-4 col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <header class="panel-title">
+                        <div class="text-center">
+                            <strong>Пользователь сайта</strong>
+                        </div>
+                    </header>
+                </div>
+                <div class="panel-body">
+                    <div class="text-center" id="author">
+                        <img src="https://bootstraptema.ru/snippets/element/2016/profilesection/myprofile.jpg">
+                        <h3 th:text="${user.name}"></h3>
+                        <small class="label label-warning">Российская Федерация</small>
+                        <p>Я простой Русский пацан и мне всё по барабану.</p>
+                        <p class="sosmed-author">
+                            <a href="#"><i class="fa fa-facebook" title="Facebook"></i></a>
+                            <a href="#"><i class="fa fa-twitter" title="Twitter"></i></a>
+                            <a href="#"><i class="fa fa-google-plus" title="Google Plus"></i></a>
+                            <a href="#"><i class="fa fa-linkedin" title="Linkedin"></i></a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8 col-md-8 col-xs-12">
+            <div class="panel">
+                <div class="panel-body">
+                    <ul id="myTab" class="nav nav-pills">
+                        <li class="active"><a href="/profile" data-toggle="tab">О пользователе</a></li>
+                        <li class=""><a href="/tickets" data-toggle="tab">Мои заявки</a></li>
+                    </ul>
+                    <div id="myTabContent" class="tab-content">
+                        <hr>
+                        <div class="tab-pane fade active in" id="detail">
+                            <div class="sosmed-author">
+                                <h4>История профиля</h4>
+                                <!--                                    <a href="#"><i class="fa fa-edit" title="Edit"></i></a></h4>-->
+                            </div>
+                            <table class="table table-th-block">
+                                <tbody>
+                                <form th:method="PATCH"
+                                      th:action="@{/profile/update/{id}(id=${user.id})}"
+                                      th:object="${user}">
+                                    <label for="name">Name</label>
+                                    <input type="text" th:field="*{name}" id="name" placeholder="Name">
+                                    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+                                    <br>
+                                    <!--                                    <input type="date" th:field="*{expirationDate}" class="form-control" id="exp" name="exp" value="">-->
+                                    <label for="dateOfBirth">Date of Birth</label>
+                                    <input type="date" th:field="*{dateOfBirth}" id="dateOfBirth">
+                                    <br>
+                                    <label>Gender</label>
+                                    <select name="gender">
+                                        <option th:each="genderOpt : ${T(ru.sberbank.edu.ticketservice.profile.UserGender).values()}"
+                                                th:selected="${gender == user.getGender()}"
+                                                th:value="${genderOpt}" th:text="${genderOpt}">
+                                        </option>
+                                    </select>
+
+
+                                    <br>
+                                    <input class="btn btn-outline-dark btn-lg btn-block" type="submit"
+                                           value="Update User">
+                                </form>
+                                <!--                                <tr>-->
+                                <!--                                    <td class="active">Зарегистрирован:</td>-->
+                                <!--                                    <td th:text="${user.dateOfRegister}"></td>-->
+                                <!--                                </tr>-->
+                                <!--                                <tr>-->
+                                <!--                                    <td class="active">Login:</td>-->
+                                <!--                                    <td th:text="${user.id}"></td>-->
+                                <!--                                </tr>-->
+                                <!--                                <tr>-->
+                                <!--                                    <td class="active">Дата Рождения:</td>-->
+                                <!--                                    <td th:text="${user.dateOfBirth}"></td>-->
+                                <!--                                </tr>-->
+                                <!--                                <tr>-->
+                                <!--                                    <td class="active">Имя Пользователя:</td>-->
+                                <!--                                    <td th:text="${user.name}"></td>-->
+                                <!--                                </tr>-->
+                                <!--                                <tr>-->
+                                <!--                                    <td class="active">Пол:</td>-->
+                                <!--                                    <td th:text="${user.gender}"></td>-->
+                                <!--                                </tr>-->
+                                <!--                                <tr>-->
+                                <!--                                    <td class="active">Полных лет:</td>-->
+                                <!--                                    <td th:text="${user.age}"></td>-->
+                                <!--                                </tr>-->
+                                <!--                                <tr>-->
+                                <!--                                    <td class="active">Роль пользователя:</td>-->
+                                <!--                                    <td th:text="${user.role}"></td>-->
+                                <!--                                </tr>-->
+                                </tbody>
+                            </table>
+                        </div>
+                        <!--                        <div class="form-group">-->
+                        <!--                            <button type="submit" class="btn btn-outline-dark btn-lg btn-block">Редактировать</button>-->
+                        <!--                        </div>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--<div class="row" sec:authorize="hasRole('USER')">Text visible to user.</div>-->
+<!--<div class="row" sec:authorize="hasRole('ADMIN')">Text visible to admin.</div>-->
+<!--<div class="row" sec:authorize="hasRole('MANAGER')">Text visible to manager.</div>-->
+<!--        <div class="row" sec:authorize="isAuthenticated()">Text visible only to authenticated users.</div>-->
+
+<!--    <div class="container" th:with="user=${user}">-->
+
+<!--Authenticated username:-->
+<!--<div class="row" th:text="${user.id}"></div>-->
+<!--Authenticated user's Name:-->
+<!--<div class="row" th:text="${user.name}"></div>-->
+<!--Authenticated user's Role:-->
+<!--<div class="row" th:text="${user.role}"></div>-->
+
+<!--Authenticated user roles:-->
+<!--<div sec:authentication="principal.authorities"></div>-->
+
+</div>
+</div>
+</body>
+
+</body>
+</html>

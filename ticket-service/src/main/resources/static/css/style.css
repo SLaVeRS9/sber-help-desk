@@ -1,0 +1,21 @@
+body {
+    font-family: "Andale Mono", monospace;
+    width: 600px;
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+span {
+    display: inline-block;
+    padding-bottom: 10px;
+    width: 100px;
+}
+
+input {
+    background-color: lightgray;
+}
+
+button {
+    background-color: #33c4ff;
+}
+
