@@ -42,7 +42,35 @@ public class User {
     }
 
     public int getAge() {
-        return Period.between(dateOfBirth, LocalDate.now()).getYears() + 1;
+        return dateOfBirth!= null ? Period.between(dateOfBirth, LocalDate.now()).getYears() + 1 : 0;
+    }
+
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public LocalDate getDateOfRegister() {
+        return dateOfRegister;
+    }
+
+    public void setDateOfRegister(LocalDate dateOfRegister) {
+        this.dateOfRegister = dateOfRegister;
+    }
+
+    public UserGender getGender() {
+        return gender;
+    }
+
+    public void setGender(UserGender gender) {
+        this.gender = gender;
     }
 
     public User(String id, String name, String password, UserRole role) {

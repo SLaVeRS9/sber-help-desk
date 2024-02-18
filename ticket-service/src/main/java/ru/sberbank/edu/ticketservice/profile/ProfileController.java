@@ -1,13 +1,13 @@
 package ru.sberbank.edu.ticketservice.profile;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
@@ -26,16 +26,26 @@ public class ProfileController {
         logger.info("getting user list: {}", user);
         return "profile.html";
     }
-    @GetMapping("/profileEdit")
+    @GetMapping("/profile/edit")
     public String editUser(Principal principal, Model model) {
         ProfileDto user = service.getActiveUser(principal.getName());
         model.addAttribute("user", user);
         logger.info("editing user list: {}", user);
-        return "profile.html";
+        return "edit-profile.html";
     }
 
-    @PutMapping("/profileEdit")
-    public String updateUser(Principal principal, Model model) {
-        return "profile.html";
+
+    @PatchMapping("profile/update/{id}")
+    public String updateUser(@PathVariable("id") String id, @Valid ProfileDto user,
+                             BindingResult result, Model model) {
+
+
+        if (result.hasErrors()) {
+            user.setId(id);
+            return "profileEdit";
+        }
+
+        service.update(user);
+        return "redirect:/profile";
     }
 }
