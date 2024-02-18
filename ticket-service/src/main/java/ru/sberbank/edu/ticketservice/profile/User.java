@@ -42,7 +42,7 @@ public class User {
     }
 
     public int getAge() {
-        return Period.between(dateOfBirth, LocalDate.now()).getYears() + 1;
+        return dateOfBirth!= null ? Period.between(dateOfBirth, LocalDate.now()).getYears() + 1 : 0;
     }
 
     public User(String id, String name, String password, UserRole role) {
