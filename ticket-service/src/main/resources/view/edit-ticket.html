@@ -9,6 +9,8 @@
         <form th:method="PATCH"
               th:action="@{/tickets/{id}(id=${ticket.getId()})}"
               th:object="${ticket}">
+            <span style="color: firebrick" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"/>
+            <br>
             <label for="title">Title: </label>
             <input type="text" id="title" th:field="*{title}">
             <span style="color: firebrick" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"/>
@@ -18,6 +20,9 @@
             <span style="color: firebrick" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"/>
             <br>
             <br>
+            <input type="text" th:field="*{requesterId}" hidden="hidden">
+            <input type="text" th:field="*{managerId}" hidden="hidden">
+            <input type="text" th:field="*{code}" hidden="hidden">
             <input type="submit" value="Save changes"/>
             <br>
             <br>
@@ -29,10 +34,10 @@
             <input type="text" id="estimation" th:field="*{estimation}" readonly>
             <br>
             <label for="requester">Requester: </label>
-            <input type="text" id="requester" th:field="*{requester.name}" readonly>
+            <input type="text" id="requester" th:field="${requester.name}" readonly>
             <br>
             <label for="manager">Manager: </label>
-            <input type="text" id="manager" th:field="*{manager.name}" readonly>
+            <input type="text" id="manager" th:field="${manager.name}" readonly>
             <br>
             <label for="creation_time">Creation time: </label>
             <input type="text" id="creation_time" th:field="*{createdAt}" readonly>

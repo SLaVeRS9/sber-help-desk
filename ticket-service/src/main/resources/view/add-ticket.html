@@ -12,6 +12,7 @@
               th:action="@{/tickets}"
               th:object="${ticket}">
             <span th:text="'Status: ' + ${ticket.getStatus()}">Status</span>
+            <input type="text" id="id" th:field="*{id}" th:id="1" hidden="hidden">
             <br>
             <label for="title">Title: </label>
             <input type="text" id="title" th:field="*{title}">
@@ -20,6 +21,14 @@
             <label for="description">Description: </label>
             <input type="text" id="description" th:field="*{description}">
             <span style="color: firebrick" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"/>
+            <br>
+            <label>Set up the manager (optional):</label>
+            <select th:field="*{managerId}">
+                <option th:each="manager : ${managers}"
+                        th:value="${manager.id}"
+                        th:text="${manager.name}">Manager name
+                </option>
+            </select>
             <br>
             <label for="requester">Requester: </label>
             <input type="text" id="requester" th:field="${currentUser.name}" readonly>

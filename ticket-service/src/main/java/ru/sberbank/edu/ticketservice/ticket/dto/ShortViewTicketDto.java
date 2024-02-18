@@ -1,5 +1,6 @@
 package ru.sberbank.edu.ticketservice.ticket.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,6 +21,7 @@ import java.time.LocalDateTime;
 public class ShortViewTicketDto {
     private Long id;
     private String code;
+    @NotBlank(message = "Title can't be empty")
     private String title;
     private User requester;
     private User manager;

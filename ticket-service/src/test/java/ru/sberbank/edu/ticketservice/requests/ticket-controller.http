@@ -1,0 +1,88 @@
+###Получение списка всех тикетов в короткой форме
+GET http://localhost:8082/api/tickets/shortViewList
+Authorization: Basic smirnovav 123456
+
+###Получение списка всех тикетов в полной форме
+GET http://localhost:8082/api/tickets/fullViewList
+Authorization: Basic smirnovav 123456
+
+###Получение списка всех тикетов конкретного юзера с пагинацией
+GET http://localhost:8082/api/tickets/user/pag/smirnovav?offset=0&limit=1
+Authorization: Basic smirnovav 123456
+
+###Получение списка всех тикетов конкретного юзера
+GET http://localhost:8082/api/tickets/user/smirnovav
+Authorization: Basic smirnovav 123456
+
+###
+GET http://localhost:8082/api/tickets
+Authorization: Basic smirnovav 123456
+
+###Получение тикета по id
+GET http://localhost:8082/api/tickets/5
+Authorization: Basic smirnovav 123456
+
+###Редактирование тикета по id
+PATCH http://localhost:8082/api/tickets
+Authorization: Basic smirnovav 123456
+Accept: application/json
+Content-Type: application/json
+
+{
+  "id": 3,
+  "code": "SHD-",
+  "title": "HOHOHOHO",
+  "description": "HOHOHHO very very very very very long description",
+  "requesterId": "smirnovav",
+  "managerId": "bakinasv",
+  "status": "IN_PROGRESS",
+  "createdAt": "2024-01-27T12:30:00",
+  "statusUpdatedAt": "2024-01-28T11:00:00",
+  "controlPeriodAt": null,
+  "comments": [],
+  "estimation": null
+}
+
+###Создание тикета по id
+POST http://localhost:8082/api/tickets
+Authorization: Basic smirnovav 123456
+Accept: application/json
+Content-Type: application/json
+
+{
+    "id": 7,
+    "code": "SHD-",
+    "title": "titleNedtssssssqq",
+    "description": "ticket N very very very very very long description",
+    "requesterId": "smirnovav",
+    "managerId": "bakinasv",
+    "status": "IN_PROGRESS",
+    "createdAt": "2024-01-27T12:30:00",
+    "statusUpdatedAt": "2024-01-28T11:00:00",
+    "controlPeriodAt": null,
+    "comments": [],
+    "estimation": null
+}
+
+###Установить менеджера в тикет
+PATCH http://localhost:8082/api/tickets/5/edit/manager
+Authorization: Basic smirnovav 123456
+Accept: application/json
+Content-Type: application/json
+
+{
+  "userId": "smirnovav",
+  "managerId": "ivanovap"
+}
+
+###Удалить тикет админ
+DELETE http://localhost:8082/api/tickets/4
+Authorization: Basic smirnovav 123456
+
+###Удалить тикет не свой не админ
+DELETE http://localhost:8082/api/tickets/4
+Authorization: Basic ivanovap 123456
+
+###Удалить тикет свой не админ
+DELETE http://localhost:8082/api/tickets/2
+Authorization: Basic ivanovap 123456
