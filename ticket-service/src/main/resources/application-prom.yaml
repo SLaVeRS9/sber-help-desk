@@ -1,0 +1,40 @@
+server:
+  port: 8082
+
+spring:
+  jpa:
+    show-sql: true
+    open-in-view: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    defer-datasource-initialization: true
+    properties:
+        hibernate: 
+            jdbc:
+                time_zone: UTC+03
+    generate-ddl: true
+    hibernate:
+        ddl-auto: create-drop
+  sql:
+    init:
+        mode: always
+                
+  datasource:
+    url: jdbc:postgresql://localhost:8085/ticket_service
+    username: postgres
+    password: password
+    driverClassName: org.postgresql.Driver
+
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+
+  thymeleaf:
+    cache: off
+
+
+ticket:
+  code: SHD-
+  SLA:
+    days: 5
