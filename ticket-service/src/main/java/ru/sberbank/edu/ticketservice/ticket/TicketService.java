@@ -192,7 +192,7 @@ public class TicketService {
         ticketRepository.deleteById(id);
     }
 
-    public void setStatus(Long ticketId, UserDetails userDetails, TicketStatus status) {
+    public FullViewTicketDto setStatus(String status, Long ticketId, UserDetails userDetails) {
         User currentUser = userService.getUserById(userDetails.getUsername());
         FullViewTicketDto ticketDto = getFullTicketInfo(ticketId);
 
@@ -200,6 +200,18 @@ public class TicketService {
                 ticketDto.getManagerId().equals(currentUser.getId()))) {
             throw new EditTicketException(TICKET_EDIT_ALLOW_EXCEPTION);
         }
+
+        ticketDto.setStatus(TicketStatus.valueOf(status));
+        Ticket ticket = fullViewTicketMapper.fullViewTicketDtoToTicket(ticketDto);
+        mapperUsersToTicket(ticketDto, ticket);
+        Ticket updatedTicket = ticketRepository.save(ticket);
+        FullViewTicketDto updatedTicketDto = fullViewTicketMapper.ticketToFullViewTicketDto(updatedTicket);
+        return updatedTicketDto;
+    }
+
+    private void mapperUsersToTicket(FullViewTicketDto ticketDto, Ticket ticket) {
+        ticket.setRequester(userService.getUserById(ticketDto.getRequesterId()));
+        ticket.setManager(userService.getUserById(ticketDto.getManagerId()));
     }
 
 }

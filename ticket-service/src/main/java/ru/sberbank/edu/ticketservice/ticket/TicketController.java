@@ -64,6 +64,13 @@ public class TicketController {
         return ticketService.setManager(ticketId, objectNode);
     }
 
+    @PatchMapping("/{id}/edit/status")
+    public FullViewTicketDto setStatus(@RequestBody String ticketStatus,
+                                       @PathVariable("id") Long ticketId,
+                                       @AuthenticationPrincipal UserDetails userDetails) {
+        return ticketService.setStatus(ticketStatus, ticketId, userDetails);
+    }
+
     @PostMapping()
     public FullViewTicketDto addTicket(@RequestBody FullViewTicketDto fullViewTicketDto,
                                         @AuthenticationPrincipal UserDetails userDetails) {
