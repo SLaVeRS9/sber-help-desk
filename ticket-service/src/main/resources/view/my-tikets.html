@@ -28,8 +28,8 @@
     </table>
     <br>
     <div class="ticketSpase">
-        <h2>Tickets</h2>
-        <div class="ticket-card" th:each="ticket : ${shortViewTicketDtosForDash}">
+        <h2>My tickets</h2>
+        <div class="ticket-card" th:each="ticket : ${fullViewTicketDtos}">
             <div th:text="${ticket.getCode()} + '-' + ${ticket.getId()}">Code</div>
             <div th:text="${ticket.getTitle()}">Title</div>
             <div th:text="${ticket.getStatus()}">Status</div>

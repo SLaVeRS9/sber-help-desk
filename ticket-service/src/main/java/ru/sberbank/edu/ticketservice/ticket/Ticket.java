@@ -7,8 +7,7 @@ import java.util.List;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import ru.sberbank.edu.common.model.TimestampedEntity;
 import ru.sberbank.edu.ticketservice.comment.Comment;
 import ru.sberbank.edu.ticketservice.profile.User;
 
@@ -19,14 +18,16 @@ import ru.sberbank.edu.ticketservice.profile.User;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Ticket {
+public class Ticket extends TimestampedEntity {
 
     @Id
-    @Column(name = "ticket_id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "ticket_code")
+    @Column(name = "code")
+    @NotBlank(message = "Code can't be empty")
+    @Size(min = 3, max = 10, message = "Code size must be between 3 and 10")
     private String code;
 
     @Column (name = "title")
@@ -35,32 +36,27 @@ public class Ticket {
     private String title;
 
     @Column (name = "description")
-    @Size(max = 600, message = "Description size must be less then 600 symbols")
+    @Size(max = 1024, message = "Description size must be less then 1024 symbols")
     private String description;
 
     //TODO CascadeType проверить
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST})
     @JoinColumn(name = "requester_id")
     @NotNull(message = "Requester must exist")
     private User requester;
 
     //TODO переписать fetch через entityGraph
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST})
     @JoinColumn(name = "manager_id")
     private User manager;
 
     @Enumerated(EnumType.STRING)
     @Column (name = "status")
+    @NotNull(message = "Status can't be empty")
     private TicketStatus status;
 
     //TODO Добавить маску отображения
-    @CreationTimestamp
-    @Column (name = "created_at")
-    private LocalDateTime createdAt;
-
-    //TODO Добавить маску отображения
     //TODO сделать листенером на смену статуса
-    @UpdateTimestamp
     @Column (name = "status_updated_at")
     private LocalDateTime statusUpdatedAt;
 

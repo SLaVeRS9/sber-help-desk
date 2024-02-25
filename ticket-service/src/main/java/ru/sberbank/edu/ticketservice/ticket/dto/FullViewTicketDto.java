@@ -19,8 +19,6 @@ import ru.sberbank.edu.ticketservice.ticket.TicketStatus;
 import java.time.LocalDateTime;
 import java.util.List;
 
-
-
 /**
  * DTO для передачи всей информации о тикете. Применяется для отображения страницы о тикете
  * @author SLaVeRS9
@@ -31,20 +29,43 @@ import java.util.List;
 @Setter
 @ToString
 public class FullViewTicketDto {
-    //@NotBlank(message = "Id can't be empty")
+    @NotBlank(message = "Id can't be empty")
     private Long id;
+
+    @NotBlank(message = "Code can't be empty")
+    @Size(min = 3, max = 10, message = "Code size must be between 3 and 10")
     private String code;
+
     @NotBlank(message = "Title can't be empty")
     @Size(max = 100, message = "Title size must be less then 100 symbols")
     private String title;
-    @Size(max = 600, message = "Description size must be less then 600 symbols")
+
+    @Size(max = 1024, message = "Description size must be less then 1024 symbols")
     private String description;
+
+    @NotNull(message = "Requester id can't be empty")
     private String requesterId;
+
+    @NotBlank(message = "Requester can't be empty")
+    private String requesterFullName;
+
     private String managerId;
+
+    private String managerFullName;
+
+    @NotNull(message = "Status can't be empty")
     private TicketStatus status;
+
+    @NotNull(message = "Creation data can't be empty")
     private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
+
     private LocalDateTime statusUpdatedAt;
+
     private LocalDateTime controlPeriodAt;
+
     private List<Comment> comments;
+
     private Estimation estimation;
 }

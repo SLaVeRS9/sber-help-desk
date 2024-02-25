@@ -1,30 +1,41 @@
 package ru.sberbank.edu.ticketservice.ticket;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import ru.sberbank.edu.ticketservice.ticket.dto.FullViewTicketDto;
 import ru.sberbank.edu.ticketservice.ticket.dto.ShortViewTicketDto;
+import ru.sberbank.edu.ticketservice.ticket.mapper.FullViewTicketMapper;
+import ru.sberbank.edu.ticketservice.ticket.mapper.ShortViewTicketMapper;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "/api/tickets", produces = "application/json")
 @AllArgsConstructor
 public class TicketController {
     private final TicketService ticketService;
+    private final FullViewTicketMapper fullViewTicketMapper;
+    private final ShortViewTicketMapper shortViewTicketMapper;
 
-    @GetMapping("/shortViewList")
-    public Set<ShortViewTicketDto> getAllTicketsInShortView() {
-        return ticketService.getAllTicketsInShortView();
+    @GetMapping("/shortView/all")
+    public List<ShortViewTicketDto> getAllTicketsInShortView() {
+
+        List<Ticket> ticketsList = ticketService.getAllTickets();
+
+        return ticketsList.stream()
+                .map(shortViewTicketMapper::ticketToShortViewTicketDto)
+                .collect(Collectors.toList());
     }
 
-    @GetMapping("/fullViewList")
+    @GetMapping("/fullView/all")
     public Set<FullViewTicketDto> getAllTicketsFullView() {
-        return ticketService.getAllTicketsInFullView();
+        List<Ticket> ticketsList = ticketService.getAllTickets();
+
+        return ticketsList.stream()
+                .map(fullViewTicketMapper::ticketToFullViewTicketDto)
+                .collect(Collectors.toSet());
     }
 
     @GetMapping("/user/pag/{userId}")
@@ -42,45 +53,49 @@ public class TicketController {
 
     @GetMapping("/{ticketId}")
     public FullViewTicketDto getTicketById(@PathVariable("ticketId") Long ticketId) {
-        return ticketService.getFullTicketInfo(ticketId);
+        return fullViewTicketMapper.ticketToFullViewTicketDto(ticketService.getTicketInfo(ticketId));
     }
 
-    @PatchMapping()
+    /*@PatchMapping()
     public FullViewTicketDto editTicket(@RequestBody FullViewTicketDto fullViewTicketDto,
                                         @AuthenticationPrincipal UserDetails userDetails) {
         String userId = userDetails.getUsername();
         return ticketService.editTicket(fullViewTicketDto, userId);
-    }
+    }*/
 
-    /**
+
+/**
      *
      * @param ticketId
      * @param objectNode - userId and managerId in json params
      * @return updated ticket
      */
-    @PatchMapping("/{id}/edit/manager")
+
+    /*@PatchMapping("/{id}/edit/manager")
     public FullViewTicketDto setManager(@PathVariable("id") Long ticketId,
                                         @RequestBody ObjectNode objectNode) {
         return ticketService.setManager(ticketId, objectNode);
-    }
+    }*/
 
-    @PatchMapping("/{id}/edit/status")
+    /*@PatchMapping("/{id}/edit/status")
     public FullViewTicketDto setStatus(@RequestBody String ticketStatus,
                                        @PathVariable("id") Long ticketId,
                                        @AuthenticationPrincipal UserDetails userDetails) {
         return ticketService.setStatus(ticketStatus, ticketId, userDetails);
-    }
+    }*/
 
-    @PostMapping()
-    public FullViewTicketDto addTicket(@RequestBody FullViewTicketDto fullViewTicketDto,
-                                        @AuthenticationPrincipal UserDetails userDetails) {
-        return ticketService.addTicket(fullViewTicketDto, userDetails);
-    }
+    /*@PostMapping()
+    public FullViewTicketDto createTicket(@RequestBody CreateTicketDto createTicketDto,
+                                          @AuthenticationPrincipal UserDetails userDetails) {
 
-    @DeleteMapping("/{id}")
+        return ticketService.createTicket(createTicketDto, userDetails);
+    }*/
+
+    /*@DeleteMapping("/{id}")
     public String deleteTicket(@PathVariable Long id,
                                @AuthenticationPrincipal UserDetails userDetails) {
         ticketService.deleteTicket(id, userDetails);
         return "redirect:/dashboard";
-    }
+    }*/
 }
+

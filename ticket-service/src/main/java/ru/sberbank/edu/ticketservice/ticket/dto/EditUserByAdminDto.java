@@ -3,25 +3,15 @@ package ru.sberbank.edu.ticketservice.ticket.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import ru.sberbank.edu.ticketservice.profile.User;
+import ru.sberbank.edu.ticketservice.comment.Comment;
+import ru.sberbank.edu.ticketservice.ticket.Estimation;
 import ru.sberbank.edu.ticketservice.ticket.TicketStatus;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
-/**
- * DTO для передачи краткой информации о тикете. Применяется для отображения списка тикетов
- * @author SLaVeRS9
- * @version 1.0
- */
-@Builder
-@Getter
-@Setter
-public class ShortViewTicketDto {
-    @NotNull(message = "ID can't be empty")
+public class EditUserByAdminDto {
+    @NotBlank(message = "Id can't be empty")
     private Long id;
 
     @NotBlank(message = "Code can't be empty")
@@ -32,19 +22,25 @@ public class ShortViewTicketDto {
     @Size(max = 100, message = "Title size must be less then 100 symbols")
     private String title;
 
-    @NotBlank(message = "Requester can't be empty")
-    private String requesterId;
+    @Size(max = 1024, message = "Description size must be less then 1024 symbols")
+    private String description;
 
     @NotBlank(message = "Requester can't be empty")
     private String requesterFullName;
 
     private String managerFullName;
 
-    @NotNull(message = "Status can't be empty")
+    @NotBlank(message = "Status can't be empty")
     private TicketStatus status;
 
     @NotNull(message = "Creation data can't be empty")
-    private LocalDateTime creationAt;
+    private LocalDateTime createdAt;
+
+    private LocalDateTime statusUpdatedAt;
 
     private LocalDateTime controlPeriodAt;
+
+    private List<Comment> comments;
+
+    private Estimation estimation;
 }

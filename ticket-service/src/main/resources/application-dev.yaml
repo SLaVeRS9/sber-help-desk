@@ -36,6 +36,8 @@ spring:
 
 
 ticket:
-  code: SHD-
+  code: SHD
+  startedStatus: NEW
   SLA:
     days: 5
+
