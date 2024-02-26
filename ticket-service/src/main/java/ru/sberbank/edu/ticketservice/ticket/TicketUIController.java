@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.sberbank.edu.ticketservice.profile.*;
 import ru.sberbank.edu.ticketservice.ticket.dto.CreateTicketDto;
 import ru.sberbank.edu.ticketservice.ticket.dto.EditTicketDto;
-import ru.sberbank.edu.ticketservice.ticket.dto.FullViewTicketDto;
 import ru.sberbank.edu.ticketservice.ticket.mapper.CreateTicketMapper;
 import ru.sberbank.edu.ticketservice.ticket.mapper.EditTicketMapper;
 import ru.sberbank.edu.ticketservice.ticket.mapper.FullViewTicketMapper;
@@ -64,7 +63,6 @@ public class TicketUIController {
         model.addAttribute("fullViewTicketDto", fullViewTicketDto);
         model.addAttribute("userId", currentUser.getUsername());
         model.addAttribute("currentUserRole", currentUserRole.name());
-
         return "ticket-info";
     }
 
@@ -80,22 +78,15 @@ public class TicketUIController {
                                  @AuthenticationPrincipal UserDetails userDetails,
                                  Model model) {
         String currentUserId = userDetails.getUsername();
-        User currentUser = userService.getUserById(currentUserId);
-        ProfileDto currentUserDto = userProfileMapper.UserToProfileDto(currentUser);
 
         List<User> managers = userService.findByRole(UserRole.MANAGER);
         Set<ProfileDto> managersDto = managers.stream()
                 .map(userProfileMapper::UserToProfileDto)
                 .collect(Collectors.toSet());
+
         createTicketDto.setRequesterId(currentUserId);
-
+        setCreateAttributesIntoModel(userDetails, managersDto, model);
         createTicketDto.setCode(ticketCode);
-
-        model.addAttribute("currentUserDto", currentUserDto);
-        model.addAttribute("managers", managersDto);
-        model.addAttribute("ticketCode", ticketCode);
-        model.addAttribute("startedStatus", startedStatus);
-
         return "create-ticket";
     }
 
@@ -113,24 +104,17 @@ public class TicketUIController {
                                @AuthenticationPrincipal UserDetails userDetails,
                                Model model) {
         if(bindingResult.hasErrors()) {
-            String currentUserId = userDetails.getUsername();
-            User currentUser = userService.getUserById(currentUserId);
-            ProfileDto currentUserDto = userProfileMapper.UserToProfileDto(currentUser);
-
             List<User> managers = userService.findByRole(UserRole.MANAGER);
             Set<ProfileDto> managersDto = managers.stream()
                     .map(userProfileMapper::UserToProfileDto)
                     .collect(Collectors.toSet());
 
-            model.addAttribute("currentUserDto", currentUserDto);
-            model.addAttribute("managers", managersDto);
-            model.addAttribute("ticketCode", ticketCode);
-            model.addAttribute("startedStatus", startedStatus);
-
+            setCreateAttributesIntoModel(userDetails, managersDto, model);
             return "create-ticket";
         }
 
-        ticketService.createTicket(createTicketDto);
+        Ticket ticket = setSubEntitiesToTicket(createTicketDto);
+        ticketService.createTicket(ticket);
         return "redirect:dashboard";
     }
 
@@ -145,6 +129,13 @@ public class TicketUIController {
         return "redirect:/dashboard";
     }
 
+    /**
+     * Контроллер Get запроса на отображение страницы редактирования тикета
+     * @param id id редактируемого тикета
+     * @param currentUser текущий пользователь
+     * @param model объект для хранения атрибутов и предеачи их в представление
+     * @return страница редактирвоания тикета
+     */
     @GetMapping("/{id}/edit")
     public String showEditPage(@PathVariable Long id,
                                @AuthenticationPrincipal UserDetails currentUser,
@@ -159,27 +150,31 @@ public class TicketUIController {
         EditTicketDto editTicketDto = editTicketMapper.ticketToEditTicketDto(ticket);
         model.addAttribute("editTicketDto", editTicketDto);
 
-        if (ticketService.hasCurrentUserAdminRole()) {
-            model.addAttribute("editTicketDto", editTicketDto);
-            model.addAttribute("isAdmin", true);
-        }
+        setAdminPrivilegesFlagIntoModel(model);
 
         List<User> managers = userService.findByRole(UserRole.MANAGER);
         List<ProfileDto> managersDto = managers.stream()
                 .map(userProfileMapper::UserToProfileDto)
                 .collect(Collectors.toList());
         model.addAttribute("managers", managersDto);
-
         return "edit-ticket";
     }
 
-
-
+    /**
+     * Контроллер Patch запроса на редактирование тикета
+     * @param editTicketDto dto тикета для редактирвоания
+     * @param bindingResult объект хранения ошибок валидации полей
+     * @param model объект для хранения атрибутов и предеачи их в представление
+     * @return
+     */
     @PatchMapping("/{id}")
     public String editTicket(@ModelAttribute("ticket") @Valid EditTicketDto editTicketDto,
-                             BindingResult bindingResult) {
+                             BindingResult bindingResult,
+                             Model model) {
         //TODO Обработка exception
         if (bindingResult.hasErrors()) {
+            model.addAttribute("editTicketDto", editTicketDto);
+            setAdminPrivilegesFlagIntoModel(model);
             return "edit-ticket";
         }
         Ticket ticket = ticketService.getTicketInfo(editTicketDto.getId());
@@ -190,9 +185,49 @@ public class TicketUIController {
         ticket = editTicketMapper.editTicketDtoToTicket(editTicketDto, ticket);
         ticketService.editTicket(ticket);
 
-
-
-        //fullViewTicketDtoModel = ticketService.editTicket(fullViewTicketDtoModel, userId);
         return "redirect:/tickets/"+editTicketDto.getId();
+    }
+
+    /**
+     * Метод установки вложенных сущностей в родительскую сущность
+     * @param createTicketDto dto содержащая родительскую сущность и id вложенных сущностей
+     * @return entity с вложенными сущностями
+     */
+    private Ticket setSubEntitiesToTicket(CreateTicketDto createTicketDto) {
+        User requester = userService.getUserById(createTicketDto.getRequesterId());
+        User manager = userService.getUserById(createTicketDto.getManagerId());
+        Ticket ticket = createTicketMapper.createTicketDtoToTicket(createTicketDto);
+        ticket.setRequester(requester);
+        ticket.setManager(manager);
+        return ticket;
+    }
+
+    /**
+     * Метод установки в модель атрибутов для отображения страницы создания тикета
+     * @param userDetails информация о текщем пользователе
+     * @param managersDto список менеджеров для назначения к задаче
+     * @param model объект для хранения атрибутов и предеачи их в представление
+     */
+    private void setCreateAttributesIntoModel(UserDetails userDetails, Set<ProfileDto> managersDto, Model model) {
+        String currentUserId = userDetails.getUsername();
+        User currentUser = userService.getUserById(currentUserId);
+        ProfileDto currentUserDto = userProfileMapper.UserToProfileDto(currentUser);
+
+        model.addAttribute("currentUserDto", currentUserDto);
+        model.addAttribute("managers", managersDto);
+        model.addAttribute("ticketCode", ticketCode);
+        model.addAttribute("startedStatus", startedStatus);
+    }
+
+    /**
+     * Метод проверки и установки признака наличия админский прав у текущего пользователя
+     * @param model объект для хранения атрибутов и предеачи их в представление
+     */
+    private void setAdminPrivilegesFlagIntoModel(Model model) {
+        if (ticketService.hasCurrentUserAdminRole()) {
+            model.addAttribute("isAdmin", true);
+        } else {
+            model.addAttribute("isAdmin", false);
+        }
     }
 }
