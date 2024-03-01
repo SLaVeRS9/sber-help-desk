@@ -40,7 +40,7 @@
             <br>
             <label th:if="${isAdmin} == true" >Change status:</label>
             <select th:if="${isAdmin} == true" name="status">
-                <option th:each="status : ${T(ru.sberbank.edu.ticketservice.ticket.TicketStatus).values()}"
+                <option th:each="status : ${T(ru.sberbank.edu.ticketservice.ticket.enums.TicketStatus).values()}"
                         th:value="${status}" th:text="${status}"></option>
             </select>
             <br>

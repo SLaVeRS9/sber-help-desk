@@ -1,7 +1,5 @@
 package ru.sberbank.edu.ticketservice.ticket.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -9,12 +7,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.format.annotation.DateTimeFormat;
 import ru.sberbank.edu.ticketservice.comment.Comment;
-import ru.sberbank.edu.ticketservice.profile.User;
-import ru.sberbank.edu.ticketservice.profile.UserDto;
-import ru.sberbank.edu.ticketservice.ticket.Estimation;
-import ru.sberbank.edu.ticketservice.ticket.TicketStatus;
+import ru.sberbank.edu.ticketservice.ticket.enums.Estimation;
+import ru.sberbank.edu.ticketservice.ticket.enums.TicketStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;

@@ -1,4 +1,4 @@
-package ru.sberbank.edu.ticketservice.ticket;
+package ru.sberbank.edu.ticketservice.ticket.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -10,11 +10,13 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.sberbank.edu.ticketservice.profile.*;
+import ru.sberbank.edu.ticketservice.ticket.Ticket;
 import ru.sberbank.edu.ticketservice.ticket.dto.CreateTicketDto;
 import ru.sberbank.edu.ticketservice.ticket.dto.EditTicketDto;
 import ru.sberbank.edu.ticketservice.ticket.mapper.CreateTicketMapper;
 import ru.sberbank.edu.ticketservice.ticket.mapper.EditTicketMapper;
 import ru.sberbank.edu.ticketservice.ticket.mapper.FullViewTicketMapper;
+import ru.sberbank.edu.ticketservice.ticket.service.TicketService;
 
 import java.util.List;
 import java.util.Set;

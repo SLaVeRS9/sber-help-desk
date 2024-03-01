@@ -1,31 +1,40 @@
-package ru.sberbank.edu.ticketservice.ticket;
+package ru.sberbank.edu.ticketservice.ticket.service;
 
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.sberbank.edu.common.AuthenticationFacade;
 import ru.sberbank.edu.common.error.EditTicketException;
 import ru.sberbank.edu.common.error.TicketNotFoundException;
+import ru.sberbank.edu.ticketservice.comment.Comment;
 import ru.sberbank.edu.ticketservice.profile.*;
-import ru.sberbank.edu.ticketservice.ticket.dto.CreateTicketDto;
-import ru.sberbank.edu.ticketservice.ticket.dto.FullViewTicketDto;
+import ru.sberbank.edu.ticketservice.ticket.Ticket;
+import ru.sberbank.edu.ticketservice.ticket.repository.TicketRepository;
+import ru.sberbank.edu.ticketservice.ticket.enums.TicketStatus;
 import ru.sberbank.edu.ticketservice.ticket.mapper.CreateTicketMapper;
 import ru.sberbank.edu.ticketservice.ticket.mapper.FullViewTicketMapper;
 import ru.sberbank.edu.ticketservice.ticket.mapper.ShortViewTicketMapper;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import static org.hibernate.Hibernate.unproxy;
 
 //TODO Проверку что текущий менеджер имеет роль менеджер и если уже не имеет, то удалить его с тикета
 //TODO Проверку что текущий менеджер есть в базе и если уже не имеет, то удалить его с тикета
 @Service
 @Transactional
 @RequiredArgsConstructor
+@EnableCaching
 public class TicketService {
     private final TicketRepository ticketRepository;
     private final FullViewTicketMapper fullViewTicketMapper;
@@ -52,6 +61,7 @@ public class TicketService {
      * @return список тикетов
      */
     @Transactional(readOnly = true)
+    @Cacheable(value = "tickets")
     public List<Ticket> getAllTickets() {
         return ticketRepository.findAll();
     }
@@ -62,30 +72,33 @@ public class TicketService {
      * @return - тикет
      */
     @Transactional(readOnly = true)
+    @Cacheable(value = "ticket", key = "#id")
     public Ticket getTicketInfo(Long id) {
         Ticket ticket = ticketRepository.getTicketById(id)
                 .orElseThrow(() -> new TicketNotFoundException(TICKET_NOT_FOUND_EXCEPTION + id));
+        ticket.setComments(new ArrayList<>(ticket.getComments()));
 
         return ticket;
     }
 
     @Transactional(readOnly = true)
-    public List<FullViewTicketDto> getUserTicketsFullView(String userId, Integer offset, Integer limit) {
-        List<Ticket> tickets = ticketRepository.getTicketsByRequesterId(userId, PageRequest.of(offset, limit));
-        List<FullViewTicketDto> fullViewTicketDtos = tickets.stream()
-                .map(fullViewTicketMapper::ticketToFullViewTicketDto).toList();
-        return fullViewTicketDtos;
+    @Cacheable(value = "tickets", key = "#userId")
+    public List<Ticket> getUserTicketsFullView(String userId, Integer offset, Integer limit) {
+        return ticketRepository.getTicketsByRequesterId(userId, PageRequest.of(offset, limit));
     }
 
+    @Cacheable(value = "tickets", key = "#userId")
     @Transactional(readOnly = true)
-    public List<FullViewTicketDto> getUserTicketsFullView(String userId) {
-        List<Ticket> tickets = ticketRepository.getTicketsByRequesterId(userId);
-        List<FullViewTicketDto> fullViewTicketDtos = tickets.stream()
-                .map(fullViewTicketMapper::ticketToFullViewTicketDto).toList();
-        return fullViewTicketDtos;
+    public List<Ticket> getUserTickets(String userId) {
+        return ticketRepository.getTicketsByRequesterId(userId);
     }
 
-
+    /**
+     * Сервис редактирования информации в тикете
+     * @param ticket
+     * @return
+     */
+    @CachePut(value = "ticket", key = "#ticket.id")
     public Ticket editTicket(Ticket ticket) {
 
         User requester = Hibernate.unproxy(ticket.getRequester(), User.class);
@@ -95,8 +108,6 @@ public class TicketService {
         if( !isCanEditTicketInfo(ticket)) {
             throw new EditTicketException(TICKET_EDIT_EXCEPTION);
         }
-
-
 
         ticketRepository.save(ticket);
 
@@ -134,28 +145,31 @@ public class TicketService {
 
     /**
      * Сервис создания тикета
-     * @param createTicketDto объект dto с данными для создания
+     * @param ticket новый тикет на создание
      * @return созданный тикет
      */
-    public Ticket createTicket(CreateTicketDto createTicketDto) {
+    @CachePut(value = "ticket", key = "#ticket.id")
+    public Ticket createTicket(Ticket ticket) {
         Authentication authentication = authenticationFacade.getAuthentication();
         String currentUserId = authentication.getName();
+        User requester = ticket.getRequester();
+        String requesterId = requester.getId();
 
-        if( !(currentUserId.equals(createTicketDto.getRequesterId()) ||
+        if( !(currentUserId.equals(requesterId) ||
                 hasCurrentUserAdminRole())){
             //TODO Сделать свой
             throw new RuntimeException(TICKET_CREATE_ALLOW_EXCEPTION);
         }
 
-        String requesterId = createTicketDto.getRequesterId();
-        User requester = userService.getUserById(requesterId);
 
-        String managerId = createTicketDto.getManagerId();
-        User manager = userService.getUserById(managerId);
+        /*User requester = userService.getUserById(requesterId);
 
-        Ticket ticket = createTicketMapper.createTicketDtoToTicket(createTicketDto);
-        ticket.setRequester(requester);
-        ticket.setManager(manager);
+        String managerId = ticket.getManagerId();
+        User manager = userService.getUserById(managerId);*/
+
+        /*Ticket ticket = createTicketMapper.createTicketDtoToTicket(createTicketDto);*/
+        /*ticket.setRequester(requester);
+        ticket.setManager(manager);*/
         ticket.setStatus(TicketStatus.valueOf(startedStatus));
 
         return ticketRepository.save(ticket);
@@ -165,6 +179,7 @@ public class TicketService {
      * Сервис удаления тикета
      * @param id id тикета для удаления
      */
+    @CacheEvict(value = "ticket", key = "#id")
     public void deleteTicket(Long id) {
         Ticket ticket = getTicketInfo(id);
 
@@ -200,7 +215,7 @@ public class TicketService {
 
 
 
-     boolean hasCurrentUserAdminRole() {
+     public boolean hasCurrentUserAdminRole() {
         Authentication authentication = authenticationFacade.getAuthentication();
 
         return authentication.getAuthorities()
@@ -222,11 +237,6 @@ public class TicketService {
     }
 
     public boolean isCanEditTicketInfo(Ticket ticket) {
-        System.out.println(isCurrentUserTicket(ticket));
-        System.out.println(!(ticket.getStatus().equals(TicketStatus.CLOSED) || ticket.getStatus().equals(TicketStatus.ARCHIVED)));
-        System.out.println(hasCurrentUserAdminRole());
-
-
          return (isCurrentUserTicket(ticket) &&
                 !(ticket.getStatus().equals(TicketStatus.CLOSED) || ticket.getStatus().equals(TicketStatus.ARCHIVED))) ||
                 hasCurrentUserAdminRole();

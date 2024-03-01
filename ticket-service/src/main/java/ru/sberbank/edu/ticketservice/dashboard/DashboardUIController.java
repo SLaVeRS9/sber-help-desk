@@ -11,9 +11,7 @@ import ru.sberbank.edu.ticketservice.profile.User;
 import ru.sberbank.edu.ticketservice.profile.UserRole;
 import ru.sberbank.edu.ticketservice.profile.UserService;
 import ru.sberbank.edu.ticketservice.ticket.Ticket;
-import ru.sberbank.edu.ticketservice.ticket.TicketController;
-import ru.sberbank.edu.ticketservice.ticket.TicketStatus;
-import ru.sberbank.edu.ticketservice.ticket.dto.FullViewTicketDto;
+import ru.sberbank.edu.ticketservice.ticket.controller.TicketController;
 import ru.sberbank.edu.ticketservice.ticket.dto.ShortViewTicketDto;
 import ru.sberbank.edu.ticketservice.ticket.mapper.ShortViewTicketMapper;
 
@@ -54,7 +52,7 @@ public class DashboardUIController {
     @GetMapping("/current")
     public String showMyTickets(Model model, @AuthenticationPrincipal UserDetails currentUser) {
         String currentUserId = currentUser.getUsername();
-        List<FullViewTicketDto> currentUserTickets = ticketController.getUserTickets(currentUserId);
+        List<ShortViewTicketDto> currentUserTickets = ticketController.getUserTickets(currentUserId);
 
         model.addAttribute("fullViewTicketDtos", currentUserTickets);
         return "my-tikets";

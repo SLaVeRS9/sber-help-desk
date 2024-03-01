@@ -1,4 +1,4 @@
-package ru.sberbank.edu.ticketservice.ticket;
+package ru.sberbank.edu.ticketservice.ticket.enums;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

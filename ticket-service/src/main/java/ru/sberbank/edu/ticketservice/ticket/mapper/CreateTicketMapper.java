@@ -1,10 +1,8 @@
 package ru.sberbank.edu.ticketservice.ticket.mapper;
 
 import org.mapstruct.*;
-import ru.sberbank.edu.ticketservice.profile.User;
 import ru.sberbank.edu.ticketservice.profile.UserProfileMapper;
 import ru.sberbank.edu.ticketservice.ticket.Ticket;
-import ru.sberbank.edu.ticketservice.ticket.TicketService;
 import ru.sberbank.edu.ticketservice.ticket.dto.CreateTicketDto;
 
 /**
@@ -31,8 +29,7 @@ public interface CreateTicketMapper {
      * @param createTicketDto - dto CreateTicketDto
      * @return возвращает объект entity
      */
+    @Mapping(source = "requesterId", target = "requester.id")
+    @Mapping(source = "managerId", target = "manager.id")
     Ticket createTicketDtoToTicket(CreateTicketDto createTicketDto);
-
-    Ticket createTicketDtoToTicket(CreateTicketDto createTicketDto, @MappingTarget Ticket ticket);
-
 }

@@ -4,8 +4,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import ru.sberbank.edu.ticketservice.comment.Comment;
-import ru.sberbank.edu.ticketservice.ticket.Estimation;
-import ru.sberbank.edu.ticketservice.ticket.TicketStatus;
+import ru.sberbank.edu.ticketservice.ticket.enums.Estimation;
+import ru.sberbank.edu.ticketservice.ticket.enums.TicketStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;
