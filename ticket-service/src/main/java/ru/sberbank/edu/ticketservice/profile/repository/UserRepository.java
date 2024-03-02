@@ -1,10 +1,11 @@
-package ru.sberbank.edu.ticketservice.profile;
+package ru.sberbank.edu.ticketservice.profile.repository;
 
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import ru.sberbank.edu.ticketservice.profile.User;
+import ru.sberbank.edu.ticketservice.profile.entity.User;
+import ru.sberbank.edu.ticketservice.profile.enums.UserRole;
 
 public interface UserRepository extends JpaRepository<User, String> {
     

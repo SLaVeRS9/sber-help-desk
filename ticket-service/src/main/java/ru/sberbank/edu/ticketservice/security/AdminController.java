@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import lombok.RequiredArgsConstructor;
-import ru.sberbank.edu.ticketservice.profile.User;
-import ru.sberbank.edu.ticketservice.profile.UserRole;
-import ru.sberbank.edu.ticketservice.profile.UserService;
-import ru.sberbank.edu.ticketservice.profile.UsersRolesEditDto;
+import ru.sberbank.edu.ticketservice.profile.entity.User;
+import ru.sberbank.edu.ticketservice.profile.enums.UserRole;
+import ru.sberbank.edu.ticketservice.profile.service.UserService;
+import ru.sberbank.edu.ticketservice.profile.dto.UsersRolesEditDto;
 
 @Controller
 @RequiredArgsConstructor

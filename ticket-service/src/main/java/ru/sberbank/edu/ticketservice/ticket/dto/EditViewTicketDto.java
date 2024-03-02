@@ -5,9 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import ru.sberbank.edu.ticketservice.comment.Comment;
-import ru.sberbank.edu.ticketservice.profile.User;
-import ru.sberbank.edu.ticketservice.ticket.Estimation;
-import ru.sberbank.edu.ticketservice.ticket.TicketStatus;
+import ru.sberbank.edu.ticketservice.profile.entity.User;
+import ru.sberbank.edu.ticketservice.ticket.enums.Estimation;
+import ru.sberbank.edu.ticketservice.ticket.enums.TicketStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;

@@ -1,4 +1,4 @@
-package ru.sberbank.edu.ticketservice.profile;
+package ru.sberbank.edu.ticketservice.profile.service;
 
 import lombok.RequiredArgsConstructor;
 
@@ -6,6 +6,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import ru.sberbank.edu.ticketservice.profile.dto.ProfileDto;
+import ru.sberbank.edu.ticketservice.profile.entity.User;
+import ru.sberbank.edu.ticketservice.profile.mapper.UserProfileMapper;
+import ru.sberbank.edu.ticketservice.profile.enums.UserRole;
+import ru.sberbank.edu.ticketservice.profile.repository.UserRepository;
 import ru.sberbank.edu.common.error.UserNotFoundException;
 import ru.sberbank.edu.ticketservice.security.details.AppUserPrincipal;
 import ru.sberbank.edu.ticketservice.ticket.dto.ShortViewTicketDto;
@@ -21,9 +26,8 @@ public class ProfileService {
     private final UserProfileMapper userProfileMapper;
 
     public ProfileDto getActiveUser(String name) {
-
         User user = userRepository.findUserById(name);
-        return userProfileMapper.INSTANCE.UserToProfileDto(user);
+        return userProfileMapper.UserToProfileDto(user);
     }
     
     public User getActiveUser() {
@@ -35,7 +39,7 @@ public class ProfileService {
     public List<ProfileDto> getAllManagers() {
         List<User> users = userRepository.findAllUsersByRole(String.valueOf(UserRole.MANAGER));
         List<ProfileDto> profilesDto = users.stream()
-                .map(userProfileMapper.INSTANCE::UserToProfileDto).toList();
+                .map(userProfileMapper::UserToProfileDto).toList();
         return profilesDto;
 
     }
@@ -60,7 +64,7 @@ public class ProfileService {
 
     public User save(ProfileDto user) {
 
-        return userRepository.save(userProfileMapper.INSTANCE.ProfileDtoToUser(user));
+        return userRepository.save(userProfileMapper.ProfileDtoToUser(user));
     }
 
 

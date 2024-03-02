@@ -1,4 +1,4 @@
-package ru.sberbank.edu.ticketservice.profile;
+package ru.sberbank.edu.ticketservice.profile.enums;
 
 public enum UserRole {
     ADMIN,

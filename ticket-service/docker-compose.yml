@@ -5,7 +5,7 @@ services:
         environment:
             POSTGRES_DB: ticket_service
             POSTGRES_USER: postgres
-            POSTGRES_PASSWORD: password
+            POSTGRES_PASSWORD: postgres
         volumes:
             - app:/home/node/app
         ports:
@@ -20,9 +20,17 @@ services:
             SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/ticket_service
             SPRING_PROFILES_ACTIVE: prom
         ports:
-            - 8082:8082
+            - 8083:8083
         depends_on:
             - db
-            
+            - rediscash
+
+    rediscash:
+        image: redis/redis-stack
+        container_name: ticket_service_rediscash
+        ports:
+            - 6379:6379
+            - 8001:8001
+
 volumes:
     app: 

@@ -86,13 +86,3 @@ Authorization: Basic ivanovap 123456
 ###Удалить тикет свой не админ
 DELETE http://localhost:8082/api/tickets/2
 Authorization: Basic ivanovap 123456
-
-###Сменить статус я - менеджер
-PATCH http://localhost:8082/api/tickets/4/edit/status
-Authorization: Basic ivanovap 123456
-Accept: application/json
-Content-Type: application/json
-
-{
-  "ticketStatus" :"new"
-}

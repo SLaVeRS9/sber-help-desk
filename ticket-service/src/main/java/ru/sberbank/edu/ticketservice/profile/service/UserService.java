@@ -1,9 +1,14 @@
-package ru.sberbank.edu.ticketservice.profile;
+package ru.sberbank.edu.ticketservice.profile.service;
 
 import ru.sberbank.edu.common.error.UserAlreadyExistsException;
 import ru.sberbank.edu.common.error.UserNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.sberbank.edu.ticketservice.profile.entity.User;
+import ru.sberbank.edu.ticketservice.profile.repository.UserRepository;
+import ru.sberbank.edu.ticketservice.profile.dto.UserDto;
+import ru.sberbank.edu.ticketservice.profile.enums.UserRole;
+
 import java.util.List;
 import java.util.Optional;
 

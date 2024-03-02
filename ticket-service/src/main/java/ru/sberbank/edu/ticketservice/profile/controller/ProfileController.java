@@ -1,4 +1,4 @@
-package ru.sberbank.edu.ticketservice.profile;
+package ru.sberbank.edu.ticketservice.profile.controller;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -6,6 +6,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import ru.sberbank.edu.ticketservice.profile.dto.ProfileDto;
+import ru.sberbank.edu.ticketservice.profile.service.ProfileService;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,12 +1,9 @@
 package ru.sberbank.edu.ticketservice.ticket.mapper;
 
-import lombok.AllArgsConstructor;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
-import ru.sberbank.edu.ticketservice.profile.User;
-import ru.sberbank.edu.ticketservice.profile.UserService;
-import ru.sberbank.edu.ticketservice.ticket.Ticket;
+import ru.sberbank.edu.ticketservice.ticket.entity.Ticket;
 import ru.sberbank.edu.ticketservice.ticket.dto.FullViewTicketDto;
 
 /**
@@ -23,6 +20,8 @@ public interface FullViewTicketMapper {
      */
     @Mapping(source = "requester.id", target = "requesterId")
     @Mapping(source = "manager.id", target = "managerId")
+    @Mapping(source = "requester.name", target = "requesterFullName")
+    @Mapping(source = "manager.name", target = "managerFullName")
     FullViewTicketDto ticketToFullViewTicketDto(Ticket ticket);
 
     /**

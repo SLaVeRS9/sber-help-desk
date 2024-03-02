@@ -2,7 +2,7 @@ package ru.sberbank.edu.ticketservice.security.validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import ru.sberbank.edu.ticketservice.profile.UserService;
+import ru.sberbank.edu.ticketservice.profile.service.UserService;
 
 public class UniqueLoginValidator implements ConstraintValidator<UniqueLogin, Object>{
 

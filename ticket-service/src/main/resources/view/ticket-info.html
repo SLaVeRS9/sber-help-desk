@@ -10,43 +10,50 @@
     <div class="ticket-info">
         <table>
             <tr>
-                <td><h1 th:text="${ticket.getCode()} + ${ticket.getId()}">Ticket code</h1></td>
-                <td><h1 th:text="${ticket.getTitle()}">Ticket title</h1>
-                    <h2 class="ticket-status" th:text="' ' + ${ticket.getStatus()} + ' '"> Ticket status </h2></td>
+                <td><h1 th:text="${fullViewTicketDto.getCode()} + '-' + ${fullViewTicketDto.getId()}">Ticket code</h1></td>
+                <td>
+                    <h1 th:text="${fullViewTicketDto.getTitle()}">Ticket title</h1>
+                    <h2 class="ticket-status" th:text="' ' + ${fullViewTicketDto.getStatus()} + ' '"> Ticket status </h2>
+                </td>
             </tr>
             <tr>
                 <td></td>
-                <td><p th:text="${ticket.getEstimation()}">Estimate</p></td>
+                <td><p th:text="${fullViewTicketDto.getEstimation()}">Estimate</p></td>
                 <td></td>
             </tr>
             <tr>
-                <td>Requester:</td>
-                <td><p th:text="${requester.name}">Requester</p></td>
+                <td>Requester: </td>
+                <td><p th:text="${fullViewTicketDto.getRequesterFullName()}">Requester</p></td>
                 <td></td>
             </tr>
             <tr>
-                <td>Manager:</td>
-                <td><p th:text="${manager}!=null ? ${manager.name} : 'NotSetted'">Manager</p></td>
+                <td>Manager: </td>
+                <td><p th:text="${fullViewTicketDto.getManagerFullName()}!=null ? ${fullViewTicketDto.getManagerFullName()} : 'NotSetted'">Manager</p></td>
                 <td></td>
             </tr>
             <tr>
-                <td>Description</td>
-                <td><p th:text="${ticket.getDescription()}">Description</p></td>
+                <td>Description: </td>
+                <td><p th:text="${fullViewTicketDto.getDescription()}">Description</p></td>
                 <td></td>
             </tr>
             <tr>
-                <td>Creation time:</td>
-                <td><p th:text="${#temporals.format(ticket.getCreatedAt(), 'dd-MM-yyyy HH:mm')}">Creation time</p></td>
+                <td>Creation time: </td>
+                <td><p th:text="${#temporals.format(fullViewTicketDto.getCreatedAt(), 'dd-MM-yyyy HH:mm')}">Creation time</p></td>
                 <td></td>
             </tr>
             <tr>
-                <td>Last status change time</td>
-                <td><p th:text="${#temporals.format(ticket.getStatusUpdatedAt(), 'dd-MM-yyyy HH:mm')}">Last status change time</p></td>
+                <td>Last ticket updated: </td>
+                <td><p th:text="${#temporals.format(fullViewTicketDto.getUpdatedAt(), 'dd-MM-yyyy HH:mm')}">Last ticket updated</p></td>
                 <td></td>
             </tr>
             <tr>
-                <td>Control time</td>
-                <td><p th:text="${#temporals.format(ticket.getControlPeriodAt(), 'dd-MM-yyyy HH:mm')}">Control time</p></td>
+                <td>Last status change time: </td>
+                <td><p th:text="${#temporals.format(fullViewTicketDto.getStatusUpdatedAt(), 'dd-MM-yyyy HH:mm')}">Last status change time</p></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Control time:</td>
+                <td><p th:text="${#temporals.format(fullViewTicketDto.getControlPeriodAt(), 'dd-MM-yyyy HH:mm')}">Control time</p></td>
                 <td></td>
             </tr>
         </table>
@@ -57,10 +64,10 @@
                 <td><form th:method="GET" th:action="@{/dashboard}">
                     <input type="submit" value="Back"/>
                 </form></td>
-                <td><form th:method="GET" th:if="${ticket.getRequesterId}==${userId}" th:action="@{/tickets/{id}/edit(id=${ticket.getId()})}">
+                <td><form th:method="GET" th:if="${fullViewTicketDto.getRequesterId() == userId || currentUserRole =='ADMIN'}" th:action="@{/tickets/{id}/edit(id=${fullViewTicketDto.getId()})}">
                     <input type="submit" value="Edit"/>
                 </form></td>
-                <td><form th:method="DELETE" th:if="${ticket.getRequesterId}==${userId}" th:action="@{/tickets/{id}(id=${ticket.getId()})}">
+                <td><form th:method="DELETE" th:if="${fullViewTicketDto.getRequesterId() == userId || currentUserRole =='ADMIN'}" th:action="@{/tickets/{id}(id=${fullViewTicketDto.getId()})}">
                     <input type="submit" value="Delete"/>
                 </form></td>
             </tr>

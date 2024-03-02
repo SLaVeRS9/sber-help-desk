@@ -5,49 +5,71 @@
     <title>Edit ticket</title>
 </head>
 <body>
+    <h1>Edit ticket</h1>
+    <br>
     <div class="edit ticket">
         <form th:method="PATCH"
-              th:action="@{/tickets/{id}(id=${ticket.getId()})}"
-              th:object="${ticket}">
-            <span style="color: firebrick" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"/>
+              th:action="@{/tickets/{id}(id=${editTicketDto.getId()})}"
+              th:object="${editTicketDto}">
+            <div th:if="${isAdmin == true}">
+                <label for="codeA">Code: </label>
+                <input type="text" id="codeA" th:field="*{code}">
+                <span style="color: firebrick" th:if="${#fields.hasErrors('code')}" th:errors="*{code}"/>
+            </div>
+            <div th:if="${isAdmin} != true">
+                <span th:text="'Ticket code: ' + *{code}">Code</span>
+            </div>
             <br>
             <label for="title">Title: </label>
             <input type="text" id="title" th:field="*{title}">
             <span style="color: firebrick" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"/>
             <br>
-            <label for="description">Description: </label>
-            <input type="text" id="description" th:field="*{description}">
+            <label for="title">Ticket description: </label>
+            <br>
+            <textarea id="description" th:field="*{description}">Ticket description</textarea>
             <span style="color: firebrick" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"/>
             <br>
-            <br>
             <input type="text" th:field="*{requesterId}" hidden="hidden">
-            <input type="text" th:field="*{managerId}" hidden="hidden">
-            <input type="text" th:field="*{code}" hidden="hidden">
+            <label>Change manager:</label>
+            <select th:field="*{managerId}">
+                <option th:each="manager : ${managers}"
+                        th:value="${manager.id}"
+                        th:text="${manager.name}">Manager name
+                </option>
+            </select>
+            <br>
+            <label th:if="${isAdmin} == true" >Change status:</label>
+            <select th:if="${isAdmin} == true" name="status">
+                <option th:each="status : ${T(ru.sberbank.edu.ticketservice.ticket.enums.TicketStatus).values()}"
+                        th:value="${status}" th:text="${status}"></option>
+            </select>
+            <br>
+            <br>
             <input type="submit" value="Save changes"/>
             <br>
             <br>
             <br>
-            <label for="status">Status: </label>
-            <input type="text" id="status" th:field="*{status}" readonly>
-            <br>
-            <label for="estimation">Estimate: </label>
-            <input type="text" id="estimation" th:field="*{estimation}" readonly>
+            <label th:if="${isAdmin} != true " for="status">Current status: </label>
+            <input th:if="${isAdmin} != true" type="text" id="status" th:field="*{status}" readonly>
             <br>
             <label for="requester">Requester: </label>
-            <input type="text" id="requester" th:field="${requester.name}" readonly>
+            <input type="text" id="requester" th:field="*{requesterFullName}" readonly>
             <br>
-            <label for="manager">Manager: </label>
-            <input type="text" id="manager" th:field="${manager.name}" readonly>
+            <span th:if="${isAdmin} != true" th:text="'Current manager: ' + *{managerFullName}">Current manager</span>
             <br>
-            <label for="creation_time">Creation time: </label>
-            <input type="text" id="creation_time" th:field="*{createdAt}" readonly>
+            <span th:text="'Creation time: ' + ${editTicketDto.getCreatedAt()}">createdAt</span>
             <br>
-            <label for="status_updatedAt">Last status change time: </label>
-            <input type="text" id="status_updatedAt" th:field="*{statusUpdatedAt}" readonly>
-
+            <span th:text="'Last status change time: ' + *{statusUpdatedAt}">Last status change time</span>
+            <br>
+            <label for="id" hidden="hidden">id: </label>
+            <input type="text" id="id" th:field="*{id}" hidden="hidden">
         </form>
-
-
+        <div>
+            <form th:method="GET"
+                  th:action="@{/dashboard}">
+                <input class="ticket-buttons" type="submit" id="back" value="Back">
+            </form>
+        </div>
     </div>
 </body>
 </html>

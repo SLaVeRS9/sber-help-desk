@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import jakarta.validation.Valid;
-import ru.sberbank.edu.ticketservice.profile.UserDto;
-import ru.sberbank.edu.ticketservice.profile.UserService;
+import ru.sberbank.edu.ticketservice.profile.dto.UserDto;
+import ru.sberbank.edu.ticketservice.profile.service.UserService;
 
 @Controller
 @RequestMapping(value = "/auth")

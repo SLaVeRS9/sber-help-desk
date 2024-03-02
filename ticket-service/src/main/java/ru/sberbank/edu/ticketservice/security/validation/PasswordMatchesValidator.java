@@ -2,7 +2,7 @@ package ru.sberbank.edu.ticketservice.security.validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import ru.sberbank.edu.ticketservice.profile.UserDto;
+import ru.sberbank.edu.ticketservice.profile.dto.UserDto;
 
 public class PasswordMatchesValidator implements ConstraintValidator<PasswordMatches, Object> {
     private String firstFieldName;

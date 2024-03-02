@@ -1,9 +1,10 @@
-package ru.sberbank.edu.ticketservice.ticket;
+package ru.sberbank.edu.ticketservice.ticket.repository;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import ru.sberbank.edu.ticketservice.ticket.entity.Ticket;
 
 import java.util.List;
 import java.util.Optional;

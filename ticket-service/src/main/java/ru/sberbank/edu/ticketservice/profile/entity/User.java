@@ -1,13 +1,17 @@
-package ru.sberbank.edu.ticketservice.profile;
+package ru.sberbank.edu.ticketservice.profile.entity;
 
 import jakarta.persistence.*;
+import ru.sberbank.edu.ticketservice.profile.enums.UserGender;
+import ru.sberbank.edu.ticketservice.profile.enums.UserRole;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Period;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements Serializable {
+    static final long serialVersionUID = -100500L;
 
     @Id
     @Column (name = "id")

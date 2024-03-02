@@ -26,7 +26,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="help-desk" options="-parameters" />
+      <module name="help-desk" options="" />
       <module name="ticket-service" options="-parameters" />
     </option>
   </component>

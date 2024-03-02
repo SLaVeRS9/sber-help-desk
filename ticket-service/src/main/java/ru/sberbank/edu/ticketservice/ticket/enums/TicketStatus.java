@@ -1,23 +1,23 @@
-package ru.sberbank.edu.ticketservice.ticket;
+package ru.sberbank.edu.ticketservice.ticket.enums;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public enum TicketStatus {
     @JsonProperty("new")
-    NEW("new"),
+    NEW(1),
 
     @JsonProperty("assigned")
-    ASSIGNED("assigned"),
+    ASSIGNED(2),
 
     @JsonProperty("inProgress")
-    IN_PROGRESS("inProgress"),
+    IN_PROGRESS(3),
 
     @JsonProperty("closed")
-    CLOSED("closed"),
+    CLOSED(4),
 
     @JsonProperty("archived")
-    ARCHIVED("archived");
+    ARCHIVED(5);
 
-    TicketStatus(String s) {
+    TicketStatus(Integer statusNumber) {
     }
 }
