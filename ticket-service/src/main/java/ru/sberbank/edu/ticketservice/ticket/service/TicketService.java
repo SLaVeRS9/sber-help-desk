@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.sberbank.edu.common.AuthenticationFacade;
+import ru.sberbank.edu.common.aspect.ToLog;
 import ru.sberbank.edu.common.error.EditTicketException;
 import ru.sberbank.edu.common.error.TicketNotFoundException;
 import ru.sberbank.edu.ticketservice.profile.entity.User;
@@ -58,8 +59,11 @@ public class TicketService {
      */
     @Transactional(readOnly = true)
     @Cacheable(value = "Tickets")
+    @ToLog
     public List<Ticket> getAllTickets() {
-        return ticketRepository.findAll();
+        List<Ticket> ticketList = ticketRepository.findAll();
+        System.out.println(ticketList);
+        return ticketList;
     }
 
     /**
@@ -69,6 +73,7 @@ public class TicketService {
      */
     @Transactional(readOnly = true)
     @Cacheable(value = "Ticket", key = "#id")
+    @ToLog
     public Ticket getTicketInfo(Long id) {
         Ticket ticket = ticketRepository.getTicketById(id)
                 .orElseThrow(() -> new TicketNotFoundException(TICKET_NOT_FOUND_EXCEPTION + id));
@@ -79,12 +84,14 @@ public class TicketService {
 
     @Transactional(readOnly = true)
     @Cacheable(value = "TicketsPag", key = "#userId + #offset + #limit")
+    @ToLog
     public List<Ticket> getUserTicketsFullView(String userId, Integer offset, Integer limit) {
         return ticketRepository.getTicketsByRequesterId(userId, PageRequest.of(offset, limit));
     }
 
     @Cacheable(value = "UserTickets", key = "#userId")
     @Transactional(readOnly = true)
+    @ToLog
     public List<Ticket> getUserTickets(String userId) {
         return ticketRepository.getTicketsByRequesterId(userId);
     }
@@ -99,6 +106,7 @@ public class TicketService {
             @CacheEvict(value = "UserTickets", allEntries = true)
     })
     @CachePut(value = "Ticket", key = "#ticket.id")
+    @ToLog
     public Ticket editTicket(Ticket ticket) {
 
         User requester = Hibernate.unproxy(ticket.getRequester(), User.class);
@@ -153,6 +161,7 @@ public class TicketService {
             @CacheEvict(value = "UserTickets", allEntries = true)
     })
     @CachePut(value = "Ticket", key = "#ticket.id")
+    @ToLog
     public Ticket createTicket(Ticket ticket) {
         Authentication authentication = authenticationFacade.getAuthentication();
         String currentUserId = authentication.getName();
@@ -188,6 +197,7 @@ public class TicketService {
             @CacheEvict(value = "UserTickets", allEntries = true),
             @CacheEvict(value = "Ticket", key = "#id"),
     })
+    @ToLog
     public void deleteTicket(Long id) {
         Ticket ticket = getTicketInfo(id);
 
@@ -222,7 +232,7 @@ public class TicketService {
     }*/
 
 
-
+    @ToLog
      public boolean hasCurrentUserAdminRole() {
         Authentication authentication = authenticationFacade.getAuthentication();
 
@@ -230,6 +240,8 @@ public class TicketService {
                 .stream()
                 .anyMatch(a -> a.getAuthority().equals("ROLE_" + UserRole.ADMIN.name()));
     }
+
+    @ToLog
      boolean hasManagerRole() {
         Authentication authentication = authenticationFacade.getAuthentication();
 
@@ -238,12 +250,14 @@ public class TicketService {
                 .anyMatch(a -> a.getAuthority().equals("ROLE_" + UserRole.MANAGER.name()));
     }
 
+    @ToLog
      private boolean isCurrentUserTicket(Ticket ticket) {
         Authentication authentication = authenticationFacade.getAuthentication();
         String currentUserId = authentication.getName();
         return ticket.getRequester().getId().equals(currentUserId);
     }
 
+    @ToLog
     public boolean isCanEditTicketInfo(Ticket ticket) {
          return (isCurrentUserTicket(ticket) &&
                 !(ticket.getStatus().equals(TicketStatus.CLOSED) || ticket.getStatus().equals(TicketStatus.ARCHIVED))) ||
