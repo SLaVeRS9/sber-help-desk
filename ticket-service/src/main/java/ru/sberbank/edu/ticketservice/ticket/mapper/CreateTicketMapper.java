@@ -1,8 +1,8 @@
 package ru.sberbank.edu.ticketservice.ticket.mapper;
 
 import org.mapstruct.*;
-import ru.sberbank.edu.ticketservice.profile.UserProfileMapper;
-import ru.sberbank.edu.ticketservice.ticket.Ticket;
+import ru.sberbank.edu.ticketservice.profile.mapper.UserProfileMapper;
+import ru.sberbank.edu.ticketservice.ticket.entity.Ticket;
 import ru.sberbank.edu.ticketservice.ticket.dto.CreateTicketDto;
 
 /**

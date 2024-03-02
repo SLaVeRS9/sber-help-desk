@@ -1,4 +1,4 @@
-package ru.sberbank.edu.ticketservice.ticket;
+package ru.sberbank.edu.ticketservice.ticket.entity;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -12,11 +12,9 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import ru.sberbank.edu.common.model.TimestampedEntity;
 import ru.sberbank.edu.ticketservice.comment.Comment;
-import ru.sberbank.edu.ticketservice.profile.User;
+import ru.sberbank.edu.ticketservice.profile.entity.User;
 import ru.sberbank.edu.ticketservice.ticket.enums.Estimation;
 import ru.sberbank.edu.ticketservice.ticket.enums.TicketStatus;
 

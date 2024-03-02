@@ -29,9 +29,9 @@ public class RedisCashConfig implements CachingConfigurer {
 
     @Bean
     public JedisConnectionFactory jedisConnectionFactory() {
-        RedisStandaloneConfiguration config = new RedisStandaloneConfiguration("redisHost", redisPort);
-        config.setDatabase(redisDatabase);
-        return new JedisConnectionFactory(config);
+            RedisStandaloneConfiguration config = new RedisStandaloneConfiguration(redisHost, redisPort);
+            config.setDatabase(redisDatabase);
+            return new JedisConnectionFactory(config);
     }
 
     @Bean

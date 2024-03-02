@@ -1,8 +1,10 @@
-package ru.sberbank.edu.ticketservice.profile;
+package ru.sberbank.edu.ticketservice.profile.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.MappingTarget;
+import ru.sberbank.edu.ticketservice.profile.dto.ProfileDto;
+import ru.sberbank.edu.ticketservice.profile.entity.User;
 
 /**
  * User to ProfileDto

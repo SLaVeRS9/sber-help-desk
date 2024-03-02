@@ -1,9 +1,8 @@
 package ru.sberbank.edu.ticketservice.ticket.mapper;
 
 import org.mapstruct.*;
-import ru.sberbank.edu.ticketservice.ticket.Ticket;
+import ru.sberbank.edu.ticketservice.ticket.entity.Ticket;
 import ru.sberbank.edu.ticketservice.ticket.dto.EditTicketDto;
-import ru.sberbank.edu.ticketservice.ticket.dto.FullViewTicketDto;
 
 /**
  * Mapper для сущности EditTicketDto

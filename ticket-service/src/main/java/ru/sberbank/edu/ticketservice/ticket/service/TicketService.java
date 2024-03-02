@@ -3,21 +3,18 @@ package ru.sberbank.edu.ticketservice.ticket.service;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.annotation.*;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.sberbank.edu.common.AuthenticationFacade;
 import ru.sberbank.edu.common.error.EditTicketException;
 import ru.sberbank.edu.common.error.TicketNotFoundException;
-import ru.sberbank.edu.ticketservice.comment.Comment;
-import ru.sberbank.edu.ticketservice.profile.*;
-import ru.sberbank.edu.ticketservice.ticket.Ticket;
+import ru.sberbank.edu.ticketservice.profile.entity.User;
+import ru.sberbank.edu.ticketservice.profile.enums.UserRole;
+import ru.sberbank.edu.ticketservice.profile.service.UserService;
+import ru.sberbank.edu.ticketservice.ticket.entity.Ticket;
 import ru.sberbank.edu.ticketservice.ticket.repository.TicketRepository;
 import ru.sberbank.edu.ticketservice.ticket.enums.TicketStatus;
 import ru.sberbank.edu.ticketservice.ticket.mapper.CreateTicketMapper;
@@ -26,7 +23,6 @@ import ru.sberbank.edu.ticketservice.ticket.mapper.ShortViewTicketMapper;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 //TODO Проверку что текущий менеджер имеет роль менеджер и если уже не имеет, то удалить его с тикета
@@ -61,7 +57,7 @@ public class TicketService {
      * @return список тикетов
      */
     @Transactional(readOnly = true)
-    @Cacheable(value = "tickets")
+    @Cacheable(value = "Tickets")
     public List<Ticket> getAllTickets() {
         return ticketRepository.findAll();
     }
@@ -72,7 +68,7 @@ public class TicketService {
      * @return - тикет
      */
     @Transactional(readOnly = true)
-    @Cacheable(value = "ticket", key = "#id")
+    @Cacheable(value = "Ticket", key = "#id")
     public Ticket getTicketInfo(Long id) {
         Ticket ticket = ticketRepository.getTicketById(id)
                 .orElseThrow(() -> new TicketNotFoundException(TICKET_NOT_FOUND_EXCEPTION + id));
@@ -82,12 +78,12 @@ public class TicketService {
     }
 
     @Transactional(readOnly = true)
-    @Cacheable(value = "tickets", key = "#userId")
+    @Cacheable(value = "TicketsPag", key = "#userId + #offset + #limit")
     public List<Ticket> getUserTicketsFullView(String userId, Integer offset, Integer limit) {
         return ticketRepository.getTicketsByRequesterId(userId, PageRequest.of(offset, limit));
     }
 
-    @Cacheable(value = "tickets", key = "#userId")
+    @Cacheable(value = "UserTickets", key = "#userId")
     @Transactional(readOnly = true)
     public List<Ticket> getUserTickets(String userId) {
         return ticketRepository.getTicketsByRequesterId(userId);
@@ -98,7 +94,11 @@ public class TicketService {
      * @param ticket
      * @return
      */
-    @CachePut(value = "ticket", key = "#ticket.id")
+    @Caching(evict = {
+            @CacheEvict(value = "Tickets", allEntries = true),
+            @CacheEvict(value = "UserTickets", allEntries = true)
+    })
+    @CachePut(value = "Ticket", key = "#ticket.id")
     public Ticket editTicket(Ticket ticket) {
 
         User requester = Hibernate.unproxy(ticket.getRequester(), User.class);
@@ -148,7 +148,11 @@ public class TicketService {
      * @param ticket новый тикет на создание
      * @return созданный тикет
      */
-    @CachePut(value = "ticket", key = "#ticket.id")
+    @Caching(evict = {
+            @CacheEvict(value = "Tickets", allEntries = true),
+            @CacheEvict(value = "UserTickets", allEntries = true)
+    })
+    @CachePut(value = "Ticket", key = "#ticket.id")
     public Ticket createTicket(Ticket ticket) {
         Authentication authentication = authenticationFacade.getAuthentication();
         String currentUserId = authentication.getName();
@@ -179,7 +183,11 @@ public class TicketService {
      * Сервис удаления тикета
      * @param id id тикета для удаления
      */
-    @CacheEvict(value = "ticket", key = "#id")
+    @Caching(evict = {
+            @CacheEvict(value = "Tickets", allEntries = true),
+            @CacheEvict(value = "UserTickets", allEntries = true),
+            @CacheEvict(value = "Ticket", key = "#id"),
+    })
     public void deleteTicket(Long id) {
         Ticket ticket = getTicketInfo(id);
 

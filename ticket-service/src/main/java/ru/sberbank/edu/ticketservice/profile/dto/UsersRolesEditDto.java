@@ -1,4 +1,6 @@
-package ru.sberbank.edu.ticketservice.profile;
+package ru.sberbank.edu.ticketservice.profile.dto;
+
+import ru.sberbank.edu.ticketservice.profile.entity.User;
 
 import java.util.ArrayList;
 import java.util.List;

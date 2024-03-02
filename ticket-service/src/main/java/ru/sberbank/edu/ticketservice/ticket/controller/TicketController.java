@@ -2,7 +2,7 @@ package ru.sberbank.edu.ticketservice.ticket.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.sberbank.edu.ticketservice.ticket.Ticket;
+import ru.sberbank.edu.ticketservice.ticket.entity.Ticket;
 import ru.sberbank.edu.ticketservice.ticket.dto.CreateTicketDto;
 import ru.sberbank.edu.ticketservice.ticket.dto.FullViewTicketDto;
 import ru.sberbank.edu.ticketservice.ticket.dto.ShortViewTicketDto;

@@ -2,7 +2,7 @@ package ru.sberbank.edu.ticketservice.dashboard;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.sberbank.edu.ticketservice.ticket.Ticket;
+import ru.sberbank.edu.ticketservice.ticket.entity.Ticket;
 import ru.sberbank.edu.ticketservice.ticket.service.TicketService;
 import ru.sberbank.edu.ticketservice.ticket.enums.TicketStatus;
 
