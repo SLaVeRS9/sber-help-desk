@@ -1,4 +1,4 @@
-package ru.sberbank.edu.ticketservice.profile;
+package ru.sberbank.edu.ticketservice.profile.service;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,7 +27,7 @@ public class ProfileService {
 
     public ProfileDto getActiveUser(String name) {
         User user = userRepository.findUserById(name);
-        return userProfileMapper.INSTANCE.UserToProfileDto(user);
+        return userProfileMapper.UserToProfileDto(user);
     }
     
     public User getActiveUser() {
@@ -64,7 +64,7 @@ public class ProfileService {
 
     public User save(ProfileDto user) {
 
-        return userRepository.save(userProfileMapper.INSTANCE.ProfileDtoToUser(user));
+        return userRepository.save(userProfileMapper.ProfileDtoToUser(user));
     }
 
 

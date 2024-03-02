@@ -1,4 +1,4 @@
-package ru.sberbank.edu.ticketservice.profile;
+package ru.sberbank.edu.ticketservice.profile.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
