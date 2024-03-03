@@ -3,12 +3,14 @@ package ru.sberbank.edu.ticketservice.ticket.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ru.sberbank.edu.common.error.ActionNotAllowException;
 import ru.sberbank.edu.ticketservice.profile.dto.ProfileDto;
 import ru.sberbank.edu.ticketservice.profile.entity.User;
 import ru.sberbank.edu.ticketservice.profile.enums.UserRole;
@@ -25,6 +27,8 @@ import ru.sberbank.edu.ticketservice.ticket.service.TicketService;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static ru.sberbank.edu.common.error.ErrorMessages.TICKET_EDIT_ALLOW_EXCEPTION;
 
 /**
  * Controller для обработки запросов на отображение ui
@@ -105,6 +109,7 @@ public class TicketUIController {
      * @return страницу со списком всех тикетов
      */
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public String createTicket(@ModelAttribute("createTicketDto") @Valid CreateTicketDto createTicketDto,
                                BindingResult bindingResult,
                                @AuthenticationPrincipal UserDetails userDetails,
@@ -130,6 +135,7 @@ public class TicketUIController {
      * @return страница со списком всех тикетов
      */
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public String deleteTicket(@PathVariable Long id) {
         ticketService.deleteTicket(id);
         return "redirect:/dashboard";
@@ -150,7 +156,7 @@ public class TicketUIController {
         Ticket ticket = ticketService.getTicketInfo(id);
 
         if( !ticketService.isCanEditTicketInfo(ticket)) {
-            return "not-allow";
+            throw new ActionNotAllowException(TICKET_EDIT_ALLOW_EXCEPTION);
         }
 
         EditTicketDto editTicketDto = editTicketMapper.ticketToEditTicketDto(ticket);
@@ -174,6 +180,7 @@ public class TicketUIController {
      * @return
      */
     @PatchMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public String editTicket(@ModelAttribute("ticket") @Valid EditTicketDto editTicketDto,
                              BindingResult bindingResult,
                              Model model) {

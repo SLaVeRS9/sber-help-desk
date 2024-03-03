@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Error</title>
+</head>
+<body>
+  <h1><div th:text="${serviceError.getStatus()}">code</div></h1>
+  <div th:text="${serviceError.getDetails()}">description</div>
+  <br>
+  <div>
+      <form th:method="GET"
+            th:action="@{/dashboard}">
+          <input class="ticket-buttons" type="submit" id="back" value="Back to dashboard">
+      </form>
+  </div>
+</body>
+</html>

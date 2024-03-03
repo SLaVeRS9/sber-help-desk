@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.sberbank.edu.common.AuthenticationFacade;
 import ru.sberbank.edu.common.aspect.ToLog;
+import ru.sberbank.edu.common.error.ActionNotAllowException;
 import ru.sberbank.edu.common.error.EditTicketException;
 import ru.sberbank.edu.common.error.TicketNotFoundException;
+import ru.sberbank.edu.ticketservice.comment.Comment;
 import ru.sberbank.edu.ticketservice.profile.entity.User;
 import ru.sberbank.edu.ticketservice.profile.enums.UserRole;
 import ru.sberbank.edu.ticketservice.profile.service.UserService;
@@ -24,6 +26,8 @@ import ru.sberbank.edu.ticketservice.ticket.mapper.ShortViewTicketMapper;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static ru.sberbank.edu.common.error.ErrorMessages.*;
 
 
 //TODO Проверку что текущий менеджер имеет роль менеджер и если уже не имеет, то удалить его с тикета
@@ -47,12 +51,6 @@ public class TicketService {
     @Value("${ticket.startedStatus}")
     private String startedStatus;
 
-    private final static String TICKET_EDIT_EXCEPTION = "You can't edit ticket on that status";
-    private final static String TICKET_NOT_FOUND_EXCEPTION = "Ticket not found, id = ";
-    private final static String TICKET_EDIT_ALLOW_EXCEPTION= "You can't edit another's tickets";
-    private final static String TICKET_DELETE_ALLOW_EXCEPTION= "You can't delete another's tickets";
-    private final static String TICKET_CREATE_ALLOW_EXCEPTION= "You can't create another's tickets";
-
     /**
      * Метод получения всех тикетов
      * @return список тикетов
@@ -62,7 +60,8 @@ public class TicketService {
     @ToLog
     public List<Ticket> getAllTickets() {
         List<Ticket> ticketList = ticketRepository.findAll();
-        System.out.println(ticketList);
+        ticketList.forEach(ticket -> ticket.setComments(new ArrayList<>(ticket.getComments())));
+
         return ticketList;
     }
 
@@ -86,14 +85,20 @@ public class TicketService {
     @Cacheable(value = "TicketsPag", key = "#userId + #offset + #limit")
     @ToLog
     public List<Ticket> getUserTicketsFullView(String userId, Integer offset, Integer limit) {
-        return ticketRepository.getTicketsByRequesterId(userId, PageRequest.of(offset, limit));
+        List<Ticket> ticketList = ticketRepository.getTicketsByRequesterId(userId, PageRequest.of(offset, limit));
+        ticketList.forEach(ticket -> ticket.setComments(new ArrayList<>(ticket.getComments())));
+
+        return ticketList;
     }
 
     @Cacheable(value = "UserTickets", key = "#userId")
     @Transactional(readOnly = true)
     @ToLog
     public List<Ticket> getUserTickets(String userId) {
-        return ticketRepository.getTicketsByRequesterId(userId);
+        List<Ticket> ticketList = ticketRepository.getTicketsByRequesterId(userId);
+        ticketList.forEach(ticket -> ticket.setComments(new ArrayList<>(ticket.getComments())));
+
+        return ticketList;
     }
 
     /**
@@ -114,7 +119,7 @@ public class TicketService {
         ticket.setRequester(requester);
 
         if( !isCanEditTicketInfo(ticket)) {
-            throw new EditTicketException(TICKET_EDIT_EXCEPTION);
+            throw new ActionNotAllowException(TICKET_EDIT_ALLOW_EXCEPTION);
         }
 
         ticketRepository.save(ticket);
@@ -170,8 +175,7 @@ public class TicketService {
 
         if( !(currentUserId.equals(requesterId) ||
                 hasCurrentUserAdminRole())){
-            //TODO Сделать свой
-            throw new RuntimeException(TICKET_CREATE_ALLOW_EXCEPTION);
+            throw new ActionNotAllowException(TICKET_CREATE_ALLOW_EXCEPTION);
         }
 
 
@@ -203,7 +207,7 @@ public class TicketService {
 
         if ( !(hasCurrentUserAdminRole() ||
                 (isCurrentUserTicket(ticket)))) {
-            throw new EditTicketException(TICKET_DELETE_ALLOW_EXCEPTION);
+            throw new ActionNotAllowException(TICKET_DELETE_ALLOW_EXCEPTION);
         }
 
         ticketRepository.deleteById(id);
