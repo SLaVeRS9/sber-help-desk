@@ -1,4 +1,4 @@
-package ru.sberbank.edu.common.error;
+package ru.sberbank.edu.common.error.exception;
 
 public class EditTicketException extends RuntimeException {
     public EditTicketException() {

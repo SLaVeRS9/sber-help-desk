@@ -1,7 +1,7 @@
 package ru.sberbank.edu.ticketservice.profile.service;
 
-import ru.sberbank.edu.common.error.UserAlreadyExistsException;
-import ru.sberbank.edu.common.error.UserNotFoundException;
+import ru.sberbank.edu.common.error.exception.UserAlreadyExistsException;
+import ru.sberbank.edu.common.error.exception.UserNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.sberbank.edu.ticketservice.profile.entity.User;

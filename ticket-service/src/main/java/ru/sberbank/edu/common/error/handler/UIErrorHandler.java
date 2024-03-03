@@ -1,4 +1,4 @@
-package ru.sberbank.edu.common.error;
+package ru.sberbank.edu.common.error.handler;
 
 import java.util.Date;
 
@@ -10,6 +10,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import ru.sberbank.edu.common.error.ServiceError;
+import ru.sberbank.edu.common.error.exception.ActionNotAllowException;
+import ru.sberbank.edu.common.error.exception.TicketNotFoundException;
+import ru.sberbank.edu.common.error.exception.UserNotFoundException;
 
 @ControllerAdvice(annotations = Controller.class)
 @Slf4j
