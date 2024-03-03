@@ -11,9 +11,8 @@ import ru.sberbank.edu.ticketservice.profile.entity.User;
 import ru.sberbank.edu.ticketservice.profile.mapper.UserProfileMapper;
 import ru.sberbank.edu.ticketservice.profile.enums.UserRole;
 import ru.sberbank.edu.ticketservice.profile.repository.UserRepository;
-import ru.sberbank.edu.common.error.UserNotFoundException;
+import ru.sberbank.edu.common.error.exception.UserNotFoundException;
 import ru.sberbank.edu.ticketservice.security.details.AppUserPrincipal;
-import ru.sberbank.edu.ticketservice.ticket.dto.ShortViewTicketDto;
 
 import java.util.List;
 import java.util.Optional;

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.sberbank.edu.common.error.ActionNotAllowException;
+import ru.sberbank.edu.common.error.exception.ActionNotAllowException;
 import ru.sberbank.edu.ticketservice.profile.dto.ProfileDto;
 import ru.sberbank.edu.ticketservice.profile.entity.User;
 import ru.sberbank.edu.ticketservice.profile.enums.UserRole;

@@ -1,4 +1,4 @@
-package ru.sberbank.edu.common.error;
+package ru.sberbank.edu.common.error.handler;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -8,6 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
+import ru.sberbank.edu.common.error.ServiceError;
+import ru.sberbank.edu.common.error.exception.ActionNotAllowException;
+import ru.sberbank.edu.common.error.exception.TicketNotFoundException;
+import ru.sberbank.edu.common.error.exception.UserNotFoundException;
 
 import java.util.Date;
 
