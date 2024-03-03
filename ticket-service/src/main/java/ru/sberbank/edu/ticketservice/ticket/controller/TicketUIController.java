@@ -61,7 +61,6 @@ public class TicketUIController {
      * @return представление информации о тикете
      */
     @GetMapping("/{id}")
-    //TODO Добавить обработку исключений
     public String showFullTicketInfo(@PathVariable Long id, Model model,
                                  @AuthenticationPrincipal UserDetails currentUser) {
         Ticket ticket = ticketService.getTicketInfo(id);
@@ -109,7 +108,6 @@ public class TicketUIController {
      * @return страницу со списком всех тикетов
      */
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
     public String createTicket(@ModelAttribute("createTicketDto") @Valid CreateTicketDto createTicketDto,
                                BindingResult bindingResult,
                                @AuthenticationPrincipal UserDetails userDetails,
@@ -135,7 +133,6 @@ public class TicketUIController {
      * @return страница со списком всех тикетов
      */
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
     public String deleteTicket(@PathVariable Long id) {
         ticketService.deleteTicket(id);
         return "redirect:/dashboard";
@@ -180,7 +177,6 @@ public class TicketUIController {
      * @return
      */
     @PatchMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
     public String editTicket(@ModelAttribute("ticket") @Valid EditTicketDto editTicketDto,
                              BindingResult bindingResult,
                              Model model) {
