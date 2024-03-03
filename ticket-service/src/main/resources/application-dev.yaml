@@ -48,6 +48,16 @@ spring:
       port: 6379
       database: 1
 
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:29092
+    producer:
+      bootstrap-servers: localhost:29092
+    topic-1: topic-1
+    topic-2: topic-2
+    bootstrap-servers: localhost:29092
+
+
 
 ticket:
   code: SHD

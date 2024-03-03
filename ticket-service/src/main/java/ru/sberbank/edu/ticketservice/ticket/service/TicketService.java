@@ -12,6 +12,7 @@ import ru.sberbank.edu.common.AuthenticationFacade;
 import ru.sberbank.edu.common.aspect.ToLog;
 import ru.sberbank.edu.common.error.exception.ActionNotAllowException;
 import ru.sberbank.edu.common.error.exception.TicketNotFoundException;
+import ru.sberbank.edu.ticketservice.kafka.KafkaCreateTicketNoticeService;
 import ru.sberbank.edu.ticketservice.profile.entity.User;
 import ru.sberbank.edu.ticketservice.profile.enums.UserRole;
 import ru.sberbank.edu.ticketservice.profile.service.UserService;
@@ -41,6 +42,7 @@ public class TicketService {
     private final UserService userService;
     private final CreateTicketMapper createTicketMapper;
     private final AuthenticationFacade authenticationFacade;
+    private final KafkaCreateTicketNoticeService kafkaCreateTicketNoticeService;
 
     @Value("${ticket.SLA.days}")
     private Long slaDays;
@@ -186,8 +188,10 @@ public class TicketService {
         /*ticket.setRequester(requester);
         ticket.setManager(manager);*/
         ticket.setStatus(TicketStatus.valueOf(startedStatus));
+        ticketRepository.save(ticket);
+        kafkaCreateTicketNoticeService.sendCreatedTicketWithCallback(ticket);
 
-        return ticketRepository.save(ticket);
+        return ticket;
     }
 
     /**
