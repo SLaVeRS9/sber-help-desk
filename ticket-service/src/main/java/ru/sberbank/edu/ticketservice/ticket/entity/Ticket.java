@@ -80,7 +80,7 @@ public class Ticket extends TimestampedEntity implements Serializable {
     //TODO доделать как отдельную сущность, в которую будет писаться переписка. С датами записи, кто, кому отвечал
     //TODO Чекнуть что List лучший вариант
     //TODO Работу с комментариями сделать как доп задачу
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "ticket_id")
     private List<Comment> comments = new ArrayList<>();
     
