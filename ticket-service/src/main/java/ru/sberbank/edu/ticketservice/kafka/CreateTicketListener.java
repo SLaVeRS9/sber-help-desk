@@ -13,7 +13,6 @@ public class CreateTicketListener {
     private String topic1;
 
     @KafkaListener(topics = "topic-1", groupId = "group1")
-    /*@ToLog*/
     void listener(String data) {
         log.info("Received message [{}] in group1", data);
     }

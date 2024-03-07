@@ -35,6 +35,11 @@ spring:
   thymeleaf:
     cache: off
 
+  cache:
+    type: redis
+    redis:
+      time-to-live: 6000
+
   data:
     redis:
       host: localhost
@@ -43,12 +48,12 @@ spring:
 
   kafka:
     consumer:
-      bootstrap-servers: localhost:29092
+      bootstrap-servers: host.docker.internal:19092
     producer:
-      bootstrap-servers: localhost:29092
+      bootstrap-servers: host.docker.internal:19092
     topic-1: topic-1
     topic-2: topic-2
-    bootstrap-servers: localhost:29092
+    bootstrap-servers: host.docker.internal:19092
 
 ticket:
   code: SHD
