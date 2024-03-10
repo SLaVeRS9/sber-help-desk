@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id: 6
+      author: slavers9
+      comment: "add estimation column into tickets"
+      changes:
+        - addColumn:
+            tableName: tickets
+            columns:
+              - column:
+                  name: estimation
+                  type: varchar(20)

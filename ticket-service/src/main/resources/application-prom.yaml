@@ -7,14 +7,14 @@ spring:
     open-in-view: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-    defer-datasource-initialization: true
+    defer-datasource-initialization: false
     properties:
         hibernate: 
             jdbc:
                 time_zone: UTC+03
-    generate-ddl: true
+    generate-ddl: false
     hibernate:
-        ddl-auto: create-drop
+        ddl-auto: none
   sql:
     init:
         mode: always
@@ -38,7 +38,7 @@ spring:
   cache:
     type: redis
     redis:
-      time-to-live: 6000
+      time-to-live: 10s
 
   data:
     redis:
@@ -54,6 +54,10 @@ spring:
     topic-1: topic-1
     topic-2: topic-2
     bootstrap-servers: host.docker.internal:19092
+
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog-master.yaml
 
 ticket:
   code: SHD

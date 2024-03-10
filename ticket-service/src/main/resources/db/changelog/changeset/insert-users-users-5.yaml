@@ -1,0 +1,64 @@
+databaseChangeLog:
+  - changeSet:
+      id: 5
+      author: slavers9
+      comment: "add users into users"
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  value: 'egorovamr'
+              - column:
+                  name: name
+                  value: 'Egorova Marina'
+              - column:
+                  name: password
+                  value: '$2a$12$9QtD97Z9A8cqiiI01/yNlO/WWDQHqi6FFCNy1/vi1Tl8yHzxg.MaK'
+              - column:
+                  name: role
+                  value: 'USER'
+              - column:
+                  name: date_of_birth
+                  value: '1993-08-11'
+              - column:
+                  name: age
+                  value: 35
+              - column:
+                  name: date_of_register
+                  value: '2024-02-20'
+              - column:
+                  name: gender
+                  value: 'FEMALE'
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  value: 'petrovii'
+              - column:
+                  name: name
+                  value: 'Ivan Ivanovich'
+              - column:
+                  name: password
+                  value: '$2a$10$w..OerA2VLNExkF9aQiHZOhejecn.dz31b/iOL.yPwkGQWSoNEMvS'
+              - column:
+                  name: role
+                  value: 'USER'
+              - column:
+                  name: date_of_birth
+                  value: '1992-05-21'
+              - column:
+                  name: age
+                  value: 32
+              - column:
+                  name: date_of_register
+                  value: '2024-02-18'
+              - column:
+                  name: gender
+                  value: 'MALE'
+      rollback:
+        - delete:
+            tableName: users
+            where: id in ('egorovamr', 'petrovii')

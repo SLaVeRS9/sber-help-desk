@@ -63,14 +63,12 @@ public class Ticket extends TimestampedEntity implements Serializable {
     @NotNull(message = "Status can't be empty")
     private TicketStatus status;
 
-    //TODO Добавить маску отображения
     //TODO сделать листенером на смену статуса
     @Column (name = "status_updated_at")
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime statusUpdatedAt;
 
-    //TODO Добавить маску отображения
     //TODO сделать вычисляемым полем
     @Column (name = "control_period_at")
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)

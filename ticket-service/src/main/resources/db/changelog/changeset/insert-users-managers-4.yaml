@@ -1,0 +1,64 @@
+databaseChangeLog:
+  - changeSet:
+      id: 4
+      author: slavers9
+      comment: "add managers into users"
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  value: 'ivanovap'
+              - column:
+                  name: name
+                  value: 'Ivanov Andrey'
+              - column:
+                  name: password
+                  value: '$2a$10$HI1EpUmJ63gTBIPc7RwhlujG70u2eiMIKp6Zq8aIlKbyfQZ9CAmsW'
+              - column:
+                  name: role
+                  value: 'MANAGER'
+              - column:
+                  name: date_of_birth
+                  value: '1986-02-22'
+              - column:
+                  name: age
+                  value: 38
+              - column:
+                  name: date_of_register
+                  value: '2024-01-29'
+              - column:
+                  name: gender
+                  value: 'MALE'
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  value: 'bakinasv'
+              - column:
+                  name: name
+                  value: 'Bakina Svetlana'
+              - column:
+                  name: password
+                  value: '$2a$10$BnmEUVOJ9Ly9WiGlBsu3dOP.0nDgdC0DZVZ9yhlwY6ARQgX4NTQVy'
+              - column:
+                  name: role
+                  value: 'MANAGER'
+              - column:
+                  name: date_of_birth
+                  value: '1990-05-21'
+              - column:
+                  name: age
+                  value: 34
+              - column:
+                  name: date_of_register
+                  value: '2024-02-15'
+              - column:
+                  name: gender
+                  value: 'FEMALE'
+      rollback:
+        - delete:
+            tableName: users
+            where: id in ('ivanovap', 'bakinasv')

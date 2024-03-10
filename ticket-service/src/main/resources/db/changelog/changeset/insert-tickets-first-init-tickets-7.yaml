@@ -1,0 +1,304 @@
+databaseChangeLog:
+  - changeSet:
+      id: 7
+      author: slavers9
+      comment: "insert init tickets into users"
+      changes:
+        - insert:
+            tableName: tickets
+            columns:
+              - column:
+                  name: id
+                  value: 1
+              - column:
+                  name: code
+                  value: 'SHD'
+              - column:
+                  name: title
+                  value: 'title1'
+              - column:
+                  name: description
+                  value: 'ticket 1 description'
+              - column:
+                  name: requester_id
+                  value: 'egorovamr'
+              - column:
+                  name: manager_id
+                  value: 'ivanovap'
+              - column:
+                  name: status
+                  value: 'NEW'
+              - column:
+                  name: status_updated_at
+                  value:
+              - column:
+                  name: control_period_at
+                  value:
+              - column:
+                  name: created_at
+                  value: '2024-01-26 12:52:00'
+              - column:
+                  name: updated_at
+                  value:
+        - insert:
+            tableName: tickets
+            columns:
+              - column:
+                  name: id
+                  value: 2
+              - column:
+                  name: code
+                  value: 'SHD'
+              - column:
+                  name: title
+                  value: 'title2'
+              - column:
+                  name: description
+                  value: 'ticket 2 description'
+              - column:
+                  name: requester_id
+                  value: 'egorovamr'
+              - column:
+                  name: manager_id
+                  value: 'bakinasv'
+              - column:
+                  name: status
+                  value: 'NEW'
+              - column:
+                  name: status_updated_at
+                  value:
+              - column:
+                  name: control_period_at
+                  value:
+              - column:
+                  name: created_at
+                  value: '2024-01-26 12:52:00'
+              - column:
+                  name: updated_at
+                  value:
+        - insert:
+            tableName: tickets
+            columns:
+              - column:
+                  name: id
+                  value: 3
+              - column:
+                  name: code
+                  value: 'SHD'
+              - column:
+                  name: title
+                  value: 'title3'
+              - column:
+                  name: description
+                  value: 'ticket 3 description'
+              - column:
+                  name: requester_id
+                  value: 'smirnovav'
+              - column:
+                  name: manager_id
+                  value: 'ivanovap'
+              - column:
+                  name: status
+                  value: 'NEW'
+              - column:
+                  name: status_updated_at
+                  value:
+              - column:
+                  name: control_period_at
+                  value:
+              - column:
+                  name: created_at
+                  value: '2024-01-26 12:52:00'
+              - column:
+                  name: updated_at
+                  value:
+        - insert:
+            tableName: tickets
+            columns:
+              - column:
+                  name: id
+                  value: 4
+              - column:
+                  name: code
+                  value: 'SHD'
+              - column:
+                  name: title
+                  value: 'title4'
+              - column:
+                  name: description
+                  value: 'ticket 4 description'
+              - column:
+                  name: requester_id
+                  value: 'ivanovap'
+              - column:
+                  name: manager_id
+                  value: 'bakinasv'
+              - column:
+                  name: status
+                  value: 'NEW'
+              - column:
+                  name: status_updated_at
+                  value:
+              - column:
+                  name: control_period_at
+                  value:
+              - column:
+                  name: created_at
+                  value: '2024-01-26 12:52:00'
+              - column:
+                  name: updated_at
+                  value:
+        - insert:
+            tableName: tickets
+            columns:
+              - column:
+                  name: id
+                  value: 5
+              - column:
+                  name: code
+                  value: 'SHD'
+              - column:
+                  name: title
+                  value: 'title5'
+              - column:
+                  name: description
+                  value: 'ticket 5 description'
+              - column:
+                  name: requester_id
+                  value: 'ivanovap'
+              - column:
+                  name: manager_id
+                  value: 'bakinasv'
+              - column:
+                  name: status
+                  value: 'IN_PROGRESS'
+              - column:
+                  name: status_updated_at
+                  value: '2024-01-28 12:30:00'
+              - column:
+                  name: control_period_at
+                  value: '2024-02-2 12:30:00'
+              - column:
+                  name: created_at
+                  value: '2024-01-27 11:00:00'
+              - column:
+                  name: updated_at
+                  value: '2024-01-28 12:30:00'
+        - insert:
+            tableName: tickets
+            columns:
+              - column:
+                  name: id
+                  value: 6
+              - column:
+                  name: code
+                  value: 'SHD'
+              - column:
+                  name: title
+                  value: 'title6'
+              - column:
+                  name: description
+                  value: 'ticket 6 description'
+              - column:
+                  name: requester_id
+                  value: 'smirnovav'
+              - column:
+                  name: manager_id
+                  value: 'bakinasv'
+              - column:
+                  name: status
+                  value: 'IN_PROGRESS'
+              - column:
+                  name: status_updated_at
+                  value: '2024-02-02 11:28:00'
+              - column:
+                  name: control_period_at
+                  value: '2024-02-07 11:28:00'
+              - column:
+                  name: created_at
+                  value: '2024-02-01 17:28:00'
+              - column:
+                  name: updated_at
+                  value: '2024-02-02 11:28:00'
+        - insert:
+            tableName: tickets
+            columns:
+              - column:
+                  name: id
+                  value: 7
+              - column:
+                  name: code
+                  value: 'SHD'
+              - column:
+                  name: title
+                  value: 'title7'
+              - column:
+                  name: description
+                  value: 'ticket 7 description'
+              - column:
+                  name: requester_id
+                  value: 'egorovamr'
+              - column:
+                  name: manager_id
+                  value: 'ivanovap'
+              - column:
+                  name: status
+                  value: 'CLOSED'
+              - column:
+                  name: status_updated_at
+                  value: '2024-01-25 17:25:00'
+              - column:
+                  name: control_period_at
+                  value: '2024-01-26 16:43:00'
+              - column:
+                  name: created_at
+                  value: '2024-01-20 14:14:00'
+              - column:
+                  name: updated_at
+                  value: '2024-01-25 17:25:00'
+              - column:
+                  name: estimation
+                  value: 'FOUR'
+        - insert:
+            tableName: tickets
+            columns:
+              - column:
+                  name: id
+                  value: 8
+              - column:
+                  name: code
+                  value: 'SHD'
+              - column:
+                  name: title
+                  value: 'title8'
+              - column:
+                  name: description
+                  value: 'ticket 8 description'
+              - column:
+                  name: requester_id
+                  value: 'smirnovav'
+              - column:
+                  name: manager_id
+                  value: 'bakinasv'
+              - column:
+                  name: status
+                  value: 'ARCHIVED'
+              - column:
+                  name: status_updated_at
+                  value: '2024-01-08 10:33:00'
+              - column:
+                  name: control_period_at
+                  value: '2024-01-08 11:00:00'
+              - column:
+                  name: created_at
+                  value: '2024-01-02 17:28:00'
+              - column:
+                  name: updated_at
+                  value: '2024-01-08 10:33:00'
+              - column:
+                  name: estimation
+                  value: 'FIVE'
+      rollback:
+        - delete:
+            tableName: tickets
+            where: id in (1, 2, 3, 4, 5, 6, 7, 8)
