@@ -6,7 +6,9 @@ spring:
     show-sql: true
     open-in-view: true
     database-platform: org.hibernate.dialect.H2Dialect
-    defer-datasource-initialization: true
+    defer-datasource-initialization: false
+    hibernate:
+      ddl-auto: none
 
     thymeleaf:
         prefix: classpath:/templates/
@@ -19,7 +21,7 @@ spring:
   cache:
     type: redis
     redis:
-      time-to-live: 6000
+      time-to-live: 10s
 
   datasource:
     url: jdbc:h2:mem:testdb
@@ -57,6 +59,9 @@ spring:
     topic-2: topic-2
     bootstrap-servers: localhost:29092
 
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog-master.yaml
 
 
 ticket:

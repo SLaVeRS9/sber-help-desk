@@ -1,0 +1,18 @@
+databaseChangeLog:
+  - include:
+        file: db/changelog/changeset/create-users-table-0.yaml
+  - include:
+        file: db/changelog/changeset/create-tickets-table-1.yaml
+  - include:
+        file: db/changelog/changeset/create-comments-table-2.yaml
+  - include:
+      file: db/changelog/changeset/insert-users-admins-3.yaml
+  - include:
+      file: db/changelog/changeset/insert-users-managers-4.yaml
+  - include:
+      file: db/changelog/changeset/insert-users-users-5.yaml
+  - include:
+      file: db/changelog/changeset/add-tickets-estimation-6.yaml
+  - include:
+      file: db/changelog/changeset/insert-tickets-first-init-tickets-7.yaml
+

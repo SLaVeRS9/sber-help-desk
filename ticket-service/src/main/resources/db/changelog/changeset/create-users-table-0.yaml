@@ -1,0 +1,43 @@
+databaseChangeLog:
+  - changeSet:
+      id: 0
+      author: slavers9
+      comment: "create table for users"
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: varchar(50)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(50)
+                  constraints:
+                      unique: true
+                      nullable: false
+              - column:
+                  name: password
+                  type: varchar(512)
+                  constraints:
+                      nullable: false
+              - column:
+                  name: role
+                  type: varchar(50)
+              - column:
+                  name: date_of_birth
+                  type: date
+              - column:
+                 name: age
+                 type: int
+              - column:
+                 name: date_of_register
+                 type: date
+                 constraints:
+                     nullable: false
+              - column:
+                 name: gender
+                 type: varchar(20)

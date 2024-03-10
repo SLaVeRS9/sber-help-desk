@@ -1,0 +1,64 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3
+      author: slavers9
+      comment: "add admins into users"
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  value: 'smirnovav'
+              - column:
+                  name: name
+                  value: 'Smirnov Alexey'
+              - column:
+                  name: password
+                  value: '$2a$12$HHSybys2IZOGkIev4I0nuOYQkNvtjVamreLkz8iRazn0jHABlrsT6'
+              - column:
+                  name: role
+                  value: 'ADMIN'
+              - column:
+                  name: date_of_birth
+                  value: '1980-01-26'
+              - column:
+                  name: age
+                  value: 44
+              - column:
+                  name: date_of_register
+                  value: '2024-01-26'
+              - column:
+                  name: gender
+                  value: 'MALE'
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  value: 'balagurovaoo'
+              - column:
+                  name: name
+                  value: 'Olga Olegovna'
+              - column:
+                  name: password
+                  value: '$2a$10$WjqoEbr8xC.xnOtL5/4L0erAZbicWFHvexmu9iD84Ze5qprxo6d6O'
+              - column:
+                  name: role
+                  value: 'ADMIN'
+              - column:
+                  name: date_of_birth
+                  value: '1985-01-26'
+              - column:
+                  name: age
+                  value: 39
+              - column:
+                  name: date_of_register
+                  value: '2024-01-20'
+              - column:
+                  name: gender
+                  value: 'FEMALE'
+      rollback:
+        - delete:
+            tableName: users
+            where: id in ('smirnovav', 'balagurovaoo')
