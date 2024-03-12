@@ -1,5 +1,8 @@
 package ru.sberbank.edu.ticketservice.ticket.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.sberbank.edu.ticketservice.ticket.entity.Ticket;
@@ -17,6 +20,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping(path = "/api/tickets", produces = "application/json")
 @AllArgsConstructor
+@Tag(name="Tickets", description="Manage tickets")
 public class TicketController {
     private final TicketService ticketService;
     private final FullViewTicketMapper fullViewTicketMapper;
@@ -28,6 +32,10 @@ public class TicketController {
      * @return список тикетов в кратком содержании
      */
     @GetMapping("/shortView/all")
+    @Operation(
+            summary = "Get all tickets in short view",
+            description = "You can get all tickets in short form"
+    )
     public List<ShortViewTicketDto> getAllTicketsInShortView() {
 
         List<Ticket> ticketsList = ticketService.getAllTickets();
@@ -42,6 +50,10 @@ public class TicketController {
      * @return список тикетов в полном содержании
      */
     @GetMapping("/fullView/all")
+    @Operation(
+            summary = "Get all tickets in full view",
+            description = "You can get all tickets in full form"
+    )
     public List<FullViewTicketDto> getAllTicketsFullView() {
         List<Ticket> ticketsList = ticketService.getAllTickets();
 
@@ -58,10 +70,20 @@ public class TicketController {
      * @return список тикетов от offset до limit
      */
     @GetMapping("/shortView/{userId}/page")
+    @Operation(
+            summary = "Get user tickets from-to in short view",
+            description = "You can get all user tickets in short form from-to"
+    )
     public List<ShortViewTicketDto> getUserTicketsWithPagination(
-            @PathVariable("userId") String userId,
-            @RequestParam(required = false, defaultValue = "0") Integer offset,
-            @RequestParam(required = false, defaultValue = "1") Integer limit) {
+            @PathVariable("userId")
+            @Parameter(description = "User id")
+            String userId,
+            @RequestParam(required = false, defaultValue = "0")
+            @Parameter(description = "Start position")
+            Integer offset,
+            @RequestParam(required = false, defaultValue = "1")
+            @Parameter(description = "Count from start position")
+            Integer limit) {
 
         return ticketService.getUserTicketsFullView(userId, offset, limit)
                 .stream()
@@ -75,7 +97,14 @@ public class TicketController {
      * @return список тикетов пользователя в краткой форме
      */
     @GetMapping("/shortView/{userId}")
-    public List<ShortViewTicketDto> getUserTickets(@PathVariable("userId") String userId) {
+    @Operation(
+            summary = "Get user tickets in short view",
+            description = "You can get all user tickets in short form"
+    )
+    public List<ShortViewTicketDto> getUserTickets(
+            @PathVariable("userId")
+            @Parameter(description = "User id")
+            String userId) {
         List<Ticket> ticketList = ticketService.getUserTickets(userId);
         return ticketList.stream()
                 .map(shortViewTicketMapper::ticketToShortViewTicketDto)
@@ -83,12 +112,19 @@ public class TicketController {
     }
 
     /**
-     * Получить информация по тикету в полной форме
+     * Получить информацию по тикету в полной форме
      * @param ticketId id тикета
      * @return тикет в полной форме
      */
     @GetMapping("/fullView/{ticketId}")
-    public FullViewTicketDto getTicketById(@PathVariable("ticketId") Long ticketId) {
+    @Operation(
+            summary = "Get ticket info in full view",
+            description = "You can get info about ticket in full view by his id"
+    )
+    public FullViewTicketDto getTicketById(
+            @PathVariable("ticketId")
+            @Parameter(description = "Ticket id")
+            Long ticketId) {
         return fullViewTicketMapper.ticketToFullViewTicketDto(ticketService.getTicketInfo(ticketId));
     }
 

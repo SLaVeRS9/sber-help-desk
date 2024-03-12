@@ -178,15 +178,6 @@ public class TicketService {
             throw new ActionNotAllowException(TICKET_CREATE_ALLOW_EXCEPTION);
         }
 
-
-        /*User requester = userService.getUserById(requesterId);
-
-        String managerId = ticket.getManagerId();
-        User manager = userService.getUserById(managerId);*/
-
-        /*Ticket ticket = createTicketMapper.createTicketDtoToTicket(createTicketDto);*/
-        /*ticket.setRequester(requester);
-        ticket.setManager(manager);*/
         ticket.setStatus(TicketStatus.valueOf(startedStatus));
         ticketRepository.save(ticket);
         kafkaCreateTicketNoticeService.sendCreatedTicketWithCallback(ticket);
