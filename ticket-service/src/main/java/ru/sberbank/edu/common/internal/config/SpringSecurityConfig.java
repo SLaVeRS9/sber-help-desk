@@ -30,6 +30,8 @@ public class SpringSecurityConfig {
             .authorizeHttpRequests(authorize -> authorize
                     .dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.ERROR).permitAll()
                     .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                    .requestMatchers("/swagger-ui/**").permitAll()
+                    .requestMatchers("/v3/api-docs/**").permitAll()
                     .requestMatchers("/h2-console/**").permitAll()
                     .requestMatchers("/error/**").permitAll()
                     .requestMatchers("/auth/**").permitAll()
