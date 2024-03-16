@@ -44,24 +44,16 @@ Content-Type: application/json
 }
 
 ###Создание тикета по id
-POST http://localhost:8082/api/tickets
+POST http://localhost:8083/api/tickets
 Authorization: Basic smirnovav 123456
 Accept: application/json
 Content-Type: application/json
 
 {
-    "id": 7,
-    "code": "SHD-",
-    "title": "titleNedtssssssqq",
+    "code": "PHD",
+    "title": "NEW_PHD_TASK",
     "description": "ticket N very very very very very long description",
-    "requesterId": "smirnovav",
-    "managerId": "bakinasv",
-    "status": "IN_PROGRESS",
-    "createdAt": "2024-01-27T12:30:00",
-    "statusUpdatedAt": "2024-01-28T11:00:00",
-    "controlPeriodAt": null,
-    "comments": [],
-    "estimation": null
+    "managerId": "bakinasv"
 }
 
 ###Установить менеджера в тикет

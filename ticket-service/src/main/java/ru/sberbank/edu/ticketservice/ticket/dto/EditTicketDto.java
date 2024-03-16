@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import ru.sberbank.edu.ticketservice.comment.Comment;
 import ru.sberbank.edu.ticketservice.ticket.enums.Estimation;
 import ru.sberbank.edu.ticketservice.ticket.enums.TicketStatus;
 
@@ -48,8 +47,6 @@ public class EditTicketDto {
     private LocalDateTime statusUpdatedAt;
 
     private LocalDateTime controlPeriodAt;
-
-    private List<Comment> comments;
 
     private Estimation estimation;
 }

@@ -15,6 +15,8 @@ import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 
+import java.time.Duration;
+
 @Configuration
 @EnableCaching
 public class RedisCashConfig implements CachingConfigurer {
@@ -43,6 +45,7 @@ public class RedisCashConfig implements CachingConfigurer {
     @Bean
     public RedisCacheConfiguration cacheConfiguration() {
         return RedisCacheConfiguration.defaultCacheConfig()
+                .entryTtl(Duration.ofSeconds(30))
                 .serializeValuesWith((RedisSerializationContext
                         .SerializationPair
                         .fromSerializer(new GenericJackson2JsonRedisSerializer())));

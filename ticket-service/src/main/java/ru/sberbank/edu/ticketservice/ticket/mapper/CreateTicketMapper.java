@@ -1,6 +1,8 @@
 package ru.sberbank.edu.ticketservice.ticket.mapper;
 
 import org.mapstruct.*;
+import org.springframework.security.core.userdetails.UserDetails;
+import ru.sberbank.edu.ticketservice.profile.entity.User;
 import ru.sberbank.edu.ticketservice.profile.mapper.UserProfileMapper;
 import ru.sberbank.edu.ticketservice.ticket.entity.Ticket;
 import ru.sberbank.edu.ticketservice.ticket.dto.CreateTicketDto;
@@ -20,8 +22,7 @@ public interface CreateTicketMapper {
      * @param ticket - entity ticket
      * @return возвращает объект dto
      */
-    @Mapping(source = "requester.id", target = "requesterId")
-    @Mapping(source = "manager.id", target = "managerId")
+    @Mapping(source = "ticket.manager", target = "managerDto")
     CreateTicketDto ticketToCreateTicketDto(Ticket ticket);
 
     /**
@@ -29,7 +30,6 @@ public interface CreateTicketMapper {
      * @param createTicketDto - dto CreateTicketDto
      * @return возвращает объект entity
      */
-    @Mapping(source = "requesterId", target = "requester.id")
-    @Mapping(source = "managerId", target = "manager.id")
+    @Mapping(source = "createTicketDto.managerDto", target = "manager")
     Ticket createTicketDtoToTicket(CreateTicketDto createTicketDto);
 }

@@ -60,7 +60,7 @@ public class TicketService {
     @ToLog
     public List<Ticket> getAllTickets() {
         List<Ticket> ticketList = ticketRepository.findAll();
-        ticketList.forEach(ticket -> ticket.setComments(new ArrayList<>(ticket.getComments())));
+        //ticketList.forEach(ticket -> ticket.setComments(new ArrayList<>(ticket.getComments())));
 
         return ticketList;
     }
@@ -76,7 +76,7 @@ public class TicketService {
     public Ticket getTicketInfo(Long id) {
         Ticket ticket = ticketRepository.getTicketById(id)
                 .orElseThrow(() -> new TicketNotFoundException(TICKET_NOT_FOUND_EXCEPTION + id));
-        ticket.setComments(new ArrayList<>(ticket.getComments()));
+        //ticket.setComments(new ArrayList<>(ticket.getComments()));
 
         return ticket;
     }
@@ -86,7 +86,7 @@ public class TicketService {
     @ToLog
     public List<Ticket> getUserTicketsFullView(String userId, Integer offset, Integer limit) {
         List<Ticket> ticketList = ticketRepository.getTicketsByRequesterId(userId, PageRequest.of(offset, limit));
-        ticketList.forEach(ticket -> ticket.setComments(new ArrayList<>(ticket.getComments())));
+        //ticketList.forEach(ticket -> ticket.setComments(new ArrayList<>(ticket.getComments())));
 
         return ticketList;
     }
@@ -96,7 +96,7 @@ public class TicketService {
     @ToLog
     public List<Ticket> getUserTickets(String userId) {
         List<Ticket> ticketList = ticketRepository.getTicketsByRequesterId(userId);
-        ticketList.forEach(ticket -> ticket.setComments(new ArrayList<>(ticket.getComments())));
+        //ticketList.forEach(ticket -> ticket.setComments(new ArrayList<>(ticket.getComments())));
 
         return ticketList;
     }
@@ -180,7 +180,7 @@ public class TicketService {
 
         ticket.setStatus(TicketStatus.valueOf(startedStatus));
         ticketRepository.save(ticket);
-        kafkaCreateTicketNoticeService.sendCreatedTicketWithCallback(ticket);
+        //kafkaCreateTicketNoticeService.sendCreatedTicketWithCallback(ticket);
 
         return ticket;
     }

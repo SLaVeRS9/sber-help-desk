@@ -4,7 +4,11 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import ru.sberbank.edu.ticketservice.profile.entity.User;
+import ru.sberbank.edu.ticketservice.profile.service.UserService;
 import ru.sberbank.edu.ticketservice.ticket.entity.Ticket;
 import ru.sberbank.edu.ticketservice.ticket.dto.CreateTicketDto;
 import ru.sberbank.edu.ticketservice.ticket.dto.FullViewTicketDto;
@@ -26,12 +30,13 @@ public class TicketController {
     private final FullViewTicketMapper fullViewTicketMapper;
     private final ShortViewTicketMapper shortViewTicketMapper;
     private final CreateTicketMapper createTicketMapper;
+    private final UserService userService;
 
     /**
      * Получить все тикеты в кратком содержании
      * @return список тикетов в кратком содержании
      */
-    @GetMapping("/shortView/all")
+    @GetMapping("/all/shortView")
     @Operation(
             summary = "Get all tickets in short view",
             description = "You can get all tickets in short form"
@@ -49,7 +54,7 @@ public class TicketController {
      * Получить все тикеты в полном содержании
      * @return список тикетов в полном содержании
      */
-    @GetMapping("/fullView/all")
+    @GetMapping("/all/fullView")
     @Operation(
             summary = "Get all tickets in full view",
             description = "You can get all tickets in full form"
@@ -69,7 +74,7 @@ public class TicketController {
      * @param limit порядковый номер последнего тикета от всех тикетов пользователя
      * @return список тикетов от offset до limit
      */
-    @GetMapping("/shortView/{userId}/page")
+    @GetMapping("/{userId}/page/shortView")
     @Operation(
             summary = "Get user tickets from-to in short view",
             description = "You can get all user tickets in short form from-to"
@@ -96,7 +101,7 @@ public class TicketController {
      * @param userId id пользователя
      * @return список тикетов пользователя в краткой форме
      */
-    @GetMapping("/shortView/{userId}")
+    @GetMapping("/{userId}/ticket/shortView")
     @Operation(
             summary = "Get user tickets in short view",
             description = "You can get all user tickets in short form"
@@ -116,7 +121,7 @@ public class TicketController {
      * @param ticketId id тикета
      * @return тикет в полной форме
      */
-    @GetMapping("/fullView/{ticketId}")
+    @GetMapping("/{ticketId}/fullView")
     @Operation(
             summary = "Get ticket info in full view",
             description = "You can get info about ticket in full view by his id"
@@ -128,10 +133,19 @@ public class TicketController {
         return fullViewTicketMapper.ticketToFullViewTicketDto(ticketService.getTicketInfo(ticketId));
     }
 
-
+    /**
+     * Создать тикет
+     * @param createTicketDto id тикета
+     * @return тикет в полной форме
+     */
     @PostMapping()
-    public FullViewTicketDto createTicket(@RequestBody CreateTicketDto createTicketDto) {
+    public FullViewTicketDto createTicket(@RequestBody CreateTicketDto createTicketDto,
+                                          @AuthenticationPrincipal UserDetails userDetails) {
+        var currentUserId = userDetails.getUsername();
+        User requester = userService.getUserById(currentUserId);
+
         Ticket ticket = createTicketMapper.createTicketDtoToTicket(createTicketDto);
+        ticket.setRequester(requester);
         ticket = ticketService.createTicket(ticket);
         return fullViewTicketMapper.ticketToFullViewTicketDto(ticket);
     }

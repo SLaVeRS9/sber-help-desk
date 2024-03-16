@@ -29,15 +29,15 @@
             <span style="color: firebrick" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"/>
             <br>
             <label>Set up the manager:</label>
-            <select th:field="*{managerId}">
+            <select th:field="*{managerDto.id}">
                 <option th:each="manager : ${managers}"
                         th:value="${manager.id}"
                         th:text="${manager.name}">Manager name
                 </option>
             </select>
-            <br>
+            <!--<br>
             <span th:text="'Requester: ' + ${currentUserDto.name}">Requester</span>
-            <input type="text" th:field="*{requesterId}" hidden="hidden">
+            <input type="text" th:field="*{requesterId}" hidden="hidden">-->
             <br>
             <br>
             <input class="ticket-buttons" type="submit" id="submit" value="Add ticket">

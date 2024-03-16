@@ -3,7 +3,6 @@ package ru.sberbank.edu.ticketservice.ticket.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import ru.sberbank.edu.ticketservice.comment.Comment;
 import ru.sberbank.edu.ticketservice.ticket.enums.Estimation;
 import ru.sberbank.edu.ticketservice.ticket.enums.TicketStatus;
 
@@ -39,8 +38,6 @@ public class EditUserByAdminDto {
     private LocalDateTime statusUpdatedAt;
 
     private LocalDateTime controlPeriodAt;
-
-    private List<Comment> comments;
 
     private Estimation estimation;
 }
