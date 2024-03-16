@@ -13,7 +13,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import ru.sberbank.edu.common.model.TimestampedEntity;
-import ru.sberbank.edu.ticketservice.comment.Comment;
+//import ru.sberbank.edu.ticketservice.comment.Comment;
 import ru.sberbank.edu.ticketservice.profile.entity.User;
 import ru.sberbank.edu.ticketservice.ticket.enums.Estimation;
 import ru.sberbank.edu.ticketservice.ticket.enums.TicketStatus;
@@ -78,9 +78,8 @@ public class Ticket extends TimestampedEntity implements Serializable {
     //TODO доделать как отдельную сущность, в которую будет писаться переписка. С датами записи, кто, кому отвечал
     //TODO Чекнуть что List лучший вариант
     //TODO Работу с комментариями сделать как доп задачу
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "ticket_id")
-    private List<Comment> comments = new ArrayList<>();
+    /*@OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments;*/
     
     @Enumerated(EnumType.STRING)
     @Column (name = "estimation")

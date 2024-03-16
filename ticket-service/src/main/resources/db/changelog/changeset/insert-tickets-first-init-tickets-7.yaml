@@ -8,9 +8,6 @@ databaseChangeLog:
             tableName: tickets
             columns:
               - column:
-                  name: id
-                  value: 1
-              - column:
                   name: code
                   value: 'SHD'
               - column:
@@ -43,9 +40,6 @@ databaseChangeLog:
         - insert:
             tableName: tickets
             columns:
-              - column:
-                  name: id
-                  value: 2
               - column:
                   name: code
                   value: 'SHD'
@@ -80,9 +74,6 @@ databaseChangeLog:
             tableName: tickets
             columns:
               - column:
-                  name: id
-                  value: 3
-              - column:
                   name: code
                   value: 'SHD'
               - column:
@@ -115,9 +106,6 @@ databaseChangeLog:
         - insert:
             tableName: tickets
             columns:
-              - column:
-                  name: id
-                  value: 4
               - column:
                   name: code
                   value: 'SHD'
@@ -152,9 +140,6 @@ databaseChangeLog:
             tableName: tickets
             columns:
               - column:
-                  name: id
-                  value: 5
-              - column:
                   name: code
                   value: 'SHD'
               - column:
@@ -188,9 +173,6 @@ databaseChangeLog:
             tableName: tickets
             columns:
               - column:
-                  name: id
-                  value: 6
-              - column:
                   name: code
                   value: 'SHD'
               - column:
@@ -223,9 +205,6 @@ databaseChangeLog:
         - insert:
             tableName: tickets
             columns:
-              - column:
-                  name: id
-                  value: 7
               - column:
                   name: code
                   value: 'SHD'
@@ -262,9 +241,6 @@ databaseChangeLog:
         - insert:
             tableName: tickets
             columns:
-              - column:
-                  name: id
-                  value: 8
               - column:
                   name: code
                   value: 'SHD'

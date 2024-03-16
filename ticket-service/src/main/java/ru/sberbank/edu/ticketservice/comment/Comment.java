@@ -1,11 +1,13 @@
-package ru.sberbank.edu.ticketservice.comment;
+/*package ru.sberbank.edu.ticketservice.comment;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.sberbank.edu.ticketservice.ticket.entity.Ticket;
 
 import java.io.Serializable;
 
@@ -26,4 +28,8 @@ public class Comment implements Serializable {
     @Size(max = 2048, message = "Text size must be less then 2048 symbols")
     private String text;
 
-}
+    @ManyToOne(fetch = FetchType.EAGER)
+    @NotNull
+    private Ticket ticket;
+
+}*/

@@ -8,7 +8,7 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     defer-datasource-initialization: false
     hibernate:
-      ddl-auto: none
+      ddl-auto: validate
 
     thymeleaf:
         prefix: classpath:/templates/
