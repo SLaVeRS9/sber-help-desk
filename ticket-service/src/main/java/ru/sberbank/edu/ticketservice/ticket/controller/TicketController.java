@@ -90,7 +90,7 @@ public class TicketController {
             @Parameter(description = "Count from start position")
             Integer limit) {
 
-        return ticketService.getUserTicketsFullView(userId, offset, limit)
+        return ticketService.getUserTicketsWithPagination(userId, offset, limit)
                 .stream()
                 .map(shortViewTicketMapper::ticketToShortViewTicketDto)
                 .toList();
