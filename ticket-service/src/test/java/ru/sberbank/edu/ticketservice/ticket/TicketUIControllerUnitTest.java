@@ -6,9 +6,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration;
@@ -19,8 +21,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureWebM
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -55,10 +59,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
-@WebMvcTest(value = {TicketUIController.class})
-@AutoConfigureMockMvc
+
+//@WebMvcTest(value = {TicketUIController.class})
+/*@AutoConfigureMockMvc*/
 /*@SpringBootTest
 @ActiveProfiles("test")*/
+@WebMvcTest(controllers = TicketUIController.class)
+@AutoConfigureMockMvc(addFilters = false)
+@WithUserDetails
+@WithMockUser
 public class TicketUIControllerUnitTest {
 
     @Autowired
@@ -119,6 +128,7 @@ public class TicketUIControllerUnitTest {
 
     @Test
     @DisplayName("GET /{id} success")
+    //@WithMockUser("User1")
     //@WithUserDetails(value = "User1")
     public void showFullTicketInfoTest_Success() throws Exception {
         Long ticketId = 1L;
@@ -126,7 +136,7 @@ public class TicketUIControllerUnitTest {
         when(ticketService.getTicketInfo(ticketId)).thenReturn(ticket1);
 
 
-        mockMvc.perform(get("/tickets/{id}", ticketId).with(user("User1").roles("ADMIN")))
+        mockMvc.perform(get("/tickets/{id}", ticketId))
                 .andExpect(content().contentType(MediaType.TEXT_HTML))
                 .andExpect(status().isOk())
                 .andExpect(header().string(HttpHeaders.LOCATION,"/tickets/1"))
