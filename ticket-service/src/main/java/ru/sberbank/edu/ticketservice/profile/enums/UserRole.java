@@ -1,7 +1,11 @@
 package ru.sberbank.edu.ticketservice.profile.enums;
 
 public enum UserRole {
-    ADMIN,
-    MANAGER,
-    USER;
+    ADMIN("ROLE_ADMIN"),
+    MANAGER("ROLE_MANAGER"),
+    USER("ROLE_USER");
+
+
+    UserRole(String roleAdmin) {
+    }
 }

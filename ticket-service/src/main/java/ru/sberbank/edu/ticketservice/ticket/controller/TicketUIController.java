@@ -1,5 +1,6 @@
 package ru.sberbank.edu.ticketservice.ticket.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +16,7 @@ import ru.sberbank.edu.ticketservice.profile.entity.User;
 import ru.sberbank.edu.ticketservice.profile.enums.UserRole;
 import ru.sberbank.edu.ticketservice.profile.mapper.UserProfileMapper;
 import ru.sberbank.edu.ticketservice.profile.service.UserService;
+import ru.sberbank.edu.ticketservice.ticket.dto.FullViewTicketDto;
 import ru.sberbank.edu.ticketservice.ticket.entity.Ticket;
 import ru.sberbank.edu.ticketservice.ticket.dto.CreateTicketDto;
 import ru.sberbank.edu.ticketservice.ticket.dto.EditTicketDto;
@@ -190,6 +192,15 @@ public class TicketUIController {
         ticketService.editTicket(ticket);
 
         return "redirect:/tickets/"+editTicketDto.getId();
+    }
+
+    @PatchMapping("/{id}/assign-on-me")
+    public String assignTicketOnManager(@PathVariable Long id) {
+
+        Ticket ticket = ticketService.assignManagerOnTicket(id);
+        System.out.println(ticket);
+
+        return "redirect:/tickets/"+id;
     }
 
     /**

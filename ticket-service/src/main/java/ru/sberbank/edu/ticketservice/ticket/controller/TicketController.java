@@ -10,11 +10,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import ru.sberbank.edu.ticketservice.profile.entity.User;
 import ru.sberbank.edu.ticketservice.profile.service.UserService;
+import ru.sberbank.edu.ticketservice.ticket.dto.EditTicketDto;
 import ru.sberbank.edu.ticketservice.ticket.entity.Ticket;
 import ru.sberbank.edu.ticketservice.ticket.dto.CreateTicketDto;
 import ru.sberbank.edu.ticketservice.ticket.dto.FullViewTicketDto;
 import ru.sberbank.edu.ticketservice.ticket.dto.ShortViewTicketDto;
 import ru.sberbank.edu.ticketservice.ticket.mapper.CreateTicketMapper;
+import ru.sberbank.edu.ticketservice.ticket.mapper.EditTicketMapper;
 import ru.sberbank.edu.ticketservice.ticket.mapper.FullViewTicketMapper;
 import ru.sberbank.edu.ticketservice.ticket.mapper.ShortViewTicketMapper;
 import ru.sberbank.edu.ticketservice.ticket.service.TicketService;
@@ -32,6 +34,7 @@ public class TicketController {
     private final FullViewTicketMapper fullViewTicketMapper;
     private final ShortViewTicketMapper shortViewTicketMapper;
     private final CreateTicketMapper createTicketMapper;
+    private final EditTicketMapper editTicketMapper;
     private final UserService userService;
 
     /**
@@ -92,7 +95,7 @@ public class TicketController {
             @Parameter(description = "Count from start position")
             Integer limit) {
 
-        return ticketService.getUserTicketsFullView(userId, offset, limit)
+        return ticketService.getUserTicketsWithPagination(userId, offset, limit)
                 .stream()
                 .map(shortViewTicketMapper::ticketToShortViewTicketDto)
                 .toList();
@@ -113,6 +116,7 @@ public class TicketController {
             @Parameter(description = "User id")
             String userId) {
         List<Ticket> ticketList = ticketService.getUserTickets(userId);
+
         return ticketList.stream()
                 .map(shortViewTicketMapper::ticketToShortViewTicketDto)
                 .toList();
@@ -132,6 +136,7 @@ public class TicketController {
             @PathVariable("ticketId")
             @Parameter(description = "Ticket id")
             Long ticketId) {
+
         return fullViewTicketMapper.ticketToFullViewTicketDto(ticketService.getTicketInfo(ticketId));
     }
 
@@ -141,6 +146,10 @@ public class TicketController {
      * @return тикет в полной форме
      */
     @PostMapping()
+    @Operation(
+            summary = "Create ticket",
+            description = "You can create ticket and get created one"
+    )
     public FullViewTicketDto createTicket(@RequestBody CreateTicketDto createTicketDto,
                                           @AuthenticationPrincipal UserDetails userDetails) {
         var currentUserId = userDetails.getUsername();
@@ -149,40 +158,76 @@ public class TicketController {
         Ticket ticket = createTicketMapper.createTicketDtoToTicket(createTicketDto);
         ticket.setRequester(requester);
         ticket = ticketService.createTicket(ticket);
+
         return fullViewTicketMapper.ticketToFullViewTicketDto(ticket);
     }
 
+    /**
+     * Удалить тикет
+     * @param id id тикета
+     */
     @DeleteMapping("/{id}")
+    @Operation(
+            summary = "Delete ticket",
+            description = "You can delete ticket"
+    )
     public void deleteTicket(@PathVariable Long id) {
         ticketService.deleteTicket(id);
     }
 
     /**
      * Изменить данные в тикете
-     * @param createTicketDto
-     * @param userDetails
+     * @param editTicketDto
+     * @param editTicketDto
      * @return
      */
-    /*@PatchMapping()
+    @PatchMapping()
     public FullViewTicketDto editTicket(@RequestBody EditTicketDto editTicketDto) {
-        ticketService.getTicketInfo(createTicketDto.)
-        Ticket ticket = createTicketMapper.createTicketDtoToTicket(createTicketDto)
-        return ticketService.editTicket(fullViewTicketDto);
-    }*/
+        Ticket edittedTicket = ticketService.getTicketInfo(editTicketDto.getId());
+        edittedTicket = editTicketMapper.editTicketDtoToTicket(editTicketDto, edittedTicket);
+        edittedTicket = ticketService.editTicket(edittedTicket);
 
+        return fullViewTicketMapper.ticketToFullViewTicketDto(edittedTicket);
+    }
 
-/**
-     *
-     * @param ticketId
-     * @param objectNode - userId and managerId in json params
-     * @return updated ticket
-     */
+    @PatchMapping("/{id}/assign-on-me")
+    @Operation(
+            summary = "Assign current manager on ticket",
+            description = "You can assign tickets on current manager"
+    )
+    public FullViewTicketDto assignTicketOnManager(@PathVariable Long id) {
 
-    /*@PatchMapping("/{id}/manager")
-    public FullViewTicketDto setManager(@PathVariable("id") Long ticketId,
-                                        @RequestBody ObjectNode objectNode) {
-        return ticketService.setManager(ticketId, objectNode);
-    }*/
+        Ticket assignedTicket = ticketService.assignManagerOnTicket(id);
+
+        return fullViewTicketMapper.ticketToFullViewTicketDto(assignedTicket);
+    }
+
+    @GetMapping("/on-me")
+    @Operation(
+            summary = "Get tickets on manager",
+            description = "You can get tickets assigned on manager"
+    )
+    public List<ShortViewTicketDto> getTicketsOnManager(@RequestParam String managerId) {
+        List<Ticket> ticketsOnManager = ticketService.getTicketsOnManager(managerId);
+
+        return ticketsOnManager.stream()
+                .map(shortViewTicketMapper::ticketToShortViewTicketDto)
+                .toList();
+    }
+
+    @GetMapping("/unassigned-tickets")
+    @Operation(
+            summary = "Get tickets without manager",
+            description = "You can get tickets unassigned on manager"
+    )
+    public List<ShortViewTicketDto> getUnassignedTickets() {
+        List<Ticket> unassignedTickets = ticketService.getUnassignedTickets();
+
+        return unassignedTickets.stream()
+                .map(shortViewTicketMapper::ticketToShortViewTicketDto)
+                .toList();
+    }
+
 
     /*@PatchMapping("/{id}/status")
     public FullViewTicketDto setStatus(@RequestBody String ticketStatus,
