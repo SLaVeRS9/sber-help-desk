@@ -5,7 +5,9 @@ import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.*;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.sberbank.edu.common.AuthenticationFacade;
@@ -195,6 +197,7 @@ public class TicketService {
             @CacheEvict(value = "Ticket", key = "#id"),
     })
     @ToLog
+    //@PreAuthorize("#userDetails.username == authentication.principal.username or hasRole('ROLE_ADMIN') ")
     public void deleteTicket(Long id) {
         Ticket ticket = getTicketInfo(id);
 

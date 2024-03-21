@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -22,10 +23,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(path = "/api/tickets", produces = "application/json")
+@RequestMapping(path = TicketController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @AllArgsConstructor
 @Tag(name="Tickets", description="Manage tickets")
 public class TicketController {
+    public static final String REST_URL = "/api/tickets";
     private final TicketService ticketService;
     private final FullViewTicketMapper fullViewTicketMapper;
     private final ShortViewTicketMapper shortViewTicketMapper;
@@ -150,21 +152,10 @@ public class TicketController {
         return fullViewTicketMapper.ticketToFullViewTicketDto(ticket);
     }
 
-
-
-
-
-
-    /*@DeleteMapping("/{id}")
-    public String deleteTicket(@PathVariable Long id,
-                               @AuthenticationPrincipal UserDetails userDetails) {
-        ticketService.deleteTicket(id, userDetails);
-        return "redirect:/dashboard";
-    }*/
-
-
-
-
+    @DeleteMapping("/{id}")
+    public void deleteTicket(@PathVariable Long id) {
+        ticketService.deleteTicket(id);
+    }
 
     /**
      * Изменить данные в тикете
@@ -187,13 +178,20 @@ public class TicketController {
      * @return updated ticket
      */
 
-    /*@PatchMapping("/{id}/edit/manager")
+    /*@PatchMapping("/{id}/manager")
     public FullViewTicketDto setManager(@PathVariable("id") Long ticketId,
                                         @RequestBody ObjectNode objectNode) {
         return ticketService.setManager(ticketId, objectNode);
     }*/
 
-    /*@PatchMapping("/{id}/edit/status")
+    /*@PatchMapping("/{id}/status")
+    public FullViewTicketDto setStatus(@RequestBody String ticketStatus,
+                                       @PathVariable("id") Long ticketId,
+                                       @AuthenticationPrincipal UserDetails userDetails) {
+        return ticketService.setStatus(ticketStatus, ticketId, userDetails);
+    }*/
+
+    /*@PatchMapping("/{id}/estimation")
     public FullViewTicketDto setStatus(@RequestBody String ticketStatus,
                                        @PathVariable("id") Long ticketId,
                                        @AuthenticationPrincipal UserDetails userDetails) {
