@@ -1,5 +1,6 @@
 package ru.sberbank.edu.ticketservice.ticket.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,9 +21,8 @@ import ru.sberbank.edu.ticketservice.profile.service.UserService;
 import ru.sberbank.edu.ticketservice.ticket.entity.Ticket;
 import ru.sberbank.edu.ticketservice.ticket.repository.TicketRepository;
 import ru.sberbank.edu.ticketservice.ticket.enums.TicketStatus;
-import ru.sberbank.edu.ticketservice.ticket.mapper.CreateTicketMapper;
-import ru.sberbank.edu.ticketservice.ticket.mapper.FullViewTicketMapper;
-import ru.sberbank.edu.ticketservice.ticket.mapper.ShortViewTicketMapper;
+
+import java.sql.SQLException;
 
 import java.util.List;
 
@@ -37,10 +37,10 @@ import static ru.sberbank.edu.common.error.ErrorMessages.*;
 @EnableCaching
 public class TicketService {
     private final TicketRepository ticketRepository;
-    private final FullViewTicketMapper fullViewTicketMapper;
-    private final ShortViewTicketMapper shortViewTicketMapper;
+    //private final FullViewTicketMapper fullViewTicketMapper;
+    //private final ShortViewTicketMapper shortViewTicketMapper;
     private final UserService userService;
-    private final CreateTicketMapper createTicketMapper;
+    //private final CreateTicketMapper createTicketMapper;
     private final AuthenticationFacade authenticationFacade;
     private final KafkaCreateTicketNoticeService kafkaCreateTicketNoticeService;
 
@@ -73,28 +73,22 @@ public class TicketService {
     @Cacheable(value = "Ticket", key = "#id")
     @ToLog
     public Ticket getTicketInfo(Long id) {
-        Ticket ticket = ticketRepository.getTicketById(id)
+        return ticketRepository.getTicketById(id)
                 .orElseThrow(() -> new TicketNotFoundException(TICKET_NOT_FOUND_EXCEPTION + id));
-
-        return ticket;
     }
 
     @Transactional(readOnly = true)
     @Cacheable(value = "TicketsPag", key = "#userId + #offset + #limit")
     @ToLog
     public List<Ticket> getUserTicketsWithPagination(String userId, Integer offset, Integer limit) {
-        List<Ticket> ticketList = ticketRepository.getTicketsByRequesterId(userId, PageRequest.of(offset, limit));
-
-        return ticketList;
+        return ticketRepository.getTicketsByRequesterId(userId, PageRequest.of(offset, limit));
     }
 
     @Cacheable(value = "UserTickets", key = "#userId")
     @Transactional(readOnly = true)
     @ToLog
     public List<Ticket> getUserTickets(String userId) {
-        List<Ticket> ticketList = ticketRepository.getTicketsByRequesterId(userId);
-
-        return ticketList;
+        return ticketRepository.getTicketsByRequesterId(userId);
     }
 
     /**
@@ -316,7 +310,7 @@ public class TicketService {
     }
 
     @ToLog
-     private boolean isCurrentUserTicket(Ticket ticket) {
+    private boolean isCurrentUserTicket(Ticket ticket) {
         Authentication authentication = authenticationFacade.getAuthentication();
         String currentUserId = authentication.getName();
         return ticket.getRequester().getId().equals(currentUserId);
