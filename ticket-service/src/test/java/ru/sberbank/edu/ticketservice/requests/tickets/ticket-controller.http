@@ -1,38 +1,34 @@
 ###Получение списка всех тикетов в короткой форме
-GET http://localhost:8082/api/tickets/shortViewList
-Authorization: Basic smirnovav 123456
+GET http://{{host}}/api/tickets/all/shortView
+Authorization: Basic {{admin_login}} {{admin_password}}
 
 ###Получение списка всех тикетов в полной форме
-GET http://localhost:8082/api/tickets/fullViewList
-Authorization: Basic smirnovav 123456
+GET http://{{host}}/api/tickets/all/fullView
+Authorization: Basic {{admin_login}} {{admin_password}}
 
 ###Получение списка всех тикетов конкретного юзера с пагинацией
-GET http://localhost:8082/api/tickets/user/pag/smirnovav?offset=0&limit=1
-Authorization: Basic smirnovav 123456
+GET http://{{host}}/api/tickets/smirnovav/page/shortView?offset=0&limit=1
+Authorization: Basic {{admin_login}} {{admin_password}}
 
 ###Получение списка всех тикетов конкретного юзера
-GET http://localhost:8082/api/tickets/user/smirnovav
-Authorization: Basic smirnovav 123456
+GET http://{{host}}/api/tickets/smirnovav/ticket/shortView/{{sds}}
+Authorization: Basic {{admin_login}} {{admin_password}}
 
-###
-GET http://localhost:8082/api/tickets
-Authorization: Basic smirnovav 123456
-
-###Получение тикета по id
-GET http://localhost:8082/api/tickets/5
-Authorization: Basic smirnovav 123456
+###Получение тикета по id полной формы
+GET http://{{host}}/api/tickets/4/fullView
+Authorization: Basic {{admin_login}} {{admin_password}}
 
 ###Редактирование тикета по id
-PATCH http://localhost:8082/api/tickets
-Authorization: Basic smirnovav 123456
+PATCH http://{{host}}/api/tickets
+Authorization: Basic {{admin_login}} {{admin_password}}
 Accept: application/json
 Content-Type: application/json
 
 {
   "id": 3,
-  "code": "SHD-",
-  "title": "HOHOHOHO",
-  "description": "HOHOHHO very very very very very long description",
+  "code": "SHD",
+  "title": "title3_EDITED",
+  "description": "NEW DESCRIPTION",
   "requesterId": "smirnovav",
   "managerId": "bakinasv",
   "status": "IN_PROGRESS",
@@ -44,21 +40,20 @@ Content-Type: application/json
 }
 
 ###Создание тикета по id
-POST http://localhost:8083/api/tickets
-Authorization: Basic smirnovav 123456
+POST http://{{host}}/api/tickets
+Authorization: Basic {{admin_login}} {{admin_password}}
 Accept: application/json
 Content-Type: application/json
 
 {
     "code": "PHD",
     "title": "NEW_PHD_TASK",
-    "description": "ticket N very very very very very long description",
-    "managerId": "bakinasv"
+    "description": "ticket N very very very very very long description"
 }
 
 ###Установить менеджера в тикет
-PATCH http://localhost:8082/api/tickets/5/edit/manager
-Authorization: Basic smirnovav 123456
+PATCH http://{{host}}/api/tickets/5/edit/manager
+Authorization: Basic {{admin_login}} {{admin_password}}
 Accept: application/json
 Content-Type: application/json
 
@@ -68,13 +63,13 @@ Content-Type: application/json
 }
 
 ###Удалить тикет админ
-DELETE http://localhost:8082/api/tickets/4
-Authorization: Basic smirnovav 123456
+DELETE http://{{host}}/api/tickets/1
+Authorization: Basic {{admin_login}} {{admin_password}}
 
 ###Удалить тикет не свой не админ
-DELETE http://localhost:8082/api/tickets/4
-Authorization: Basic ivanovap 123456
+DELETE http://{{host}}/api/tickets/4
+Authorization: Basic {{common_user_login}} {{common_user_password}}
 
 ###Удалить тикет свой не админ
-DELETE http://localhost:8082/api/tickets/2
-Authorization: Basic ivanovap 123456
+DELETE http://{{host}}/api/tickets/2
+Authorization: Basic {{admin_login}} {{admin_password}}

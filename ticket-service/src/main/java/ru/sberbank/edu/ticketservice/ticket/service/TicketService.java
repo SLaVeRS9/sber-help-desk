@@ -6,6 +6,7 @@ import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.*;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,7 @@ import ru.sberbank.edu.ticketservice.ticket.repository.TicketRepository;
 import ru.sberbank.edu.ticketservice.ticket.enums.TicketStatus;
 
 import java.sql.SQLException;
+
 import java.util.List;
 
 import static ru.sberbank.edu.common.error.ErrorMessages.*;
@@ -166,7 +168,12 @@ public class TicketService {
             throw new ActionNotAllowException(TICKET_CREATE_ALLOW_EXCEPTION);
         }
 
-        ticket.setStatus(TicketStatus.valueOf(startedStatus));
+        if (ticket.getManager() != null) {
+            ticket.setStatus(TicketStatus.ASSIGNED);
+        } else {
+            ticket.setStatus(TicketStatus.valueOf(startedStatus));
+        }
+
         ticketRepository.save(ticket);
         //kafkaCreateTicketNoticeService.sendCreatedTicketWithCallback(ticket);
 
@@ -192,6 +199,73 @@ public class TicketService {
         }
 
         ticketRepository.deleteById(id);
+    }
+
+    /**
+    * Сервис получения тикетов, назначенных на менеджера
+    * @param managerId id менеджера
+     * @return список тикетов назначенных на менеджера
+    */
+    @Transactional(readOnly = true)
+    @Cacheable(value = "Tickets on manager", key = "#managerId")
+    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+    @ToLog
+    public List<Ticket> getTicketsOnManager(String managerId) {
+        if ( !(hasCurrentUserAdminRole() ||
+                hasManagerRole())) {
+            throw new ActionNotAllowException(TICKET_GET_EXCEPTION);
+        }
+
+        return ticketRepository.getTicketsByManagerId(managerId);
+    }
+
+    /**
+     * Сервис получения тикетов, не назначенных на менеджера
+     * @return список тикетов не назначенных на менеджера
+     */
+    @Transactional(readOnly = true)
+    @Cacheable(value = "Unassigned tickets")
+    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+    @ToLog
+    public List<Ticket> getUnassignedTickets() {
+        if ( !(hasCurrentUserAdminRole() ||
+                hasManagerRole())) {
+            throw new ActionNotAllowException(TICKET_GET_EXCEPTION);
+        }
+
+        return ticketRepository.getUnassignedTickets();
+    }
+
+    /**
+     * Сервис назначения текущего менеджера к тикету
+     * @return список тикетов не назначенных на менеджера
+     */
+    @Caching(evict = {
+            @CacheEvict(value = "Tickets", allEntries = true),
+            @CacheEvict(value = "UserTickets", allEntries = true),
+            @CacheEvict(value = "Ticket", key = "#id"),
+            @CacheEvict(value = "Unassigned tickets")
+    })
+    @CachePut(value = "Ticket", key = "#id")
+    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+    @ToLog
+    public Ticket assignManagerOnTicket(Long id) {
+        if ( !(hasCurrentUserAdminRole() ||
+                hasManagerRole())) {
+            throw new ActionNotAllowException(TICKET_GET_EXCEPTION);
+        }
+
+        Authentication authentication = authenticationFacade.getAuthentication();
+        String currentUserId = authentication.getName();
+        User currentManager = userService.getUserById(currentUserId);
+
+        Ticket ticket = getTicketInfo(id);
+        ticket.setManager(currentManager);
+        ticket.setStatus(TicketStatus.ASSIGNED);
+
+        ticketRepository.save(ticket);
+
+        return ticket;
     }
 
     /*public FullViewTicketDto setStatus(String status, Long ticketId, UserDetails userDetails) {
