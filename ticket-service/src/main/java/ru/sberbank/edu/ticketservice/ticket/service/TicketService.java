@@ -37,10 +37,7 @@ import static ru.sberbank.edu.common.error.ErrorMessages.*;
 @EnableCaching
 public class TicketService {
     private final TicketRepository ticketRepository;
-    //private final FullViewTicketMapper fullViewTicketMapper;
-    //private final ShortViewTicketMapper shortViewTicketMapper;
     private final UserService userService;
-    //private final CreateTicketMapper createTicketMapper;
     private final AuthenticationFacade authenticationFacade;
     private final KafkaCreateTicketNoticeService kafkaCreateTicketNoticeService;
 
@@ -175,7 +172,7 @@ public class TicketService {
         }
 
         ticketRepository.save(ticket);
-        //kafkaCreateTicketNoticeService.sendCreatedTicketWithCallback(ticket);
+        kafkaCreateTicketNoticeService.sendCreatedTicketWithCallback(ticket);
 
         return ticket;
     }
