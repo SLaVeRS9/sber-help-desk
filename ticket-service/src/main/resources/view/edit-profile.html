@@ -68,7 +68,7 @@
                                     <br>
                                     <label>Gender</label>
                                     <select name="gender">
-                                        <option th:each="genderOpt : ${T(ru.sberbank.edu.ticketservice.profile.UserGender).values()}"
+                                        <option th:each="genderOpt : ${T(ru.sberbank.edu.ticketservice.profile.enums.UserGender).values()}"
                                                 th:selected="${gender == user.getGender()}"
                                                 th:value="${genderOpt}" th:text="${genderOpt}">
                                         </option>

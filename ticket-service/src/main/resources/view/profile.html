@@ -45,6 +45,8 @@
                     <ul id="myTab" class="nav nav-pills">
                         <li class="active"><a href="/profile" data-toggle="tab">О пользователе</a></li>
                         <li class=""><a th:href="@{/dashboard/current}" data-toggle="tab">Мои заявки</a></li>
+                        <li class=""><a th:href="@{/dashboard/on-me}" data-toggle="tab">Заявки на мне</a></li>
+                        <li class=""><a th:href="@{/dashboard/unassigned-tickets}" data-toggle="tab">Не назначенные заявки</a></li>
                         <li class=""><a th:href="@{/dashboard}" data-toggle="tab">Dashboard</a></li>
                         <li class=""><a th:href="@{/admin/users}" data-toggle="tab" th:if="${user.role == T(ru.sberbank.edu.ticketservice.profile.enums.UserRole).ADMIN}">Роли пользователей</a></li>
                         <li class=""><a th:href="@{/logout}" data-toggle="tab">Выйти</a></li>

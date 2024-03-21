@@ -6,4 +6,5 @@ public class ErrorMessages {
     public final static String TICKET_EDIT_ALLOW_EXCEPTION= "You can't edit another's tickets";
     public final static String TICKET_DELETE_ALLOW_EXCEPTION= "You can't delete another's tickets";
     public final static String TICKET_CREATE_ALLOW_EXCEPTION= "You can't create another's tickets";
+    public final static String TICKET_GET_EXCEPTION = "You can't get any tickets";
 }

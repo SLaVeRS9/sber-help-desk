@@ -48,8 +48,7 @@ Content-Type: application/json
 {
     "code": "PHD",
     "title": "NEW_PHD_TASK",
-    "description": "ticket N very very very very very long description",
-    "managerId": "bakinasv"
+    "description": "ticket N very very very very very long description"
 }
 
 ###Установить менеджера в тикет

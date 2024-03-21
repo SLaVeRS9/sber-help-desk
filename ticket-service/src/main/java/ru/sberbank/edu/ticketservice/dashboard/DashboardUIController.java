@@ -1,6 +1,7 @@
 package ru.sberbank.edu.ticketservice.dashboard;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -54,7 +55,26 @@ public class DashboardUIController {
         String currentUserId = currentUser.getUsername();
         List<ShortViewTicketDto> currentUserTickets = ticketController.getUserTickets(currentUserId);
 
-        model.addAttribute("fullViewTicketDtos", currentUserTickets);
+        model.addAttribute("shortViewTicketDtos", currentUserTickets);
         return "my-tikets";
+    }
+
+    @GetMapping("/on-me")
+    @PreAuthorize("hasAuthority('ROLE_MANAGER')")
+    public String showTicketsOnMe(Model model, @AuthenticationPrincipal UserDetails currentUser) {
+        String currentUserId = currentUser.getUsername();
+        List<ShortViewTicketDto> currentUserTickets = ticketController.getTicketsOnManager(currentUserId);
+
+        model.addAttribute("shortViewTicketDtos", currentUserTickets);
+        return "tickets-on-me";
+    }
+
+    @GetMapping("/unassigned-tickets")
+    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+    public String showUnasignedTickets(Model model) {
+        List<ShortViewTicketDto> currentUserTickets = ticketController.getUnassignedTickets();
+
+        model.addAttribute("shortViewTicketDtos", currentUserTickets);
+        return "unassigned-tickets";
     }
 }

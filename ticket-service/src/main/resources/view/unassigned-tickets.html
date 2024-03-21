@@ -9,13 +9,6 @@
     <h1>SberHelpDesk</h1>
     <table>
         <tr>
-            <td>
-                <div class="ticket-buttons">
-                    <form method="GET" th:action="@{/tickets/create}">
-                        <input type="submit" value="Create new ticket"/>
-                    </form>
-                </div>
-            </td>
             <td th:width="50px"></td>
             <td>
                 <div class="ticket-buttons">
@@ -28,7 +21,7 @@
     </table>
     <br>
     <div class="ticketSpase">
-        <h2>My tickets</h2>
+        <h2>Unassigned tickets</h2>
         <div class="ticket-card" th:each="ticket : ${shortViewTicketDtos}">
             <div th:text="${ticket.getCode()} + '-' + ${ticket.getId()}">Code</div>
             <div th:text="${ticket.getTitle()}">Title</div>
@@ -52,6 +45,11 @@
                     <td>
                         <form method="GET" th:action="@{/tickets/{id}(id=${ticket.getId()})}">
                             <input type="submit" value="Details"/>
+                        </form>
+                    </td>
+                    <td>
+                        <form th:method="PATCH" th:action="@{/tickets/{id}/assign-on-me(id=${ticket.getId()})}">
+                            <input type="submit" value="Assign on me"/>
                         </form>
                     </td>
                 </tr>
